@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 
 //@Entity
 @Table(name = "roles")
-public class Roles {
+public class Rol {
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
