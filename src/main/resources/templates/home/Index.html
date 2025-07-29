@@ -3,9 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenidos</title>
+    <title>R&D</title>
+    <link rel="stylesheet" href="/css/style.css" />
+
 </head>
 <body>
-    <h1>Bienvenidos a nuestro sistema R&DbodegaPro</h1>
+<div class="contenedor-principal">
+    <div class="panel-lateral">
+        <div class="logo">Isla</div>
+        <div class="botones-panel">
+            <div class="btn-panel" data-panel="panel-productos">📦 Productos</div>
+            <div class="btn-panel" data-panel="panel-categorias">🗂 Categorías</div>
+            <div class="btn-panel" data-panel="panel-usuarios">👤 Usuarios</div>
+            <div class="btn-panel" data-panel="panel-reportes">📊 Reportes</div>
+            <div class="btn-panel" data-panel="panel-perfil">🙋 Perfil</div>
+        </div>
+    </div>
+
+    <div class="panel" id="panel-productos">Contenido de Productos</div>
+    <div class="panel" id="panel-categorias">Contenido de Categorías</div>
+    <div class="panel" id="panel-usuarios">Contenido de Usuarios</div>
+    <div class="panel" id="panel-reportes">Contenido de Reportes</div>
+
+    <div class="panel" id="panel-perfil">
+        <div class="info-perfil">
+            <h2>Mi Perfil</h2>
+            <p><strong>Nombre:</strong> Daniel López</p>
+            <p><strong>Teléfono:</strong> +503 7777-7777</p>
+            <p><strong>Correo:</strong> daniel@example.com</p>
+            <p><strong>Contraseña:</strong> ********</p>
+            <p><strong>Dirección:</strong> El Salvador</p>
+        </div>
+    </div>
+</div>
+
+<script src="/js/script.js"></script>
 </body>
 </html>
