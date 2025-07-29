@@ -1,12 +1,12 @@
 package org.esfe.AppRyDBodega_Pro.modelos;
 
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Entity;
+//import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity
+//@Entity
 @Table(name = "roles")
 public class Roles {
 
