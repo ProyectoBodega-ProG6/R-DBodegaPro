@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R&D</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom right, #000000, #1a1a1a);
+            height: 100vh;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        .isla {
+            position: fixed;
+            top: 10px;
+            bottom: 10px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(6px);
+            border-radius: 0 20px 20px 0;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 4px 0 10px rgba(0, 200, 83, 0.3);
+            z-index: 10;
+            width: 60px;
+            transition: width 0.3s ease;
+            overflow: hidden;
+        }
+
+        .isla:hover {
+            width: 230px;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: #ccc;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .btn-icon:hover {
+            background-color: rgba(0, 200, 83, 0.2);
+            color: #00c853;
+        }
+
+        .btn-icon.active {
+            background-color: #10cb5e;
+            color: #000000;
+        }
+
+        .icon {
+            font-size: 20px;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .panel {
+            position: absolute;
+            top: 20px;
+            left: calc(60px + 40px);
+            right: 40px;
+            bottom: 20px;
+            background: hsla(0, 1%, 27%, 0.788);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(55, 55, 54, 0.1);
+            transition: left 0.3s ease, opacity 0.3s, transform 0.3s;
+            overflow-y: auto;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
+        .panel.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .titulo-panel {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-style: italic;
+            color: #12cf61;
+        }
+
+        .contenido {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #f0f0f0;
+        }
+
+        .separador {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+        }
+
+        .isla:hover~.panel {
+            left: calc(230px + 40px);
+        }
+
+        #panel-perfil {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            max-width: 400px;
+            margin: auto;
+            gap: 20px;
+        }
+
+        #panel-perfil img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #00c853;
+            object-fit: cover;
+        }
+
+        .info-perfil {
+            font-size: 16px;
+            color: #ccc;
+        }
+
+        .info-perfil strong {
+            color: #12cf61;
+        }
+
+        .btn-editar {
+            background-color: #00c853;
+            color: #000000;
+            border: none;
+            padding: 10px 25px;
+            font-size: 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-editar:hover {
+            background-color: #0b9946;
+        }
+
+        /* Estilo para el mensaje de bienvenida */
+        #panel-bienvenida {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 26px;
+            color: #12cf61;
+            font-weight: bold;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Panel de Bienvenida -->
+    <div id="panel-bienvenida" class="panel active">
+        Bienvenido a nuestro sistema R&DBodega_Pro
+    </div>
+
+    <!-- Otros Paneles -->
+    <div id="panel-productos" class="panel">
+        <div class="titulo-panel">Gestión de Productos</div>
+        <div class="contenido"></div>
+    </div>
+    <div id="panel-categorias" class="panel">
+        <div class="titulo-panel">Gestión de Categorías</div>
+        <div class="contenido"></div>
+    </div>
+    <div id="panel-proveedores" class="panel">
+        <div class="titulo-panel">Gestión de Proveedores</div>
+        <div class="contenido"></div>
+    </div>
+    <div id="panel-movimientos" class="panel">
+        <div class="titulo-panel">Entrada y Salida</div>
+        <div class="contenido"></div>
+    </div>
+    <div id="panel-usuarios" class="panel">
+        <div class="titulo-panel">Gestión de Usuarios</div>
+        <div class="contenido"></div>
+    </div>
+    <div id="panel-reportes" class="panel">
+        <div class="titulo-panel">Gestión de Reportes</div>
+        <div class="contenido"></div>
+    </div>
+
+    <!-- Panel de perfil -->
+    <div id="panel-perfil" class="panel">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Perfil">
+        <!-- <div class="info-perfil"><strong>Nombre:</strong> Daniel López</div>
+        <div class="info-perfil"><strong>Teléfono:</strong> +503 7123-4567</div>
+        <div class="info-perfil"><strong>Correo:</strong> daniel@example.com</div>
+        <div class="info-perfil"><strong>Contraseña:</strong> ********</div>
+        <div class="info-perfil"><strong>Dirección:</strong> San Salvador, El Salvador</div>
+        <button class="btn-editar">Editar Perfil</button> -->
+    </div>
+
+    <!-- Botones de la Isla -->
+    <div class="isla">
+        <div class="btn-container">
+            <div class="btn-icon" data-panel="panel-productos">
+                <span class="icon">📦</span><span class="texto">Gestión de Productos</span>
+            </div>
+            <div class="btn-icon" data-panel="panel-categorias">
+                <span class="icon">📂</span><span class="texto">Gestión de Categorías</span>
+            </div>
+            <div class="btn-icon" data-panel="panel-proveedores">
+                <span class="icon">🚚</span><span class="texto">Gestión de Proveedores</span>
+            </div>
+            <div class="btn-icon" data-panel="panel-movimientos">
+                <span class="icon">🔄</span><span class="texto">Entrada/Salida</span>
+            </div>
+            <div class="btn-icon" data-panel="panel-usuarios">
+                <span class="icon">👤</span><span class="texto">Gestión de Usuarios</span>
+            </div>
+            <div class="btn-icon" data-panel="panel-reportes">
+                <span class="icon">📊</span><span class="texto">Gestión de Reportes</span>
+            </div>
+        </div>
+
+        <div class="separador"></div>
+
+        <div class="btn-container bottom-buttons">
+            <div class="btn-icon" id="btn-perfil">
+                <span class="icon">🙍‍♂️</span><span class="texto">Mi Perfil</span>
+            </div>
+            <div class="btn-icon">
+                <span class="icon">🚪</span><span class="texto">Cerrar Sesión</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const botones = document.querySelectorAll('.btn-icon[data-panel]');
+        const paneles = document.querySelectorAll('.panel');
+        const perfilBtn = document.getElementById('btn-perfil');
+        const panelPerfil = document.getElementById('panel-perfil');
+        const panelBienvenida = document.getElementById('panel-bienvenida');
+
+        botones.forEach(boton => {
+            boton.addEventListener('click', () => {
+                const panelId = boton.getAttribute('data-panel');
+                const panel = document.getElementById(panelId);
+                const estaActivo = panel && panel.classList.contains('active');
+
+                paneles.forEach(p => p.classList.remove('active'));
+                botones.forEach(b => b.classList.remove('active'));
+                perfilBtn.classList.remove('active');
+                panelPerfil.classList.remove('active');
+                panelBienvenida.classList.remove('active');
+
+                if (panel && !estaActivo) {
+                    panel.classList.add('active');
+                    boton.classList.add('active');
+                }
+            });
+        });
+
+        perfilBtn.addEventListener('click', () => {
+            const activo = panelPerfil.classList.contains('active');
+            paneles.forEach(p => p.classList.remove('active'));
+            botones.forEach(b => b.classList.remove('active'));
+            panelBienvenida.classList.remove('active');
+
+            if (!activo) {
+                panelPerfil.classList.add('active');
+                perfilBtn.classList.add('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
