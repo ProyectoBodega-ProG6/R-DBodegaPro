@@ -19,7 +19,7 @@ public class Rol {
     @NotBlank(message = "El nombre del rol es requerido")
     @Size(max = 50, message = "El nombre del rol no puede tener más de 50 caracteres")
     @Column(name = "nombre_rol", nullable = false, unique = true, length = 50)
-    private String nombre;
+    private String nombreRol;
 
     @Size(max = 255, message = "La descripción no puede tener más de 255 caracteres")
     @Column(name = "descripcion", length = 255)
@@ -36,12 +36,12 @@ public class Rol {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreRol() {
+        return nombreRol;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreRol(String nombreRol) {
+        this.nombreRol = nombreRol;
     }
 
     public String getDescripcion() {
