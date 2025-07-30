@@ -1,19 +1,36 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const botones = document.querySelectorAll(".btn-panel");
-  const paneles = document.querySelectorAll(".panel");
+const botones = document.querySelectorAll('.btn-icon[data-panel]');
+const paneles = document.querySelectorAll('.panel');
+const perfilBtn = document.getElementById('btn-perfil');
+const panelPerfil = document.getElementById('panel-perfil');
 
-  botones.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const panelId = btn.getAttribute("data-panel");
+botones.forEach(boton => {
+  boton.addEventListener('click', () => {
+    const panelId = boton.getAttribute('data-panel');
+    const panel = document.getElementById(panelId);
+    const estaActivo = panel && panel.classList.contains('active');
 
-      paneles.forEach((panel) => {
-        panel.classList.remove("active");
-      });
+    paneles.forEach(p => p.classList.remove('active'));
+    botones.forEach(b => b.classList.remove('active'));
+    panelPerfil.classList.remove('active');
+    perfilBtn.classList.remove('active');
 
-      const panelActivo = document.getElementById(panelId);
-      if (panelActivo) {
-        panelActivo.classList.add("active");
-      }
-    });
+    if (panel && !estaActivo) {
+      panel.classList.add('active');
+      boton.classList.add('active');
+    }
   });
+});
+
+perfilBtn.addEventListener('click', () => {
+  const activo = panelPerfil.classList.contains('active');
+  paneles.forEach(p => p.classList.remove('active'));
+  botones.forEach(b => b.classList.remove('active'));
+
+  if (!activo) {
+    panelPerfil.classList.add('active');
+    perfilBtn.classList.add('active');
+  } else {
+    panelPerfil.classList.remove('active');
+    perfilBtn.classList.remove('active');
+  }
 });
