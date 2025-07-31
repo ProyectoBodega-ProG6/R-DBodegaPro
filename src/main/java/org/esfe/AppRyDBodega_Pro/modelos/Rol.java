@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-//@Entity
+@Entity
 @Table(name = "roles", uniqueConstraints = {
 @UniqueConstraint(columnNames = "nombre_rol")
 })

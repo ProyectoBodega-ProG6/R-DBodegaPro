@@ -3,7 +3,7 @@ package org.esfe.AppRyDBodega_Pro.modelos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-//@Entity
+@Entity
 @Table(name = "proveedores", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email")
 })

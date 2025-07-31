@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 
-//@Entity
+@Entity
 @Table(name = "productos")
 
 public class Producto {
