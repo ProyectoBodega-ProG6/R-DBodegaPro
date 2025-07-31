@@ -1,26 +1,25 @@
--- BASE DE DATOS RyDBodega_pro PARA MYSQL
-USE RyDBodega_pro;
+--YA ESTAN CREADAS TODAS LAS TABLAS EN LA BASE DE DATOS
+--YA ESTAN CREADOS EL ROL Y USUARIO DE ACCESO EN LA BASE DE DATOS DE MYSQL
 
-
--- Rol ADMIN
+---- Rol ADMIN
 --INSERT INTO roles (nombre_rol, descripcion)
---VALUES ('ADMIN', 'Administrador del sistema');
+--VALUES ('Admin', 'Administrador del sistema');
 
--- Usuario
+-- Usuario de acceso
 --INSERT INTO usuarios (
-    --nombre_completo,
-    --username,
-    --password,
-    --telefono,
-    --direccion,
-    --correo_electronico,
-    --idRol
+--    nombre_completo,
+--    username,
+--    password,
+--    telefono,
+--    direccion,
+--    correo_electronico,
+--    id_rol
 --) VALUES (
-    --'Rocio Pérez',
-    --'adminbodega',
-    --'827ccb0eea8a706c4c34a16891f84e7b',
-    --'7654-3423',
-    --'Calle Principal #123, San Salvador',
-    --'rocio@gmail.com',
-    --1
+--    'Daniel Lopez',
+--    'sysadmin',
+--    '827ccb0eea8a706c4c34a16891f84e7b',
+--    '7554-3463',
+--    'San Salvador',
+--    'daniel@gmail.com',
+--    1
 --);

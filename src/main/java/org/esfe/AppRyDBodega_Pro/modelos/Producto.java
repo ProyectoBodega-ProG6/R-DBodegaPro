@@ -16,11 +16,11 @@ public class Producto {
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100)
-    @Column(nullable = false, length = 100)
+    @Column( name = "nombre", nullable = false, length = 100)
     private String nombre;
 
     @Size(max = 255)
-    @Column(length = 255)
+    @Column( name = "descripcion", length = 255)
     private String descripcion;
 
     @NotNull(message = "El precio de compra es obligatorio")
@@ -57,12 +57,12 @@ public class Producto {
 
     @NotNull(message = "Debe seleccionar una categoría")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idCategoria", nullable = false,
+    @JoinColumn(name = "id_categoria", nullable = false,
             foreignKey = @ForeignKey(name = "fk_productos_categoria"))
     private Categoria categoria;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idProveedor",
+    @JoinColumn(name = "id_proveedor",
             foreignKey = @ForeignKey(name = "fk_productos_proveedor"))
     private Proveedor proveedor;
 
