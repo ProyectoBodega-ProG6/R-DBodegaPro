@@ -5,6 +5,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class MovimientoEntradaSalida {
     @NotNull(message = "El producto es obligatorio")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-            name = "idProducto",
+            name = "id_producto",
             nullable = false,
             foreignKey = @ForeignKey(name = "movimientosEntradaSalida_ibfk_1")
     )
@@ -29,7 +30,7 @@ public class MovimientoEntradaSalida {
     @NotNull(message = "El usuario es obligatorio")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-            name = "idUsuario",
+            name = "id_usuario",
             nullable = false,
             foreignKey = @ForeignKey(name = "movimientosEntradaSalida_ibfk_2")
     )
@@ -38,7 +39,7 @@ public class MovimientoEntradaSalida {
     @NotNull(message = "El tipo de movimiento es obligatorio")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-            name = "idTipoMovimiento",
+            name = "id_tipo_movimiento",
             nullable = false,
             foreignKey = @ForeignKey(name = "movimientosEntradaSalida_ibfk_3")
     )
@@ -55,14 +56,8 @@ public class MovimientoEntradaSalida {
     @Column(name = "precio", nullable = false, precision = 10, scale = 2)
     private BigDecimal precio = BigDecimal.ZERO;
 
-    @NotNull(message = "La fecha es obligatoria")
-    @Column(
-            name = "fecha",
-            nullable = false,
-            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
-            insertable = false,
-            updatable = false
-    )
+    @CreationTimestamp
+    @Column(name = "fecha", nullable = false, updatable = false)
     private LocalDateTime fecha;
 
     @Lob

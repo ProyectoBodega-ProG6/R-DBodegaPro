@@ -51,7 +51,7 @@ public class Usuario {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idRol", nullable = false, foreignKey = @ForeignKey(name = "fk_usuario_rol"))
+    @JoinColumn(name = "id_rol", nullable = false, foreignKey = @ForeignKey(name = "fk_usuario_rol"))
     @NotNull(message = "El rol es obligatorio")
     private Rol rol;
 
