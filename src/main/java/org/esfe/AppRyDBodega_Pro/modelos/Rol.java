@@ -8,7 +8,9 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 //@Entity
-@Table(name = "roles")
+@Table(name = "roles", uniqueConstraints = {
+@UniqueConstraint(columnNames = "nombre_rol")
+})
 public class Rol {
 
     @Id
@@ -58,5 +60,15 @@ public class Rol {
 
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
+    }
+
+    public Rol(Integer id, String nombreRol, String descripcion, List<Usuario> usuarios) {
+        this.id = id;
+        this.nombreRol = nombreRol;
+        this.descripcion = descripcion;
+        this.usuarios = usuarios;
+    }
+
+    public Rol() {
     }
 }
