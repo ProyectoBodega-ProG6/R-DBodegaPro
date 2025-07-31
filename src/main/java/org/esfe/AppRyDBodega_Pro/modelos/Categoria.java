@@ -3,17 +3,10 @@ package org.esfe.AppRyDBodega_Pro.modelos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @Entity
 @Table(name = "categorias")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 
 public class Categoria {
 
@@ -30,4 +23,36 @@ public class Categoria {
     @Column(name = "descripcion", length = 255)
     private String descripcion;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Categoria(String descripcion, String nombre, Integer id) {
+        this.descripcion = descripcion;
+        this.nombre = nombre;
+        this.id = id;
+    }
+
+    public Categoria() {
+    }
 }
