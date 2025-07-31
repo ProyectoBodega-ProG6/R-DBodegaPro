@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 
-@Entity
+//@Entity
 @Table(name = "categorias")
 
 public class Categoria {

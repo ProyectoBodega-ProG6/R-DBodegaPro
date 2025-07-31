@@ -9,9 +9,9 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
+//@Entity
 @Table(name = "movimientosEntradaSalida")
-public class MovimientosEntradaSalida {
+public class MovimientoEntradaSalida {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -133,8 +133,8 @@ public class MovimientosEntradaSalida {
         this.observaciones = observaciones;
     }
 
-    public MovimientosEntradaSalida(Integer id, Producto producto, Usuario usuario, TipoMovimiento tipoMovimiento,
-                                    Integer cantidad, BigDecimal precio, LocalDateTime fecha, String observaciones) {
+    public MovimientoEntradaSalida(Integer id, Producto producto, Usuario usuario, TipoMovimiento tipoMovimiento,
+                                   Integer cantidad, BigDecimal precio, LocalDateTime fecha, String observaciones) {
         this.id = id;
         this.producto = producto;
         this.usuario = usuario;
@@ -145,6 +145,6 @@ public class MovimientosEntradaSalida {
         this.observaciones = observaciones;
     }
 
-    public MovimientosEntradaSalida() {
+    public MovimientoEntradaSalida() {
     }
 }
