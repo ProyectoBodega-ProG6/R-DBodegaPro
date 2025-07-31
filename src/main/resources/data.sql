@@ -84,7 +84,7 @@ CREATE TABLE movimientosEntradaSalida (
     FOREIGN KEY (idProducto) REFERENCES productos(id),
     FOREIGN KEY (idUsuario) REFERENCES usuarios(id),
     FOREIGN KEY (idTipoMovimiento) REFERENCES tipoMovimiento(id)
-) ENGINE = InnoDB;
+) ENGINE = InnoDB;
 
 -- Rol ADMIN
 INSERT INTO roles (nombre_rol, descripcion)
