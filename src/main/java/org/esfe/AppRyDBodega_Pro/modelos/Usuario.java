@@ -1,6 +1,7 @@
 package org.esfe.AppRyDBodega_Pro.modelos;
 
 //import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -48,10 +49,6 @@ public class Usuario {
     @Column(name = "correo_electronico", nullable = false, unique = true, length = 100)
     private String correo_electronico;
 
-    @NotBlank(message = "La fecha es requerida")
-    @CreationTimestamp
-    @Column(name = "fecha_registro", nullable = false, updatable = false)
-    private LocalDateTime fechaRegistro = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idRol", nullable = false, foreignKey = @ForeignKey(name = "fk_usuario_rol"))
@@ -114,14 +111,6 @@ public class Usuario {
         this.correo_electronico = correo_electronico;
     }
 
-    public LocalDateTime getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(LocalDateTime fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
     public Rol getRol() {
         return rol;
     }
@@ -131,7 +120,7 @@ public class Usuario {
     }
 
     public Usuario(Integer id, String nombreCompleto, String username, String password, String telefono, String direccion,
-                   String correo_electronico, LocalDateTime fechaRegistro, Rol rol) {
+                   String correo_electronico, Rol rol) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.username = username;
@@ -139,7 +128,6 @@ public class Usuario {
         this.telefono = telefono;
         this.direccion = direccion;
         this.correo_electronico = correo_electronico;
-        this.fechaRegistro = fechaRegistro;
         this.rol = rol;
     }
 
