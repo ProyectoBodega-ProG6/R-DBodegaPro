@@ -1,12 +1,12 @@
---YA ESTAN CREADAS TODAS LAS TABLAS EN LA BASE DE DATOS
---YA ESTAN CREADOS EL ROL Y USUARIO DE ACCESO EN LA BASE DE DATOS DE MYSQL
+--YA ESTAN CREADAS TODAS LAS TABLAS EN LA BASE DE DATOS PORQUE SE CREARON POR MEDIO DE @ENTITY
+--YA ESTAN CREADOS EL ROL Y USUARIO DE ACCESO DEL CODIGO QUE ESTA COMENTADO, YA ESTAN EN LA BASE DE DATOS DE MYSQL
 
 ---- Rol ADMIN
---INSERT INTO roles (nombre_rol, descripcion)
+--INSERT IGNORE INTO roles (nombre_rol, descripcion)
 --VALUES ('Admin', 'Administrador del sistema');
 
 -- Usuario de acceso
---INSERT INTO usuarios (
+--INSERT IGNORE INTO usuarios (
 --    nombre_completo,
 --    username,
 --    password,
