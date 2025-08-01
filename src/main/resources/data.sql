@@ -23,3 +23,7 @@
 --    'daniel@gmail.com',
 --    1
 --);
+
+--NOTA: Para crear más registros habilitar 2 configuraciones comentadas
+--que funcionan para insertar datos a las tablas en la base de datos
+--que estan en el archivo application.properties
