@@ -1,7 +1,7 @@
 package org.esfe.AppRyDBodega_Pro.modelos;
 
 import jakarta.persistence.*;
-//import jakarta.persistence.Entity;
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 

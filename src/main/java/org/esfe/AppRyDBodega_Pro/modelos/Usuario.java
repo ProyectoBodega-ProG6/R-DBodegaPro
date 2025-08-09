@@ -1,6 +1,6 @@
 package org.esfe.AppRyDBodega_Pro.modelos;
 
-//import jakarta.persistence.Entity;
+import jakarta.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
