@@ -15,35 +15,4 @@ import java.util.Optional;
 @Service
 public class ProductoService implements IProductoService {
 
-
-    @Autowired
-    private IProductoRepository productoRepository;
-
-
-
-
-    @Override
-    public Page<Producto> buscarTodosPaginados(Pageable pageable) {
-        return productoRepository.findAll(pageable);
-    }
-
-    @Override
-    public List<Producto> obtenerTodos() {
-        return productoRepository.findAll();
-    }
-
-    @Override
-    public Optional<Producto> buscarPorId(Integer id) {
-        return productoRepository.findById(id);
-    }
-
-    @Override
-    public Producto crearOEditttar(Producto producto) {
-        return productoRepository.save(producto);
-    }
-
-    @Override
-    public void eliminarPorId(Integer id) {
-        productoRepository.deleteById(id);
-    }
 }
