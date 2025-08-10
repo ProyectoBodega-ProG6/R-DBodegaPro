@@ -12,5 +12,5 @@ public interface ICategoriaRepository extends JpaRepository<Categoria, Integer> 
     List<Categoria> findByNombreIgnoreCase(String nombre);
     Page<Categoria> findByNombreContainingIgnoreCase(String nombre, Pageable pageable);
     List<Categoria> findAllByOrderByNombreAsc();
-    Page<Categoria> findAllByOrderByNNombreAsc();
+    Page<Categoria> findAllByOrderByNombreAsc(Pageable pageable);
 }
