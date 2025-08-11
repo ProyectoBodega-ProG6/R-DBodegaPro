@@ -10,11 +10,12 @@ import org.springframework.data.domain.Sort;
 import java.util.*;
 
 public interface IProductoService {
-Page<Producto> buscarTodosPaginados(Pageable pageable);
-List<Producto>obtenerTodos();
-Optional<Producto>buscarPorId(Integer id);
-Producto createOrEditOne(Producto producto);
-void eliminarPorId (Integer id);
+
+    Page<Producto> buscarTodosPaginados(Pageable pageable);
+    List<Producto>obtenerTodos();
+    Optional<Producto>buscarPorId(Integer id);
+    Producto createOrEditOne(Producto producto);
+    void eliminarPorId (Integer id);
 
     Producto buscarPorNombre(String nombre);
     List<Producto> buscarPorNombreParcial(String nombre);
@@ -24,4 +25,5 @@ void eliminarPorId (Integer id);
 
     List<Producto> listarOrdenados(Sort sort);
     Page<Producto> listarPaginados(Pageable pageable);
+
 }
