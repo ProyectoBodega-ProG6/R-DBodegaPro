@@ -13,6 +13,6 @@ import java.util.Optional;
 
 
 @Service
-public class ProductoService implements IProductoService {
+public abstract class ProductoService implements IProductoService {
 
 }
