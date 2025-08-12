@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IMovimientoEntradaSalidaRepository extends JpaRepository<MovimientoEntradaSalida, Integer> {
 
-    Page<MovimientoEntradaSalida> findByProductoNombreContainingIgnoreCaseOrTipoMovimientoIdOrderByIdAsc(
+    Page<MovimientoEntradaSalida> findByProductoNombreContainingIgnoreCaseAndTipoMovimientoNombreOrderByIdAsc(
             String nombreProducto,
-            Integer idTipoMovimiento,
+            String nombre,
             Pageable pageable);
 
     Page<MovimientoEntradaSalida> findAllByOrderByIdAsc(Pageable pageable);
