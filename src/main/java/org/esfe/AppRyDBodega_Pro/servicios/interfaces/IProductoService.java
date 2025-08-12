@@ -16,5 +16,6 @@ public interface IProductoService {
     Optional<Producto>buscarPorId(Integer id);
     Producto createOrEditOne(Producto producto);
     void eliminarPorId (Integer id);
-
+    Page<Producto> buscarPorNombreYCategoriaYProveedor(String nombre, String categoriaNombre, String proveedorNombre, Pageable pageable);
+    Page<Producto> listarPaginadoOrdenado(Pageable pageable);
 }
