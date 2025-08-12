@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IMovimientoEntradaSalidaRepository extends JpaRepository<MovimientoEntradaSalida, Integer> {
 
-    Page<MovimientoEntradaSalida> findByProductoNombreContainingIgnoreCaseOrderByFechaAsc(String nombre, Pageable pageable);
-    Page<MovimientoEntradaSalida> findByTipoMovimientoIdOrderByFechaAsc(Integer idTipoMovimiento, Pageable pageable);
-    Page<MovimientoEntradaSalida> findByProductoNombreContainingIgnoreCaseAndTipoMovimientoIdOrderByFechaAsc(String nombre, Integer id, Pageable pageable);
-    Page<MovimientoEntradaSalida> findAllByOrderByFechaAsc(Pageable pageable);
-    Page<MovimientoEntradaSalida> findByProductoIdOrderByFechaAsc(Integer id, Pageable pageable);
+    Page<MovimientoEntradaSalida> findByProductoNombreContainingIgnoreCaseOrTipoMovimientoIdOrderByIdAsc(
+            String nombreProducto,
+            Integer idTipoMovimiento,
+            Pageable pageable);
+
+    Page<MovimientoEntradaSalida> findAllByOrderByIdAscFechaAsc(Pageable pageable);
+
 }
