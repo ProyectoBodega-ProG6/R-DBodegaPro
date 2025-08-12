@@ -18,4 +18,11 @@ public interface IMovimientoEntradaSalidaService {
     MovimientoEntradaSalida createOrEditOne(MovimientoEntradaSalida movimientoEntradaSalida);
 
     void eliminarPorId(Integer id);
+
+    Page<MovimientoEntradaSalida> findAllOrderedById(Pageable pageable);
+
+    Page<MovimientoEntradaSalida> findByProductoNombreAndTipoMovimientoNombre(
+            String nombreProducto,
+            String nombre,
+            Pageable pageable);
 }
