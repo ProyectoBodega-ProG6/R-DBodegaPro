@@ -20,12 +20,4 @@ public interface ICategoriaService {
 
     void eliminarPorId(Integer id);
 
-    List<Categoria> findByNombreIgnoreCase(String nombre);
-
-    Page<Categoria> findByNombreContainingIgnoreCase(String nombre, Pageable pageable);
-
-    List<Categoria> findAllByOrderByNombreAsc();
-
-    Page<Categoria> findAllByOrderByNombreAsc(Pageable pageable);
-
 }

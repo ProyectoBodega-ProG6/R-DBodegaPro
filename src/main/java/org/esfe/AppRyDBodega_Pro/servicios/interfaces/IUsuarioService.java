@@ -18,14 +18,4 @@ public interface IUsuarioService {
 
     void eliminarPorId(Integer id);
 
-    Optional<Usuario> bucarPorUsername(String username);
-
-    List<Usuario> buscarPorRol(String nombreRol);
-
-    Page<Usuario> buscarPorNombreCompleto (String nombreCompleto, Pageable pageable);
-
-    Page<Usuario> buscarPorRolNombre(String nombreRol, Pageable pageable);
-
-    List<Usuario> buscarPorIdRolOrdenadosAsc(Integer idRol);
-
 }

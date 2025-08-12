@@ -21,11 +21,4 @@ public interface IProveedorService {
 
     void eliminarPorId(Integer id);
 
-    Page<Proveedor> findAllByOrderByNombreAsc(Pageable pageable);
-
-    Page<Proveedor> findByNombreContainingIgnoreCaseOrderByNombreAsc(String nombre, Pageable pageable);
-
-    Page<Proveedor> findByNombreEmpresaContainingIgnoreCaseOrderByNombreEmpresaAsc(String nombreEmpresa, Pageable pageable);
-
-
 }
