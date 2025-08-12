@@ -9,13 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ITipoMovimientoRepository extends JpaRepository<TipoMovimiento, Integer> {
-
-    List<TipoMovimiento> findAll(Sort sort);
-    List<TipoMovimiento> findAllByOrderByNombreAsc();
-
-    Page<TipoMovimiento> findAll(Pageable pageable);
-
-    Page<TipoMovimiento> findAllByOrderByNombreAsc(Pageable pageable);
-
-
+    Page<TipoMovimiento> findAllByOrderByIdAsc(Pageable pageable);
+    Page<TipoMovimiento> findByNombreContainingIgnoreCaseOrderByIdAsc(String nombre, Pageable pageable);
 }
