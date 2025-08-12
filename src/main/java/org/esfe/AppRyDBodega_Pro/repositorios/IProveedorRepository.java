@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IProveedorRepository extends JpaRepository<Proveedor, Integer> {
-    Page<Proveedor> findAllByOrderByNombreAsc(Pageable pageable);
-    Page<Proveedor> findByNombreContainingIgnoreCaseOrNombreEmpresaContainingIgnoreCaseOrderByNombreAsc(String nombre, String nombreEmpresa, Pageable pageable);
+    Page<Proveedor> findAllByOrderById(Pageable pageable);
+    Page<Proveedor> findByNombreContainingIgnoreCaseOrNombreEmpresaContainingIgnoreCaseOrderByIdAsc(String nombre, String nombreEmpresa, Pageable pageable);
 
 }
