@@ -12,6 +12,4 @@ public interface IMovimientoEntradaSalidaRepository extends JpaRepository<Movimi
             String nombre,
             Pageable pageable);
 
-    Page<MovimientoEntradaSalida> findAllByOrderByIdAsc(Pageable pageable);
-
 }

@@ -8,5 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ICategoriaRepository extends JpaRepository<Categoria, Integer> {
 
     Page<Categoria> findByNombreContainingIgnoreCaseOrderByIdAsc(String nombre, Pageable pageable);
-    Page<Categoria> findAllByOrderByIdAsc(Pageable pageable);
 }

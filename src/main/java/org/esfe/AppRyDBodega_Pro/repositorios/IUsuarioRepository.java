@@ -13,6 +13,4 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
             String username,
             Pageable pageable);
 
-    Page<Usuario> findAllByOrderByIdAsc(Pageable pageable);
-
 }

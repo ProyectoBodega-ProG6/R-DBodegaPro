@@ -16,5 +16,4 @@ public interface IProductoRepository extends JpaRepository<Producto, Integer> {
             Pageable pageable
     );
 
-    Page<Producto> findAllByOrderByIdAsc(Pageable pageable);
 }

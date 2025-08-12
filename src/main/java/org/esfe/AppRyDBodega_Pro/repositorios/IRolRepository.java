@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IRolRepository extends JpaRepository<Rol, Integer> {
 
-    Page<Rol> findAllByOrderByIdAsc(Pageable pageable);
     Page<Rol> findByNombreRolContainingIgnoreCaseOrderByIdAsc(String nombreRol, Pageable pageable);
 
 }
