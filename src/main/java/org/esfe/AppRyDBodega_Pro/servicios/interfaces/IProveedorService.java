@@ -21,4 +21,8 @@ public interface IProveedorService {
 
     void eliminarPorId(Integer id);
 
+    Page<Proveedor> obtenerTodos(Pageable pageable);
+
+    Page<Proveedor> buscarPorNombreYEmpresa(String nombre, String nombreEmpresa, Pageable pageable);
+
 }
