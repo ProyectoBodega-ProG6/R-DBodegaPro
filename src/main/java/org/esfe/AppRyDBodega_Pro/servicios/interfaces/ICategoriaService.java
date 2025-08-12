@@ -20,4 +20,8 @@ public interface ICategoriaService {
 
     void eliminarPorId(Integer id);
 
+    Page<Categoria> buscarPorNombre(String nombre, Pageable pageable);
+
+    Page<Categoria> listarOrdenadasPorId(Pageable pageable);
+
 }

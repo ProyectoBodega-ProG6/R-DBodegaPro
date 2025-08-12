@@ -9,8 +9,4 @@ public interface ICategoriaRepository extends JpaRepository<Categoria, Integer> 
 
     Page<Categoria> findByNombreContainingIgnoreCaseOrderByIdAsc(String nombre, Pageable pageable);
     Page<Categoria> findAllByOrderByIdAsc(Pageable pageable);
-
-    Page<Categoria> buscarPorNombre(String nombre, Pageable pageable);
-
-    Page<Categoria> listarOrdenadasPorId(Pageable pageable);
 }
