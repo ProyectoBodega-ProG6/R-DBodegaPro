@@ -18,4 +18,13 @@ public interface IUsuarioService {
 
     void eliminarPorId(Integer id);
 
+    Page<Usuario> buscarPorFiltros(
+            String nombreCompleto,
+            String nombreRol,
+            String username,
+            Pageable pageable
+    );
+
+    Page<Usuario> listarOrdenadoPorIdAsc(Pageable pageable);
+
 }
