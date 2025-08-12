@@ -16,7 +16,4 @@ public interface IRolService {
     Producto createOrEditOne(Producto producto);
     void eliminarPorId (Integer id);
 
-    Page<Rol> listarPaginados(Pageable pageable);
-    Page<Rol> listarPaginadosOrdenadosPorNombreAsc(Pageable pageable);
-
 }

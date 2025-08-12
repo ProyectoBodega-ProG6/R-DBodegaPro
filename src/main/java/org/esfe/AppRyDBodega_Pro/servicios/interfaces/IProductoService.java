@@ -17,13 +17,4 @@ public interface IProductoService {
     Producto createOrEditOne(Producto producto);
     void eliminarPorId (Integer id);
 
-    Producto buscarPorNombre(String nombre);
-    List<Producto> buscarPorNombreParcial(String nombre);
-    List<Producto> buscarPorCategoria(Categoria categoria);
-    List<Producto> buscarPorProveedor(Proveedor proveedor);
-    boolean existePorNombre(String nombre);
-
-    List<Producto> listarOrdenados(Sort sort);
-    Page<Producto> listarPaginados(Pageable pageable);
-
 }

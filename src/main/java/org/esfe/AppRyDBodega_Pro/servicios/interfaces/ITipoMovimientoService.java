@@ -12,12 +12,12 @@ import java.util.Optional;
 public interface ITipoMovimientoService {
 
     Page<Producto> buscarTodosPaginados(Pageable pageable);
-    List<Producto>obtenerTodos();
+
+    List<Producto> obtenerTodos();
+
     Optional<Producto> buscarPorId(Integer id);
+
     Producto createOrEditOne(Producto producto);
-    void eliminarPorId (Integer id);
-    List<TipoMovimiento> listarOrdenados(Sort sort);
-    List<TipoMovimiento> listarOrdenadosPorNombreAsc();
-    Page<TipoMovimiento> listarPaginados(Pageable pageable);
-    Page<TipoMovimiento> listarPaginadosPorNombreAsc(Pageable pageable);
+
+    void eliminarPorId(Integer id);
 }
