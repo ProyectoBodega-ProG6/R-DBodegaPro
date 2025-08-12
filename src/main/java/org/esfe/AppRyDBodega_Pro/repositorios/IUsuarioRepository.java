@@ -5,16 +5,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
-
 public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
 
-    Optional<Usuario> findByUsernameIgnoreCase(String username);
-    List<Usuario> findByRolNombreRol(String nombreRol);
-    Page<Usuario> findByNombreCompletoContainingIgnoreCase(String nombreCompleto, Pageable pageable);
-    Page<Usuario> findByRolNombreRolContainingIgnoreCase(String nombreRol, Pageable pageable);
-    List<Usuario> findByRolIdOrderByNombreCompletoAsc(Integer idRol);
-    Page<Usuario> findAll(Pageable pageable);
+    Page<Usuario> findByNombreCompletoContainingIgnoreCaseOrRolNombreRolContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrderByIdAsc(
+            String nombreCompleto,
+            String nombreRol,
+            String username,
+            Pageable pageable);
+
+    Page<Usuario> findByRolIdOrderByNombreCompletoAsc(Integer idRol, Pageable pageable);
+
+    Page<Usuario> findAllByOrderByIdAsc(Pageable pageable);
 
 }
