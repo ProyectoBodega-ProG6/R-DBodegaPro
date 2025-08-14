@@ -4,7 +4,6 @@ import org.esfe.AppRyDBodega_Pro.modelos.Producto;
 import org.esfe.AppRyDBodega_Pro.modelos.TipoMovimiento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,5 +15,5 @@ public interface ITipoMovimientoService {
     Optional<Producto> buscarPorId(Integer id);
     Producto createOrEditOne(Producto producto);
     void eliminarPorId(Integer id);
-    Page<TipoMovimiento> buscarPorNombre(String nombre, Pageable pageable);
+    Page<TipoMovimiento> findByNombreContainingIgnoreCaseOrderByIdAsc(String nombre, Pageable pageable);
 }
