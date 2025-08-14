@@ -5,11 +5,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public interface IMovimientoEntradaSalidaRepository extends JpaRepository<MovimientoEntradaSalida, Integer> {
 
     Page<MovimientoEntradaSalida> findByProductoNombreContainingIgnoreCaseAndTipoMovimientoNombreOrderByIdAsc(
             String nombreProducto,
             String nombre,
             Pageable pageable);
+
+    List<MovimientoEntradaSalida> findByFechaBetween(LocalDateTime inicio, LocalDateTime fin);
 
 }
