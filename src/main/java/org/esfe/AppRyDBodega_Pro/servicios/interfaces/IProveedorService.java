@@ -1,7 +1,5 @@
 package org.esfe.AppRyDBodega_Pro.servicios.interfaces;
 
-import org.esfe.AppRyDBodega_Pro.modelos.Categoria;
-import org.esfe.AppRyDBodega_Pro.modelos.Producto;
 import org.esfe.AppRyDBodega_Pro.modelos.Proveedor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +19,6 @@ public interface IProveedorService {
 
     void eliminarPorId(Integer id);
 
-    Page<Proveedor> buscarPorNombreYEmpresa(String nombre, String nombreEmpresa, Pageable pageable);
+    Page<Proveedor> findByNombreContainingIgnoreCaseAndNombreEmpresaContainingIgnoreCaseOrderByIdAsc(String nombre, String nombreEmpresa, Pageable pageable);
 
 }
