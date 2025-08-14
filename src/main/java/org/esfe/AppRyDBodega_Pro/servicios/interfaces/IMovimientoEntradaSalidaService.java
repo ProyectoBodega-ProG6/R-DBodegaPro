@@ -5,6 +5,7 @@ import org.esfe.AppRyDBodega_Pro.modelos.MovimientoEntradaSalida;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +20,12 @@ public interface IMovimientoEntradaSalidaService {
 
     void eliminarPorId(Integer id);
 
-    Page<MovimientoEntradaSalida> findByProductoNombreAndTipoMovimientoNombre(
+    Page<MovimientoEntradaSalida> findByProductoNombreContainingIgnoreCaseAndTipoMovimientoNombreOrderByIdAsc(
             String nombreProducto,
             String nombre,
-            Pageable pageable);
+            Pageable pageable
+    );
+
+    List<MovimientoEntradaSalida> findByFechaBetween(LocalDateTime inicio, LocalDateTime fin);
+
 }
