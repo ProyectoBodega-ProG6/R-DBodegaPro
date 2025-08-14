@@ -25,6 +25,4 @@ public interface IUsuarioService {
             Pageable pageable
     );
 
-    Page<Usuario> listarOrdenadoPorIdAsc(Pageable pageable);
-
 }

@@ -15,6 +15,5 @@ public interface IRolService {
     Optional<Producto> buscarPorId(Integer id);
     Producto createOrEditOne(Producto producto);
     void eliminarPorId (Integer id);
-    Page<Rol> listarPaginadoOrdenado(Pageable pageable);
     Page<Rol> buscarPorNombreRol(String nombreRol, Pageable pageable);
 }

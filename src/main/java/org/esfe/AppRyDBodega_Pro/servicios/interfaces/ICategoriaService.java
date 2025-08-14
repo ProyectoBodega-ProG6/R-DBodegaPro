@@ -22,6 +22,4 @@ public interface ICategoriaService {
 
     Page<Categoria> buscarPorNombre(String nombre, Pageable pageable);
 
-    Page<Categoria> listarOrdenadasPorId(Pageable pageable);
-
 }

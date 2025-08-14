@@ -19,8 +19,6 @@ public interface IMovimientoEntradaSalidaService {
 
     void eliminarPorId(Integer id);
 
-    Page<MovimientoEntradaSalida> findAllOrderedById(Pageable pageable);
-
     Page<MovimientoEntradaSalida> findByProductoNombreAndTipoMovimientoNombre(
             String nombreProducto,
             String nombre,

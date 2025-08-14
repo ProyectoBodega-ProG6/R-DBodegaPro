@@ -16,6 +16,5 @@ public interface ITipoMovimientoService {
     Optional<Producto> buscarPorId(Integer id);
     Producto createOrEditOne(Producto producto);
     void eliminarPorId(Integer id);
-    Page<TipoMovimiento> listarPaginadoOrdenado(Pageable pageable);
     Page<TipoMovimiento> buscarPorNombre(String nombre, Pageable pageable);
 }
