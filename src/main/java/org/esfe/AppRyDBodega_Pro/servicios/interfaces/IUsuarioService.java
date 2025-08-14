@@ -18,7 +18,7 @@ public interface IUsuarioService {
 
     void eliminarPorId(Integer id);
 
-    Page<Usuario> buscarPorFiltros(
+    Page<Usuario> findByNombreCompletoContainingIgnoreCaseOrRolNombreRolContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrderByIdAsc(
             String nombreCompleto,
             String nombreRol,
             String username,
