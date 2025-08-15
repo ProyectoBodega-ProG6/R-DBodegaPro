@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface ICategoriaService extends JpaRepository<Categoria, Integer> {
+public interface ICategoriaService{
 
     Page<Categoria> buscarTodosPaginados(Pageable pageable);
 
