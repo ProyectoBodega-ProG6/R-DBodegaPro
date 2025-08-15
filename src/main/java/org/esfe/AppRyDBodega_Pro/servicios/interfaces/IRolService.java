@@ -13,7 +13,7 @@ public interface IRolService {
     Page<Producto> buscarTodosPaginados(Pageable pageable);
     List<Producto> obtenerTodos();
     Optional<Producto> buscarPorId(Integer id);
-    Producto createOrEditOne(Producto producto);
+    Producto createOrEditOne(Rol rol);
     void eliminarPorId (Integer id);
     Page<Rol> findByNombreRolContainingIgnoreCaseOrderByIdAsc(String nombreRol, Pageable pageable);
 }
