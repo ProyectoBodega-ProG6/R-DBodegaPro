@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 public interface IProductoRepository extends JpaRepository<Producto, Integer> {
 
     Page<Producto> findByNombreContainingIgnoreCaseAndCategoriaNombreContainingIgnoreCaseAndProveedorNombreContainingIgnoreCaseOrderByIdAsc(
+            String nombre,
+            String categoriaNombre,
+            String proveedorNombre,
             Pageable pageable
     );
 

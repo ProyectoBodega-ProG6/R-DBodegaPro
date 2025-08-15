@@ -24,7 +24,7 @@ public class ProductoService implements IProductoService{
 
     @Override
     public Page<Producto> buscarTodosPaginados(Pageable pageable) {
-        return productoRepository.findByNombreContainingIgnoreCaseAndCategoriaNombreContainingIgnoreCaseAndProveedorNombreContainingIgnoreCaseOrderByIdAsc(pageable);
+        return productoRepository.findAll(pageable);
     }
 
     @Override
@@ -49,6 +49,6 @@ public class ProductoService implements IProductoService{
 
     @Override
     public Page<Producto> findByNombreContainingIgnoreCaseAndCategoriaNombreContainingIgnoreCaseAndProveedorNombreContainingIgnoreCaseOrderByIdAsc(String nombre, String categoriaNombre, String proveedorNombre, Pageable pageable) {
-        return null;
+    return productoRepository.findByNombreContainingIgnoreCaseAndCategoriaNombreContainingIgnoreCaseAndProveedorNombreContainingIgnoreCaseOrderByIdAsc( nombre,  categoriaNombre,  proveedorNombre,  pageable);
     }
 }
