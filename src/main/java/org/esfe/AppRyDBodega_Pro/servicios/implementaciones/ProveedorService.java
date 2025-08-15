@@ -1,7 +1,10 @@
 package org.esfe.AppRyDBodega_Pro.servicios.implementaciones;
 
 import org.esfe.AppRyDBodega_Pro.modelos.Proveedor;
+import org.esfe.AppRyDBodega_Pro.repositorios.ICategoriaRepository;
+import org.esfe.AppRyDBodega_Pro.repositorios.IProveedorRepository;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProveedorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -9,33 +12,37 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProveedorService implements IProveedorService {
+
+    @Autowired
+    private IProveedorRepository proveedorRepository;
+
     @Override
     public Page<Proveedor> buscarTodosPaginados(Pageable pageable) {
-        return null;
+        return proveedorRepository.findAll(pageable);
     }
 
     @Override
     public List<Proveedor> obtenerTodos() {
-        return List.of();
+        return proveedorRepository.findAll();
     }
 
     @Override
     public Optional<Proveedor> buscarPorId(Integer id) {
-        return Optional.empty();
+        return proveedorRepository.findById(id);
     }
 
     @Override
     public Proveedor createOrEditOne(Proveedor proveedor) {
-        return null;
+        return proveedorRepository.save(proveedor);
     }
 
     @Override
     public void eliminarPorId(Integer id) {
-
+        proveedorRepository.deleteById(id);
     }
 
     @Override
     public Page<Proveedor> findByNombreContainingIgnoreCaseAndNombreEmpresaContainingIgnoreCaseOrderByIdAsc(String nombre, String nombreEmpresa, Pageable pageable) {
-        return null;
+        return proveedorRepository.findByNombreContainingIgnoreCaseAndNombreEmpresaContainingIgnoreCaseOrderByIdAsc(nombre, nombreEmpresa, pageable);
     }
 }
