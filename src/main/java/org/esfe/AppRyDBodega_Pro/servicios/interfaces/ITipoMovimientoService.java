@@ -11,10 +11,10 @@ import java.util.Optional;
 
 public interface ITipoMovimientoService extends JpaRepository<TipoMovimiento, Integer> {
 
-    Page<Producto> buscarTodosPaginados(Pageable pageable);
-    List<Producto> obtenerTodos();
-    Optional<Producto> buscarPorId(Integer id);
-    Producto createOrEditOne(Producto producto);
+    Page<TipoMovimiento> buscarTodosPaginados(Pageable pageable);
+    List<TipoMovimiento> obtenerTodos();
+    Optional<TipoMovimiento> buscarPorId(Integer id);
+    TipoMovimiento createOrEditOne(TipoMovimiento tipoMovimiento);
     void eliminarPorId(Integer id);
     Page<TipoMovimiento> findByNombreContainingIgnoreCaseOrderByIdAsc(String nombre, Pageable pageable);
 }
