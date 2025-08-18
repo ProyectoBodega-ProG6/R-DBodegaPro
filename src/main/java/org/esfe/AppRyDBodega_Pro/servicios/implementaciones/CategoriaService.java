@@ -2,7 +2,6 @@ package org.esfe.AppRyDBodega_Pro.servicios.implementaciones;
 
 import org.esfe.AppRyDBodega_Pro.modelos.Categoria;
 import org.esfe.AppRyDBodega_Pro.repositorios.ICategoriaRepository;
-import org.esfe.AppRyDBodega_Pro.repositorios.IUsuarioRepository;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.ICategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

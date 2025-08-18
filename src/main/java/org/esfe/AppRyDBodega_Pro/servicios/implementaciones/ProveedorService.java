@@ -1,16 +1,17 @@
 package org.esfe.AppRyDBodega_Pro.servicios.implementaciones;
 
 import org.esfe.AppRyDBodega_Pro.modelos.Proveedor;
-import org.esfe.AppRyDBodega_Pro.repositorios.ICategoriaRepository;
 import org.esfe.AppRyDBodega_Pro.repositorios.IProveedorRepository;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProveedorService implements IProveedorService {
 
     @Autowired
