@@ -1,5 +1,6 @@
 package org.esfe.AppRyDBodega_Pro.controladores;
 
+import jakarta.validation.Valid;
 import org.esfe.AppRyDBodega_Pro.modelos.Proveedor;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,10 +71,10 @@ public class ProveedorController {
     }
 
     @PostMapping("/save")
-    public String save(Proveedor proveedor,
+    public String save(@Valid Proveedor proveedor,
                        BindingResult result,
-                       Model model,
-                       RedirectAttributes attributes) {
+                       RedirectAttributes attributes,
+                       Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute(proveedor);
@@ -100,15 +101,15 @@ public class ProveedorController {
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable("id") Integer id,
-                         Proveedor proveedor,
+                        @Valid Proveedor proveedor,
                          BindingResult result,
-                         Model model,
-                         RedirectAttributes attributes) {
+                         RedirectAttributes attributes,
+                         Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute(proveedor);
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
-            return "categoria/edit";
+            return "proveedor/edit";
         }
 
         try {
@@ -119,7 +120,7 @@ public class ProveedorController {
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
         }
 
-        return "redirect:/prooveedores";
+        return "redirect:/proveedores";
     }
 
     @GetMapping("/details/{id}")
