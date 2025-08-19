@@ -13,8 +13,8 @@ public class HomeController {
 
     @GetMapping
     public String index() {
-        return "templates/home/index";
-}
+        return "home/index";
+    }
 }
 
     
