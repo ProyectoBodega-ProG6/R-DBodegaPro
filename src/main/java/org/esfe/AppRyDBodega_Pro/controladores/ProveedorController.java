@@ -9,10 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -21,6 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
+@RequestMapping ("/proveedores")
 public class ProveedorController {
 
     @Autowired
@@ -90,7 +88,7 @@ public class ProveedorController {
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
         }
 
-        return "redirect:/proveedor";
+        return "redirect:/proveedores";
     }
 
     @GetMapping("/edit/{id}")
@@ -121,7 +119,7 @@ public class ProveedorController {
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
         }
 
-        return "redirect:/prooveedor";
+        return "redirect:/prooveedores";
     }
 
     @GetMapping("/details/{id}")
@@ -146,7 +144,7 @@ public class ProveedorController {
         } catch (Exception e) {
             attributes.addFlashAttribute("error", "Error de eliminación.");
         }
-        return "redirect:/proveedor";
+        return "redirect:/proveedores";
     }
 
 
