@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/rol")
+@RequestMapping("/roles")
 public class RolController {
 
     @Autowired
@@ -73,7 +73,7 @@ public class RolController {
 
         rolService.createOrEditOne(rol);
         attributes.addFlashAttribute("msg", "✅ Registro ingresado exitosamente");
-        return "redirect:/rol";
+        return "redirect:/roles";
     }
 
     @GetMapping("/details/{id}")
@@ -105,7 +105,7 @@ public class RolController {
         rol.setId(id);
         rolService.createOrEditOne(rol);
         attributes.addFlashAttribute("msg", "✅ Registro actualizado exitosamente");
-        return "redirect:/rol";
+        return "redirect:/roles";
     }
 
     @GetMapping("/remove/{id}")
@@ -123,7 +123,6 @@ public class RolController {
         } catch (Exception e) {
             attributes.addFlashAttribute("error", "⚠ Error de eliminación");
         }
-        return "redirect:/rol";
+        return "redirect:/roles";
     }
-
 }
