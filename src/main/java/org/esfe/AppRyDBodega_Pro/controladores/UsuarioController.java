@@ -1,5 +1,6 @@
 package org.esfe.AppRyDBodega_Pro.controladores;
 
+import jakarta.validation.Valid;
 import org.esfe.AppRyDBodega_Pro.modelos.Usuario;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,5 +71,88 @@ public class UsuarioController {
         }
 
         return "usuario/index";
+    }
+
+    @GetMapping("/create")
+    public String create(Usuario usuario) {
+        return "usuario/create";
+    }
+
+    @PostMapping("/save")
+    public String save(@Valid Usuario usuario,
+                       BindingResult result,
+                       RedirectAttributes attributes,
+                       Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute(usuario);
+            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
+            return "usuario/create";
+        }
+
+        try {
+            usuarioService.createOrEditOne(usuario);
+            attributes.addFlashAttribute("msg", "Registro ingresado exitosamente.");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
+        }
+
+        return "redirect:/usuarios";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model) {
+        Usuario usuario  = usuarioService.buscarPorId(id).orElse(null);
+        model.addAttribute("usuario", usuario);
+        return "usuario/edit";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable("id") Integer id,
+                         @Valid Usuario usuario,
+                         BindingResult result,
+                         RedirectAttributes attributes,
+                         Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute(usuario);
+            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
+            return "usuario/edit";
+        }
+
+        try {
+            usuario.setId(id);
+            usuarioService.createOrEditOne(usuario);
+            attributes.addFlashAttribute("msg", "Registro actualizado exitosamente.");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
+        }
+
+        return "redirect:/usuarios";
+    }
+
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable("id") Integer id, Model model) {
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
+        model.addAttribute("usuario", usuario);
+        return "usuario/details";
+    }
+
+    @GetMapping("/remove/{id}")
+    public String remove(@PathVariable("id") Integer id, Model model) {
+        Usuario usuario = usuarioService.buscarPorId(id).orElse(null);
+        model.addAttribute("usuario", usuario);
+        return "usuario/delete";
+    }
+
+    @PostMapping("/delete")
+    public String delete(Usuario usuario, RedirectAttributes attributes) {
+        try {
+            usuarioService.eliminarPorId(usuario.getId());
+            attributes.addFlashAttribute("msg", "Registro eliminado exitosamente.");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Error de eliminación.");
+        }
+        return "redirect:/usuarios";
     }
 }
