@@ -34,3 +34,19 @@ perfilBtn.addEventListener('click', () => {
     perfilBtn.classList.remove('active');
   }
 });
+
+document.querySelectorAll('.btn-icon').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const panelId = this.dataset.panel;
+        const url = this.dataset.url;
+
+        if(panelId && url) {
+            fetch(url)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById(panelId).querySelector('.contenido').innerHTML = html;
+                })
+                .catch(err => console.error('Error cargando panel:', err));
+        }
+    });
+});
