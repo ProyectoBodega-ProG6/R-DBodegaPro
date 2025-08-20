@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/tipoMovimiento")
+@RequestMapping("/tipoMovimientos")
 public class TipoMovmientoController {
     @Autowired
     private ITipoMovimientoService tipoMovimientoService;
@@ -71,7 +71,7 @@ public class TipoMovmientoController {
 
         tipoMovimientoService.createOrEditOne(tipoMovimiento);
         attributes.addFlashAttribute("msg", "✅ Registro ingresado exitosamente");
-        return "redirect:/tipoMovimiento :: contenido";
+        return "redirect:/tipoMovimientos :: contenido";
     }
 
     @GetMapping("/details/{id}")
@@ -103,7 +103,7 @@ public class TipoMovmientoController {
         tipoMovimiento.setId(id);
         tipoMovimientoService.createOrEditOne(tipoMovimiento);
         attributes.addFlashAttribute("msg", "✅ Registro actualizado exitosamente");
-        return "redirect:/tipoMovimiento :: contenido";
+        return "redirect:/tipoMovimientos :: contenido";
     }
 
     @GetMapping("/remove/{id}")
@@ -121,6 +121,6 @@ public class TipoMovmientoController {
         } catch (Exception e) {
             attributes.addFlashAttribute("error", "⚠ Error de eliminación");
         }
-        return "redirect:/tipoMovimiento :: contenido";
+        return "redirect:/tipoMovimientos :: contenido";
     }
 }
