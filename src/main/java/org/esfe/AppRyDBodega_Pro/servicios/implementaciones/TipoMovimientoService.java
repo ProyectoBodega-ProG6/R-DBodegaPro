@@ -46,4 +46,10 @@ public  class TipoMovimientoService implements ITipoMovimientoService {
     public Page<TipoMovimiento> findByNombreContainingIgnoreCaseOrderByIdAsc(String nombre, Pageable pageable) {
         return tipoMovimientoRepository.findByNombreContainingIgnoreCaseOrderByIdAsc(nombre, pageable);
     }
+
+    @Override
+    public TipoMovimiento buscarPorNombre(String nombre) {
+        return tipoMovimientoRepository.findByNombre(nombre).orElse(null);
+    }
+
 }

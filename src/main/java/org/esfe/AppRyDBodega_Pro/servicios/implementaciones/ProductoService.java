@@ -51,4 +51,10 @@ public class ProductoService implements IProductoService{
     public Page<Producto> findByNombreContainingIgnoreCaseAndCategoriaNombreContainingIgnoreCaseAndProveedorNombreContainingIgnoreCaseOrderByIdAsc(String nombre, String categoriaNombre, String proveedorNombre, Pageable pageable) {
     return productoRepository.findByNombreContainingIgnoreCaseAndCategoriaNombreContainingIgnoreCaseAndProveedorNombreContainingIgnoreCaseOrderByIdAsc( nombre,  categoriaNombre,  proveedorNombre,  pageable);
     }
+
+    @Override
+    public Producto buscarPorNombre(String nombre) {
+        return productoRepository.findByNombre(nombre).orElse(null);
+    }
+
 }
