@@ -14,4 +14,5 @@ public interface ITipoMovimientoService{
     TipoMovimiento createOrEditOne(TipoMovimiento tipoMovimiento);
     void eliminarPorId(Integer id);
     Page<TipoMovimiento> findByNombreContainingIgnoreCaseOrderByIdAsc(String nombre, Pageable pageable);
+    TipoMovimiento buscarPorNombre(String nombre);
 }
