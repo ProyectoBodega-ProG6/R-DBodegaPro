@@ -18,6 +18,27 @@ botones.forEach(boton => {
       panel.classList.add('active');
       boton.classList.add('active');
     }
+
+    // 🔹 cargar fragmento thymeleaf si tiene url
+    const url = boton.dataset.url;
+    if (panelId && url) {
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+
+                // Buscar el fragmento thymeleaf (contenido)
+                const fragment = tempDiv.querySelector('[th\\:fragment="contenido"], [data-th-fragment="contenido"]');
+
+                if (fragment) {
+                    document.getElementById(panelId).querySelector('.contenido').innerHTML = fragment.innerHTML;
+                } else {
+                    document.getElementById(panelId).querySelector('.contenido').innerHTML = html;
+                }
+            })
+            .catch(err => console.error('Error cargando panel:', err));
+    }
   });
 });
 
@@ -33,20 +54,4 @@ perfilBtn.addEventListener('click', () => {
     panelPerfil.classList.remove('active');
     perfilBtn.classList.remove('active');
   }
-});
-
-document.querySelectorAll('.btn-icon').forEach(btn => {
-    btn.addEventListener('click', function () {
-        const panelId = this.dataset.panel;
-        const url = this.dataset.url;
-
-        if(panelId && url) {
-            fetch(url)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById(panelId).querySelector('.contenido').innerHTML = html;
-                })
-                .catch(err => console.error('Error cargando panel:', err));
-        }
-    });
 });
