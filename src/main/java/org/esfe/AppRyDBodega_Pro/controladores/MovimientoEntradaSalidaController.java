@@ -64,10 +64,17 @@ public class MovimientoEntradaSalidaController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
+        // Enviar listas para los combobox de filtros
+        model.addAttribute("productos", productoService.obtenerTodos());
+        model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
+
+        // Mantener los valores seleccionados en los filtros en el combobox
+        model.addAttribute("nombreProducto", nombreProducto);
+        model.addAttribute("tipoMovimiento", tipoMovimiento);
+
         return "movimiento/index";
     }
 
-    // CREATE
     @GetMapping("/create")
     public String create(MovimientoEntradaSalida movimiento, Model model) {
 
@@ -79,36 +86,34 @@ public class MovimientoEntradaSalidaController {
         return "movimiento/create";
     }
 
-//    @PostMapping("/save")
-//    public String save(MovimientoEntradaSalida movimiento,
-//                       BindingResult result,
-//                       Model model,
-//                       RedirectAttributes attributes) {
-//
-//        // Buscar objetos por nombre
-//        Producto producto = productoService.obtenerTodos(nombreProducto);
-//        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorNombre(nombreTipo);
-//        movimiento.setProducto(producto);
-//        movimiento.setTipoMovimiento(tipoMovimiento);
-//
-//        if (result.hasErrors() || producto == null || tipoMovimiento == null) {
-//            model.addAttribute("productos", productoService.obtenerTodos());
-//            model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
-//            model.addAttribute("movimiento", movimiento);
-//            attributes.addFlashAttribute("error", "Error, verifique la información");
-//            return "movimiento/create";
-//        }
-//
-//        try {
-//            movimientoService.createOrEditOne(movimiento);
-//            attributes.addFlashAttribute("msg", "Registro ingresado exitosamente");
-//        } catch (Exception e) {
-//            attributes.addFlashAttribute("error", "Error, verifique la información");
-//        }
-//        return "redirect:/movimientos";
-//    }
+    @PostMapping("/save")
+    public String save(MovimientoEntradaSalida movimiento,
+                       BindingResult result,
+                       Model model,
+                       RedirectAttributes attributes) {
 
-    // DETAILS
+        Producto producto = productoService.buscarPorNombre(movimiento.getProducto().getNombre());
+        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorNombre(movimiento.getTipoMovimiento().getNombre());
+        movimiento.setProducto(producto);
+        movimiento.setTipoMovimiento(tipoMovimiento);
+
+        if (result.hasErrors() || producto == null || tipoMovimiento == null) {
+            model.addAttribute("productos", productoService.obtenerTodos());
+            model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
+            model.addAttribute("movimiento", movimiento);
+            attributes.addFlashAttribute("error", "Error, verifique la información");
+            return "movimiento/create";
+        }
+
+        try {
+            movimientoService.createOrEditOne(movimiento);
+            attributes.addFlashAttribute("msg", "Registro ingresado exitosamente");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Error, verifique la información");
+        }
+        return "redirect:/movimientos";
+    }
+
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model) {
         MovimientoEntradaSalida movimiento = movimientoService.buscarPorId(id).orElse(null);
@@ -116,7 +121,6 @@ public class MovimientoEntradaSalidaController {
         return "movimiento/details";
     }
 
-    // EDIT
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
         MovimientoEntradaSalida movimiento = movimientoService.buscarPorId(id).orElse(null);
@@ -126,34 +130,33 @@ public class MovimientoEntradaSalidaController {
         return "movimiento/edit";
     }
 
-//    @PostMapping("/update")
-//    public String update(MovimientoEntradaSalida movimiento,
-//                         BindingResult result,
-//                         Model model,
-//                         RedirectAttributes attributes) {
-//
-//        // Buscar objetos por nombre
-//        Producto producto = productoService.buscarPorNombre(movimiento.getProducto().getNombre());
-//        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorNombre(movimiento.getTipoMovimiento().getNombre());
-//        movimiento.setProducto(producto);
-//        movimiento.setTipoMovimiento(tipoMovimiento);
-//
-//        if (result.hasErrors() || producto == null || tipoMovimiento == null) {
-//            model.addAttribute("productos", productoService.obtenerTodos());
-//            model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
-//            model.addAttribute("movimiento", movimiento);
-//            attributes.addFlashAttribute("error", "Error, verifique la información");
-//            return "movimiento/edit";
-//        }
-//
-//        try {
-//            movimientoService.createOrEditOne(movimiento);
-//            attributes.addFlashAttribute("msg", "Registro actualizado exitosamente");
-//        } catch (Exception e) {
-//            attributes.addFlashAttribute("error", "Error, verifique la información");
-//        }
-//        return "redirect:/movimientos";
-//    }
+    @PostMapping("/update")
+    public String update(MovimientoEntradaSalida movimiento,
+                         BindingResult result,
+                         Model model,
+                         RedirectAttributes attributes) {
+
+        Producto producto = productoService.buscarPorNombre(movimiento.getProducto().getNombre());
+        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorNombre(movimiento.getTipoMovimiento().getNombre());
+        movimiento.setProducto(producto);
+        movimiento.setTipoMovimiento(tipoMovimiento);
+
+        if (result.hasErrors() || producto == null || tipoMovimiento == null) {
+            model.addAttribute("productos", productoService.obtenerTodos());
+            model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
+            model.addAttribute("movimiento", movimiento);
+            attributes.addFlashAttribute("error", "Error, verifique la información");
+            return "movimiento/edit";
+        }
+
+        try {
+            movimientoService.createOrEditOne(movimiento);
+            attributes.addFlashAttribute("msg", "Registro actualizado exitosamente");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Error, verifique la información");
+        }
+        return "redirect:/movimientos";
+    }
 
     @GetMapping("/remove/{id}")
     public String remove(@PathVariable("id") Integer id, Model model) {
@@ -173,7 +176,6 @@ public class MovimientoEntradaSalidaController {
         return "redirect:/movimientos";
     }
 
-    // VER STOCK
     @GetMapping("/stock")
     public String verStock(Model model) {
         List<Producto> productos = productoService.obtenerTodos();
