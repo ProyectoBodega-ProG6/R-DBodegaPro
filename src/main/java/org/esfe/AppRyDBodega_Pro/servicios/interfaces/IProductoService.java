@@ -14,4 +14,5 @@ public interface IProductoService{
     Producto createOrEditOne(Producto producto);
     void eliminarPorId (Integer id);
     Page<Producto> findByNombreContainingIgnoreCaseAndCategoriaNombreContainingIgnoreCaseAndProveedorNombreContainingIgnoreCaseOrderByIdAsc(String nombre, String categoriaNombre, String proveedorNombre, Pageable pageable);
+    Producto buscarPorNombre(String nombre);
 }
