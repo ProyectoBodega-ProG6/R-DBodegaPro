@@ -1,61 +1,69 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layouts/_mainLayout">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+      layout:decorate="~{/layouts/_mainLayout}">
 
 <head>
-
     <meta charset="UTF-8">
     <title>Tipo de Movimiento</title>
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
 </head>
 
 <body>
 
-<div th:fragment="contenido">
+<div th:fragment="contenido" class="container mt-4">
 
-
+    <!-- Mensajes de confirmación -->
     <div th:if="${msg != null}">
-        <script>
+        <script th:inline="javascript">
             Swal.fire({
                 title: "Confirmación",
-                text: '[[${msg}]]',
+                text: [[${msg}]],
                 icon: "success"
             });
         </script>
     </div>
 
+    <!-- Mensajes de error -->
     <div th:if="${error != null}">
-        <script>
+        <script th:inline="javascript">
             Swal.fire({
                 title: "Error",
-                text: '[[${error}]]',
+                text: [[${error}]],
                 icon: "error"
             });
         </script>
     </div>
 
-    <form th:action="@{/tipoMovimientos}" method="get">
-        <div class="row">
+    <!-- Formulario de búsqueda -->
+    <form th:action="@{/tipoMovimientos}" method="get" class="mb-3">
+        <div class="row g-2">
             <div class="col-md-6">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Escriba el nombre del tipo de movimiento">
-                </div>
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" id="nombre"
+                       placeholder="Escriba el nombre del tipo de movimiento">
+            </div>
+            <div class="col-md-6 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+                <a th:href="@{/tipoMovimientos/create}" class="btn btn-outline-primary">Nuevo tipo movimiento</a>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Buscar</button>
-        <a th:href="@{/tipoMovimientos/create}" class="btn btn-outline-primary">Nuevo tipo movimiento</a>
     </form>
 
-    <table class="table table-striped">
-        <thead>
+    <!-- Tabla -->
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
         <tr>
             <th>ID</th>
             <th>Nombre</th>
             <th>Editar Costo</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -64,28 +72,30 @@
             <td th:text="${item.nombre}"></td>
             <td th:text="${item.editarCosto}"></td>
             <td>
-                <a th:href="@{/tipoMovimientos/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a> |
-                <a th:href="@{/tipoMovimientos/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a> |
-                <a th:href="@{/tipoMovimientos/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
+                <a th:href="@{/tipoMovimientos/details/{id}(id=${item.id})}" class="btn btn-sm btn-outline-secondary">Detalles</a>
+                <a th:href="@{/tipoMovimientos/edit/{id}(id=${item.id})}" class="btn btn-sm btn-outline-info">Editar</a>
+                <a th:href="@{/tipoMovimientos/remove/{id}(id=${item.id})}" class="btn btn-sm btn-outline-danger">Eliminar</a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <nav aria-label="Page navigation example">
+    <!-- Paginación -->
+    <nav th:if="${pageNumbers != null}" aria-label="Page navigation">
         <ul class="pagination">
             <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                <a class="page-link" th:href="@{|/tipoMovimientos?page=${pageNumber}|}" th:text="${pageNumber}"></a>
+                <a class="page-link"
+                   th:href="@{|/tipoMovimientos?page=${pageNumber}|}"
+                   th:text="${pageNumber}"></a>
             </li>
         </ul>
     </nav>
 
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTFyMhVVjQ+AyNGPhxzyQO5SsJpG95Q/7xYpDzPrnO6tL/v24g" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlcoYSfWAyFKjQiFMjX+D65VohhpuuCOmLASjC" crossorigin="anonymous"></script>
-
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
-
 </html>
