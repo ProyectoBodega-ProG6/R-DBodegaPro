@@ -103,7 +103,7 @@ public class TipoMovmientoController {
         tipoMovimiento.setId(id);
         tipoMovimientoService.createOrEditOne(tipoMovimiento);
         attributes.addFlashAttribute("msg", "✅ Registro actualizado exitosamente");
-        return "redirect:/tipoMovimientos :: contenido";
+        return "redirect:/tipoMovimientos";
     }
 
     @GetMapping("/remove/{id}")
@@ -121,6 +121,6 @@ public class TipoMovmientoController {
         } catch (Exception e) {
             attributes.addFlashAttribute("error", "⚠ Error de eliminación");
         }
-        return "redirect:/tipoMovimientos :: contenido";
+        return "redirect:/tipoMovimientos";
     }
 }
