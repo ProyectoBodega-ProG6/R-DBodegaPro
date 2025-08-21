@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface IProductoRepository extends JpaRepository<Producto, Integer> {
 
@@ -15,5 +17,7 @@ public interface IProductoRepository extends JpaRepository<Producto, Integer> {
             String proveedorNombre,
             Pageable pageable
     );
+
+    Optional<Producto> findByNombre(String nombre);
 
 }
