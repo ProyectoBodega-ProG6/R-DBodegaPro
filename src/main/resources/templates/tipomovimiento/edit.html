@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Gestión de Editar Tipo de Movimientos</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
-<body>
+<body class="bg-light text-dark">
+
+<div layout:fragment="content" class="container mt-5 p-4 rounded shadow-sm bg-white">
+    <h2 class="mb-4 text-center">Editar Tipo de movimiento</h2>
+
+    <form th:action="@{/tipoMovimientos/update/{id}(id=${tipoMovimiento.id})}" th:object="${tipoMovimiento}" method="post" class="mb-4">
+
+
+    <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre: <span class="text-danger">*</span></label>
+            <input type="text" class="form-control"
+                   th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del tipo de movimiento" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Editar costo: <span class="text-danger">*</span></label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{editarCosto}" id="editarSi" value="true">
+                <label class="form-check-label" for="editarSi">SI</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{editarCosto}" id="editarNo" value="false">
+                <label class="form-check-label" for="editarNo">NO</label>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo: <span class="text-danger">*</span></label>
+            <select class="form-select" th:field="*{tipo}" id="tipo" required>
+                <option value="0">Entrada</option>
+                <option value="1">Salida</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-dark rounded-pill px-4">
+            Actualizar tipo de movimiento
+        </button>
+        <a th:href="@{/tipoMovimientos}" class="btn btn-secondary rounded-pill px-4 ms-2">Regresar</a>
+    </form>
+</div>
 
 </body>
 </html>
