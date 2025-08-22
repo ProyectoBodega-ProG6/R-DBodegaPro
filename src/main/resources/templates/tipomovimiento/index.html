@@ -58,6 +58,7 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Editar Costo</th>
+            <th>Tipo</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -65,8 +66,8 @@
         <tr th:each="item : ${tipoMovimientos}">
             <td th:text="${item.id}"></td>
             <td th:text="${item.nombre}"></td>
-            <td th:text="${item.editarCosto}"></td>
-            <td th:text="${item.tipo}"></td>
+            <td th:text="${item.editarCosto} ? 'Sí' : 'No'"></td>
+            <td th:text="${item.tipo == 0 ? 'Entrada' : 'Salida'}"></td>
             <td>
                 <a th:href="@{/tipoMovimientos/details/{id}(id=${item.id})}" class="btn btn-sm btn-outline-secondary">Detalles</a>
                 <a th:href="@{/tipoMovimientos/edit/{id}(id=${item.id})}" class="btn btn-sm btn-outline-info">Editar</a>
@@ -74,6 +75,7 @@
             </td>
         </tr>
         </tbody>
+
     </table>
 
     <!-- Paginación -->
