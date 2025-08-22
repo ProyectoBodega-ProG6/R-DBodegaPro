@@ -1,13 +1,19 @@
 package org.esfe.AppRyDBodega_Pro.servicios.implementaciones;
 
 import org.esfe.AppRyDBodega_Pro.modelos.MovimientoEntradaSalida;
+import org.esfe.AppRyDBodega_Pro.modelos.Producto;
+import org.esfe.AppRyDBodega_Pro.modelos.TipoMovimiento;
 import org.esfe.AppRyDBodega_Pro.repositorios.IMovimientoEntradaSalidaRepository;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IMovimientoEntradaSalidaService;
+import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +23,9 @@ public class MovimientoEntradaSalidaService implements IMovimientoEntradaSalidaS
 
     @Autowired
     private IMovimientoEntradaSalidaRepository movimientoEntradaSalidaRepository;
+
+    @Autowired
+    private IProductoService productoService;
 
     @Override
     public Page<MovimientoEntradaSalida> buscarTodosPaginados(Pageable pageable) {
@@ -34,8 +43,51 @@ public class MovimientoEntradaSalidaService implements IMovimientoEntradaSalidaS
     }
 
     @Override
-    public MovimientoEntradaSalida createOrEditOne(MovimientoEntradaSalida movimientoEntradaSalida) {
-        return movimientoEntradaSalidaRepository.save(movimientoEntradaSalida);
+    @Transactional
+    public MovimientoEntradaSalida createOrEditOne(MovimientoEntradaSalida movimiento) {
+
+        Producto producto = movimiento.getProducto();
+        TipoMovimiento tipo = movimiento.getTipoMovimiento();
+        Integer cantidad = movimiento.getCantidad();
+        BigDecimal precioMovimiento = movimiento.getPrecio();
+
+        // Validación básica: cantidad y producto
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor que 0");
+        }
+        if (producto == null) {
+            throw new IllegalArgumentException("El producto es obligatorio");
+        }
+
+        // Calcular costo promedio si el tipo de movimiento permite editar el costo
+        if (tipo.getEditarCosto() != null && tipo.getEditarCosto()) {
+            BigDecimal stockActual = BigDecimal.valueOf(producto.getStock_actual());
+            BigDecimal costoActual = producto.getCosto_promedio();
+
+            BigDecimal nuevoCosto = (costoActual.multiply(stockActual)
+                    .add(precioMovimiento.multiply(BigDecimal.valueOf(cantidad))))
+                    .divide(stockActual.add(BigDecimal.valueOf(cantidad)), 2, RoundingMode.HALF_UP);
+
+            producto.setCosto_promedio(nuevoCosto);
+        }
+
+        // Actualizar stock según tipo de movimiento
+        // Suponiendo tipo = 1 → Entrada, tipo = 2 → Salida
+        if (tipo.getTipo() != null && tipo.getTipo().equals(1)) { // Entrada
+            producto.setStock_actual(producto.getStock_actual() + cantidad);
+        } else { // Salida
+            int stockNuevo = producto.getStock_actual() - cantidad;
+            if (stockNuevo < 0) {
+                throw new IllegalArgumentException("No hay suficiente stock para realizar la salida");
+            }
+            producto.setStock_actual(stockNuevo);
+        }
+
+        // Guardar producto actualizado
+        productoService.createOrEditOne(producto);
+
+        // Guardar movimiento
+        return movimientoEntradaSalidaRepository.save(movimiento);
     }
 
     @Override
