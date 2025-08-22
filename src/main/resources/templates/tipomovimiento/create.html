@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Crear Tipo de movimientos</title>
@@ -7,7 +10,7 @@
 </head>
 <body class="bg-light text-dark">
 
-<div th:fragment="contenido" class="container mt-5 p-4 rounded shadow-sm bg-white">
+<div layout:fragment="content" class="container mt-5 p-4 rounded shadow-sm bg-white">
     <h2 class="mb-4 text-center">Gestión de Crear Tipo de movimientos</h2>
 
     <!-- Formulario -->

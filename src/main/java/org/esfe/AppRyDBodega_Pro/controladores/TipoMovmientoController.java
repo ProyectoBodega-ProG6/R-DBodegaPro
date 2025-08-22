@@ -55,7 +55,7 @@ public class TipoMovmientoController {
 
     @GetMapping("/create")
     public String create(TipoMovimiento tipoMovimiento) {
-        return "tipoMovimiento/create :: contenido";
+        return "tipoMovimiento/create";
     }
 
     @PostMapping("/save")
