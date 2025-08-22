@@ -50,12 +50,12 @@ public class TipoMovmientoController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "tipoMovimiento/index :: contenido";
+        return "tipoMovimiento/index";
     }
 
     @GetMapping("/create")
     public String create(TipoMovimiento tipoMovimiento) {
-        return "tipoMovimiento/create :: contenido";
+        return "tipoMovimiento/create";
     }
 
     @PostMapping("/save")
@@ -66,26 +66,26 @@ public class TipoMovmientoController {
         if (result.hasErrors()) {
             model.addAttribute("tipoMovimiento", tipoMovimiento);
             attributes.addFlashAttribute("error", "⚠ Error: verifique la información.");
-            return "tipoMovimiento/create :: contenido";
+            return "tipoMovimiento/create";
         }
 
         tipoMovimientoService.createOrEditOne(tipoMovimiento);
         attributes.addFlashAttribute("msg", "✅ Registro ingresado exitosamente");
-        return "redirect:/tipoMovimientos :: contenido";
+        return "redirect:/tipoMovimientos";
     }
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model) {
         TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorId(id).orElse(null);
         model.addAttribute("tipoMovimiento", tipoMovimiento);
-        return "tipoMovimiento/details :: contenido";
+        return "tipoMovimiento/details";
     }
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
         TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorId(id).orElse(null);
         model.addAttribute("tipoMovimiento", tipoMovimiento);
-        return "tipoMovimiento/edit :: contenido";
+        return "tipoMovimiento/edit";
     }
 
     @PostMapping("/update/{id}")
@@ -97,7 +97,7 @@ public class TipoMovmientoController {
         if (result.hasErrors()) {
             model.addAttribute("tipoMovimiento", tipoMovimiento);
             attributes.addFlashAttribute("error", "⚠ Error: verifique la información.");
-            return "tipoMovimiento/edit :: contenido";
+            return "tipoMovimiento/edit";
         }
 
         tipoMovimiento.setId(id);
@@ -110,7 +110,7 @@ public class TipoMovmientoController {
     public String remove(@PathVariable("id") Integer id, Model model) {
         TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorId(id).orElse(null);
         model.addAttribute("tipoMovimiento", tipoMovimiento);
-        return "tipoMovimiento/delete :: contenido";
+        return "tipoMovimiento/delete";
     }
 
     @PostMapping("/delete")
