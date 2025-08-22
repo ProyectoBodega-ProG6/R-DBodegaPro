@@ -25,7 +25,7 @@ public class TipoMovimiento {
 
     @Column(name = "tipo", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
     @NotNull(message = "El valor de tipo es obligatorio")
-    private Boolean tipo;
+    private Integer tipo;
 
     public Integer getId() {
         return id;
@@ -51,15 +51,16 @@ public class TipoMovimiento {
         this.editarCosto = editarCosto;
     }
 
-    public Boolean getTipo() {
+    public Integer getTipo() {
         return tipo;
     }
 
-    public void setTipo(Boolean tipo) {
+    public void setTipo(Integer tipo) {
         this.tipo = tipo;
     }
 
-    public TipoMovimiento(Integer id, String nombre, Boolean editarCosto, Boolean tipo) {
+
+    public TipoMovimiento(Integer id, String nombre, Boolean editarCosto, Integer tipo) {
         this.id = id;
         this.nombre = nombre;
         this.editarCosto = editarCosto;

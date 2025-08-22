@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Crear Proveedor</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="bg-light text-dark">
+
+<div layout:fragment="content" class="container mt-5 p-4 rounded shadow-sm bg-white">
+    <h2 class="mb-4 text-center">Gestión de Crear Proveedor</h2>
+
+    <!-- Formulario -->
+    <form th:action="@{/proveedores/save}" th:object="${proveedor}" method="post" class="mb-4">
+
+        <!-- Nombre -->
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre: <span class="text-danger">*</span></label>
+            <input type="text" class="form-control"
+                   th:field="*{nombre}" id="nombre" placeholder="Ingrese el nombre del proveedor" required>
+        </div>
+
+        <!-- Nombre Empresa -->
+        <div class="mb-3">
+            <label for="nombreEmpresa" class="form-label">Nombre de la Empresa: <span class="text-danger">*</span></label>
+            <input type="text" class="form-control"
+                   th:field="*{nombreEmpresa}" id="nombreEmpresa" placeholder="Ingrese el nombre de la empresa" required>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono: <span class="text-danger">*</span></label>
+            <input type="tel" class="form-control"
+                   th:field="*{telefono}" id="telefono" placeholder="Ingrese el número de teléfono" required>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email: <span class="text-danger">*</span></label>
+            <input type="email" class="form-control"
+                   th:field="*{email}" id="email" placeholder="Ingrese el correo electrónico" required>
+        </div>
+
+        <!-- Dirección -->
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección: <span class="text-danger">*</span></label>
+            <textarea class="form-control" th:field="*{direccion}" id="direccion" rows="3"
+                      placeholder="Ingrese la dirección del proveedor" required></textarea>
+        </div>
+
+        <!-- Botones -->
+        <button type="submit" class="btn btn-dark rounded-pill px-4">
+            Guardar proveedor
+        </button>
+        <a th:href="@{/proveedores}" class="btn btn-secondary rounded-pill px-4 ms-2">Regresar</a>
+    </form>
+</div>
+
+</body>
+</html>

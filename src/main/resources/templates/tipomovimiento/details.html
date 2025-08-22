@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Detalles Tipo de Movimientos</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="bg-light text-dark">
+
+<div layout:fragment="content" class="container mt-5 p-4 rounded shadow-sm bg-white">
+    <h2 class="mb-4 text-center">Detalles de Tipo de Movimiento</h2>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">ID:</label>
+        <p th:text="${tipoMovimiento.id}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Nombre:</label>
+        <p th:text="${tipoMovimiento.nombre}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Editar costo:</label>
+        <p th:text="${tipoMovimiento.editarCosto} ? 'Sí' : 'No'"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Tipo:</label>
+        <p th:text="${tipoMovimiento.tipo == 0 ? 'Entrada' : 'Salida'}"></p>
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{/tipoMovimientos}" class="btn btn-secondary rounded-pill px-4">Regresar</a>
+    </div>
+
+</div>
+
+</body>
+</html>
