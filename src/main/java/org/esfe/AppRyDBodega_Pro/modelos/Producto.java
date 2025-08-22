@@ -66,6 +66,13 @@ public class Producto {
             foreignKey = @ForeignKey(name = "fk_productos_proveedor"))
     private Proveedor proveedor;
 
+    // --- ENUM para el estado del stock ---
+    public enum EstadoStock {
+        AGOTADO,
+        TERMINANDO,
+        BUENO
+    }
+
 
     public Producto() {
     }
@@ -172,6 +179,17 @@ public class Producto {
 
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
+    }
+
+//  método para calcular estado según stock
+    public EstadoStock getEstadoStock() {
+        if (this.stock_actual <= 0) {
+            return EstadoStock.AGOTADO;
+        } else if (this.stock_actual <= this.stock_minimo) {
+            return EstadoStock.TERMINANDO;
+        } else {
+            return EstadoStock.BUENO;
+        }
     }
 
     @Override
