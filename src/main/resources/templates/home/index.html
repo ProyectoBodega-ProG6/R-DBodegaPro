@@ -2,10 +2,15 @@
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
-
+<head>
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+</head>
 <div layout:fragment="content">
 
-  <h1 class="text-center">Bienvenidos!!!</h1>
+    <div class="welcome-container">
+        <h1 class="welcome-text">Bienvenido a nuestro sistema <span>R&D Bodega Pro</span></h1>
+    </div>
 
 </div>
+
 </html>
