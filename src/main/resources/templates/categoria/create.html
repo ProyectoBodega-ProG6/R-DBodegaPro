@@ -25,7 +25,7 @@
         <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción: </label>
             <input type="text" class="form-control"
-                   th:field="*{descripcion}" id="descripcion" placeholder="Escriba la descripción de la categoria" required>
+                   th:field="*{descripcion}" id="descripcion" placeholder="Escriba la descripción de la categoria">
             <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
         </div>
 
