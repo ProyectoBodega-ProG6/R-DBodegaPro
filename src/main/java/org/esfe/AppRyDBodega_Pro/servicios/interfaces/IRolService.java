@@ -15,4 +15,6 @@ public interface IRolService {
     Rol createOrEditOne(Rol rol);
     void eliminarPorId (Integer id);
     Page<Rol> findByNombreRolContainingIgnoreCaseOrderByIdAsc(String nombreRol, Pageable pageable);
+
+    long count();
 }

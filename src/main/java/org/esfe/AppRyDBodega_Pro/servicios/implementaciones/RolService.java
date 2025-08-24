@@ -46,4 +46,10 @@ public class RolService implements IRolService {
     public Page<Rol> findByNombreRolContainingIgnoreCaseOrderByIdAsc(String nombreRol, Pageable pageable) {
         return rolRepository.findByNombreRolContainingIgnoreCaseOrderByIdAsc(nombreRol, pageable);
     }
+
+    @Override
+    public long count() {
+        return rolRepository.count();
+    }
+
 }
