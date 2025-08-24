@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>Eliminar Categoría</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-light text-dark">
 
@@ -30,8 +31,7 @@
         <p th:text="${categoria.descripcion}"></p>
     </div>
 
-    <form th:action="@{/categorias/delete}" method="post" th:object="${categoria}"
-          onsubmit="return confirm('¿Está seguro que desea eliminar esta categoría?');">
+    <form th:action="@{/categorias/delete}" method="post" th:object="${categoria}">
         <input type="hidden" th:field="*{id}"/>
 
         <button type="submit" class="btn btn-danger rounded-pill px-4">
@@ -41,7 +41,5 @@
             Cancelar
         </a>
     </form>
-</div>
-
 </body>
 </html>
