@@ -43,7 +43,7 @@ public class RolController {
             rol = rolService.buscarTodosPaginados(pageable);
         }
 
-        model.addAttribute("rol", rol);
+        model.addAttribute("roles", rol);
 
         int totalPages = rol.getTotalPages();
         if (totalPages > 0) {
@@ -58,6 +58,7 @@ public class RolController {
 
     @GetMapping("/create")
     public String create(Rol rol) {
+
         return "rol/create";
     }
 
