@@ -18,21 +18,32 @@
     <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <form th:action="@{/roles}" method="get" class="row g-2 mb-3">
-      <div class="col-auto">
-        <select class="form-select" name="nombre">
-          <option value="">Seleccione un Rol</option>
-          <option th:each="r : ${listaRoles}"
-                  th:value="${r.nombreRol}"
-                  th:text="${r.nombreRol}"
-                  th:selected="${r.nombreRol == nombre}">
+    <form th:action="@{/roles}" method="get" class="row g-2 mb-3" id="formBuscar">
+      <div class="input-group flex-grow-1">
+        <select class="form-select" name="nombre" id="nombre">
+          <option value="">Buscar por Rol...</option>
+          <option th:each="rol : ${roles}"
+                  th:value="${rol.nombreRol}"
+                  th:text="${rol.nombreRol}">
           </option>
         </select>
+
       </div>
       <div class="col-auto">
-        <button type="submit" class="btn btn-secondary">Buscar</button>
+          <button type="submit" class="btn btn-secondary">Buscar</button>
+      </div>
+
+      <div class="col-auto">
+      <button type="button" class="btn btn-warning" onclick="limpiarCampos()">Limpiar</button>
       </div>
     </form>
+
+    <script>
+      function limpiarCampos() {
+          document.getElementById("nombre").value = "";
+          document.getElementById("formBuscar").submit();
+      }
+    </script>
 
     <div class="mb-3">
       <a th:href="@{/roles/create}" class="btn btn-primary">+ Nuevo Rol</a>
