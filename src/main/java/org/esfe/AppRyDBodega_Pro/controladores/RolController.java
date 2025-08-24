@@ -1,6 +1,7 @@
 package org.esfe.AppRyDBodega_Pro.controladores;
 
 import jakarta.validation.Valid;
+import org.esfe.AppRyDBodega_Pro.modelos.Categoria;
 import org.esfe.AppRyDBodega_Pro.modelos.Rol;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IRolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class RolController {
             rol = rolService.buscarTodosPaginados(pageable);
         }
 
-        model.addAttribute("rol", rol);
+        model.addAttribute("roles", rol);
 
         int totalPages = rol.getTotalPages();
         if (totalPages > 0) {
@@ -52,11 +53,22 @@ public class RolController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
+        long totalRoles = rolService.count();
+        model.addAttribute("canCreate", totalRoles < 2);
+
+        model.addAttribute("disableDelete", true); // Siempre true si no se permite eliminar
+
         return "rol/index";
     }
 
     @GetMapping("/create")
-    public String create(Rol rol) {
+    public String create(Rol rol, Model model,RedirectAttributes attributes) {
+        long totalRoles = rolService.count();
+        if (totalRoles >= 2) {
+            attributes.addFlashAttribute("error", "No se pueden registrar más de 2 roles.");
+            return "redirect:/roles";
+        }
+        model.addAttribute("canCreate", true);
         return "rol/create";
     }
 
@@ -65,16 +77,29 @@ public class RolController {
                        BindingResult result,
                        Model model,
                        RedirectAttributes attributes) {
+
         if (result.hasErrors()) {
-            model.addAttribute("rol", rol);
-            attributes.addFlashAttribute("error", "⚠ Error: verifique la información.");
+            model.addAttribute(rol);
+            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
             return "rol/create";
         }
 
-        rolService.createOrEditOne(rol);
-        attributes.addFlashAttribute("msg", "✅ Registro ingresado exitosamente");
+        long totalRoles = rolService.count();
+        if (totalRoles >= 2) {
+            attributes.addFlashAttribute("error", "No se pueden registrar más de 2 roles.");
+            return "redirect:/roles";
+        }
+
+        try {
+            rolService.createOrEditOne(rol);
+            attributes.addFlashAttribute("msg", "Registro ingresado exitosamente.");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
+        }
+
         return "redirect:/roles";
     }
+
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model) {
