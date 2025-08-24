@@ -53,7 +53,8 @@
         <td>
           <a th:href="@{'/roles/details/' + ${rol.id}}" class="btn btn-info btn-sm">Detalles</a>
           <a th:href="@{'/roles/edit/' + ${rol.id}}" class="btn btn-warning btn-sm">Editar</a>
-          <a th:href="@{'/roles/remove/' + ${rol.id}}" class="btn btn-danger btn-sm">Eliminar</a>
+          <a th:href="@{'/roles/remove/' + ${rol.id}}" class="btn btn-danger btn-sm" th:attr="disabled=${disableDelete}" th:classappend="${disableDelete} ? ' disabled' : ''"
+             th:title="${disableDelete} ? 'No se pueden eliminar roles' : ''">Eliminar</a>
         </td>
       </tr>
       <tr th:if="${roles.totalElements == 0}">

@@ -38,8 +38,12 @@
              th:errors="*{descripcion}"></div>
       </div>
 
+      <div th:if="${!canCreate}" class="alert alert-warning">
+        ⚠ No se pueden registrar más roles. Ya existen 2 registros.
+      </div>
+
       <div class="mb-3">
-        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="submit" class="btn btn-success" th:disabled="${!canCreate}">Guardar</button>
         <a th:href="@{/roles}" class="btn btn-secondary">Cancelar</a>
       </div>
 

@@ -53,12 +53,22 @@ public class RolController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
+        long totalRoles = rolService.count();
+        model.addAttribute("canCreate", totalRoles < 2);
+
+        model.addAttribute("disableDelete", true); // Siempre true si no se permite eliminar
+
         return "rol/index";
     }
 
     @GetMapping("/create")
-    public String create(Rol rol) {
-
+    public String create(Rol rol, Model model,RedirectAttributes attributes) {
+        long totalRoles = rolService.count();
+        if (totalRoles >= 2) {
+            attributes.addFlashAttribute("error", "No se pueden registrar más de 2 roles.");
+            return "redirect:/roles";
+        }
+        model.addAttribute("canCreate", true);
         return "rol/create";
     }
 
@@ -72,6 +82,12 @@ public class RolController {
             model.addAttribute(rol);
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
             return "rol/create";
+        }
+
+        long totalRoles = rolService.count();
+        if (totalRoles >= 2) {
+            attributes.addFlashAttribute("error", "No se pueden registrar más de 2 roles.");
+            return "redirect:/roles";
         }
 
         try {
