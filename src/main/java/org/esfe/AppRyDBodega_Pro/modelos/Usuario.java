@@ -49,6 +49,7 @@ public class Usuario {
     @Column(name = "correo_electronico", nullable = false, unique = true, length = 100)
     private String correo_electronico;
 
+    private int status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_rol", nullable = false, foreignKey = @ForeignKey(name = "fk_usuario_rol"))
@@ -117,6 +118,14 @@ public class Usuario {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public Usuario(Integer id, String nombreCompleto, String username, String password, String telefono, String direccion,
