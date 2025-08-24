@@ -1,6 +1,7 @@
 package org.esfe.AppRyDBodega_Pro.controladores;
 
 import jakarta.validation.Valid;
+import org.esfe.AppRyDBodega_Pro.modelos.Categoria;
 import org.esfe.AppRyDBodega_Pro.modelos.Rol;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IRolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,16 +66,23 @@ public class RolController {
                        BindingResult result,
                        Model model,
                        RedirectAttributes attributes) {
+
         if (result.hasErrors()) {
-            model.addAttribute("rol", rol);
-            attributes.addFlashAttribute("error", "⚠ Error: verifique la información.");
+            model.addAttribute(rol);
+            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
             return "rol/create";
         }
 
-        rolService.createOrEditOne(rol);
-        attributes.addFlashAttribute("msg", "✅ Registro ingresado exitosamente");
+        try {
+            rolService.createOrEditOne(rol);
+            attributes.addFlashAttribute("msg", "Registro ingresado exitosamente.");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
+        }
+
         return "redirect:/roles";
     }
+
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model) {
