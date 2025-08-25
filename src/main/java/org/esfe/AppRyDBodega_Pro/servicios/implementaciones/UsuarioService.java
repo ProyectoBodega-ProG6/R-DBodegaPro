@@ -17,10 +17,6 @@ public class UsuarioService implements IUsuarioService {
     @Autowired
     private IUsuarioRepository usuarioRepository;
 
-    // 🔹 Inyectamos el PasswordEncoder
-    @Autowired
-    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
-
     @Override
     public Page<Usuario> buscarTodosPaginados(Pageable pageable) {
         return usuarioRepository.findAll(pageable);
@@ -38,18 +34,6 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario createOrEditOne(Usuario usuario) {
-
-        // 🔹 Codificamos la contraseña antes de guardar
-        if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
-            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        } else if (usuario.getId() != null) {
-            // mantener la contraseña actual si es edición y password está vacío
-            Usuario existing = usuarioRepository.findById(usuario.getId()).orElse(null);
-            if (existing != null) {
-                usuario.setPassword(existing.getPassword());
-            }
-        }
-
         return usuarioRepository.save(usuario);
     }
 
