@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Productos</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="bg-light text-dark">
+
+<div layout:fragment="content" class="container mt-5 p-4 rounded shadow-sm bg-white">
+    <h2 class="mb-4 text-center">Detalles del Producto</h2>
+
+    <div class="mb-3">
+        <label class="form-label"><b>ID:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.id}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Nombre:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.nombre}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Descripción:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.descripcion}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Categoría:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.categoria.nombre}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Proveedor:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.proveedor.nombre}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Precio de Compra:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.precio_compra}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Precio de Venta:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.precio_venta}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Costo Promedio:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.costo_promedio}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Stock Actual:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.stock_actual}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Stock Mínimo:</b></label>
+        <p class="form-control-plaintext" th:text="${producto.stock_minimo}"></p>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><b>Estado del Stock:</b></label>
+        <p class="form-control-plaintext">
+            <span th:switch="${producto.estadoStock}">
+                <span th:case="T(org.esfe.AppRyDBodega_Pro.modelos.Producto.EstadoStock).AGOTADO"
+                      class="badge bg-danger">Agotado</span>
+                <span th:case="T(org.esfe.AppRyDBodega_Pro.modelos.Producto.EstadoStock).TERMINANDO"
+                      class="badge bg-warning text-dark">Terminando</span>
+                <span th:case="T(org.esfe.AppRyDBodega_Pro.modelos.Producto.EstadoStock).BUENO"
+                      class="badge bg-success">Disponible</span>
+            </span>
+        </p>
+    </div>
+
+    <div class="mb-3 row">
+        <dt class="col-sm-2">Imagen:</dt>
+        <dd class="col-sm-10">
+            <img th:if="${producto.imagen_url != null}"
+                 th:src="@{'/producto/imagen/' + ${producto.id}}"
+                 style="max-width: 200px; max-height: 200px;"/>
+            <span th:if="${producto.imagen_url == null}">Sin imagen</span>
+        </dd>
+    </div>
+
+
+    <a th:href="@{/productos}" class="btn btn-secondary rounded-pill px-4">Regresar</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
