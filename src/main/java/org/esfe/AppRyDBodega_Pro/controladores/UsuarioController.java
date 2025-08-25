@@ -81,20 +81,21 @@ public class UsuarioController {
     }
 
     @GetMapping("/create")
-    public String create(Usuario usuario, Model model) {
+    public String create(Model model) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("roles", rolService.obtenerTodos());
         return "usuario/create";
     }
 
     @PostMapping("/save")
-    public String save(@Valid Usuario usuario,
+    public String save(@Valid @ModelAttribute Usuario usuario,
                        BindingResult result,
                        RedirectAttributes attributes,
                        Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("usuario", usuario);
+            model.addAttribute("roles", rolService.obtenerTodos());
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
             return "usuario/create";
         }

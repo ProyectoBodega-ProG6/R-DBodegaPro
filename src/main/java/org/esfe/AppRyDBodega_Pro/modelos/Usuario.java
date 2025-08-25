@@ -128,7 +128,7 @@ public class Usuario {
     }
 
     public Usuario(Integer id, String nombreCompleto, String username, String password, String telefono, String direccion,
-                   String correo_electronico, Rol rol) {
+                   String correo_electronico, Rol rol, int status) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
         this.username = username;
@@ -137,6 +137,7 @@ public class Usuario {
         this.direccion = direccion;
         this.correo_electronico = correo_electronico;
         this.rol = rol;
+        this.status= status;
     }
 
     public Usuario() {
