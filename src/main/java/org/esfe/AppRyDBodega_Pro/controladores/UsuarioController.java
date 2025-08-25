@@ -85,7 +85,7 @@ public class UsuarioController {
                        Model model) {
 
         if (result.hasErrors()) {
-            model.addAttribute(usuario);
+            model.addAttribute("usuario", usuario);
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
             return "usuario/create";
         }
@@ -115,7 +115,7 @@ public class UsuarioController {
                          Model model) {
 
         if (result.hasErrors()) {
-            model.addAttribute(usuario);
+            model.addAttribute("usuario", usuario);
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
             return "usuario/edit";
         }
