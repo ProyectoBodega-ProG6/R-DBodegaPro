@@ -18,17 +18,7 @@ public class HomeController {
         return "home/index";
     }
 
-//    @GetMapping("/login" )
-//    public String mostrarLogin() {
-//        return "home/formLogin";
-//    }
-//
-//    @GetMapping("/logout")
-//    public String logout(HttpServletRequest request){
-//        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
-//        logoutHandler.logout(request, null, null);
-//        return "redirect:/";
-//    }
+
 }
 
     
