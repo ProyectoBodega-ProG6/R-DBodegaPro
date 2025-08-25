@@ -181,7 +181,30 @@ public class Producto {
         this.proveedor = proveedor;
     }
 
-//  método para calcular estado según stock
+    // Devuelve el texto del estado del stock
+    public String getEstadoStockText() {
+        if (this.getEstadoStock() == EstadoStock.AGOTADO) {
+            return "Agotado";
+        } else if (this.getEstadoStock() == EstadoStock.TERMINANDO) {
+            return "Terminando";
+        } else {
+            return "Disponible"; // BUENO
+        }
+    }
+
+    // Devuelve una clase CSS según el estado
+    public String getEstadoStockClass() {
+        if (this.getEstadoStock() == EstadoStock.AGOTADO) {
+            return "badge bg-danger";
+        } else if (this.getEstadoStock() == EstadoStock.TERMINANDO) {
+            return "badge bg-warning text-dark";
+        } else {
+            return "badge bg-success"; // BUENO
+        }
+    }
+
+
+    //  método para calcular estado según stock
     public EstadoStock getEstadoStock() {
         if (this.stock_actual <= 0) {
             return EstadoStock.AGOTADO;

@@ -76,11 +76,12 @@
     <script>
         function limpiarCampos() {
             document.getElementById("nombre").value = "";
-            document.getElementById("categorianombre").value = "";
-            document.getElementById("proveedornombre").value = "";
+            document.getElementById("categoriaNombre").value = "";
+            document.getElementById("proveedorNombre").value = "";
             document.getElementById("formBuscar").submit();
         }
     </script>
+
 
 
     <table class="table table-striped">
@@ -89,9 +90,12 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Descripción</th>
-            <th>Precio</th>
+            <th>Precio Compra</th>
+            <th>Precio Venta</th>
+            <th>Costo Promedio</th>
             <th>Stock Actual</th>
             <th>Stock Mínimo</th>
+            <th>Imagen</th>
             <th>Categoría</th>
             <th>Proveedor</th>
             <th>Estado</th>
@@ -103,28 +107,23 @@
             <td th:text="${producto.id}"></td>
             <td th:text="${producto.nombre}"></td>
             <td th:text="${producto.descripcion}"></td>
-            <td th:text="${producto.precio}"></td>
+            <td th:text="${producto.precio_compra}"></td>
+            <td th:text="${producto.precio_venta}"></td>
+            <td th:text="${producto.costo_promedio}"></td>
             <td th:text="${producto.stock_actual}"></td>
             <td th:text="${producto.stock_minimo}"></td>
+            <td>
+                <img th:if="${producto.imagen_url != null}" th:src="@{${producto.imagen_url}}" style="max-width:100px; max-height:100px"/>
+            </td>
             <td th:text="${producto.categoria.nombre}"></td>
             <td th:text="${producto.proveedor.nombre}"></td>
             <td>
-        <span th:switch="${producto.estadoStock}">
-          <span th:case="T(org.esfe.AppRyDBodega_Pro.modelos.Producto.EstadoStock).AGOTADO"
-                class="badge bg-danger">Agotado</span>
-          <span th:case="T(org.esfe.AppRyDBodega_Pro.modelos.Producto.EstadoStock).TERMINANDO"
-                class="badge bg-warning text-dark">Terminando</span>
-          <span th:case="T(org.esfe.AppRyDBodega_Pro.modelos.Producto.EstadoStock).BUENO"
-                class="badge bg-success">Disponible</span>
-        </span>
+                <span th:text="${producto.estadoStockText}" th:class="${producto.estadoStockClass}"></span>
             </td>
             <td>
-                <a th:href="@{/productos/details/{id}(id=${producto.id})}"
-                   class="btn btn-sm btn-info">Detalles</a>
-                <a th:href="@{/productos/edit/{id}(id=${producto.id})}"
-                   class="btn btn-sm btn-primary">Editar</a>
-                <a th:href="@{/productos/delete/{id}(id=${producto.id})}"
-                   class="btn btn-sm btn-danger">Eliminar</a>
+                <a th:href="@{/productos/details/{id}(id=${producto.id})}" class="btn btn-sm btn-info">Detalles</a>
+                <a th:href="@{/productos/edit/{id}(id=${producto.id})}" class="btn btn-sm btn-primary">Editar</a>
+                <a th:href="@{/productos/delete/{id}(id=${producto.id})}" class="btn btn-sm btn-danger">Eliminar</a>
             </td>
         </tr>
         </tbody>

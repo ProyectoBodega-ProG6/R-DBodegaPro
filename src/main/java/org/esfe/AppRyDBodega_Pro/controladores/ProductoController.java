@@ -136,13 +136,6 @@ public class ProductoController {
         return "redirect:/productos";
     }
 
-    @GetMapping("/productos")
-    public String listarProductos(Model model) {
-        List<Producto> productos = productoService.obtenerTodos();
-        model.addAttribute("productos", productos);
-        return "productos/index";
-    }
-
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
