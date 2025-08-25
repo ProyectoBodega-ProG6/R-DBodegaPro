@@ -51,35 +51,35 @@
     <!-- Precio de compra -->
     <div class="mb-3">
       <label for="precio_compra" class="form-label">Precio de Compra <span class="text-danger">*</span></label>
-      <input type="number" th:field="*{precio_compra}" step="0.01" class="form-control" id="precio_compra" placeholder="0.00">
+      <input type="number" step="0.01" th:field="*{precio_compra}" step="0.01" class="form-control" id="precio_compra" placeholder="0.00" required>
       <div class="text-danger" th:if="${#fields.hasErrors('precio_compra')}" th:errors="*{precio_compra}"></div>
     </div>
 
     <!-- Precio de venta -->
     <div class="mb-3">
       <label for="precio_venta" class="form-label">Precio de Venta <span class="text-danger">*</span></label>
-      <input type="number" th:field="*{precio_venta}" step="0.01" class="form-control" id="precio_venta" placeholder="0.00">
+      <input type="number" step="0.01" th:field="*{precio_venta}" step="0.01" class="form-control" id="precio_venta" placeholder="0.00" required>
       <div class="text-danger" th:if="${#fields.hasErrors('precio_venta')}" th:errors="*{precio_venta}"></div>
     </div>
 
     <!-- Costo promedio -->
     <div class="mb-3">
       <label for="costo_promedio" class="form-label">Costo Promedio <span class="text-danger">*</span></label>
-      <input type="number" th:field="*{costo_promedio}" step="0.01" class="form-control" id="costo_promedio" placeholder="0.00">
+      <input type="number" step="0.01" th:field="*{costo_promedio}" step="0.01" class="form-control" id="costo_promedio" placeholder="0.00" required>
       <div class="text-danger" th:if="${#fields.hasErrors('costo_promedio')}" th:errors="*{costo_promedio}"></div>
     </div>
 
     <!-- Stock actual -->
     <div class="mb-3">
       <label for="stock_actual" class="form-label">Stock Actual <span class="text-danger">*</span></label>
-      <input type="number" th:field="*{stock_actual}" class="form-control" id="stock_actual" min="0">
+      <input type="number" th:field="*{stock_actual}" class="form-control" id="stock_actual" min="0" required>
       <div class="text-danger" th:if="${#fields.hasErrors('stock_actual')}" th:errors="*{stock_actual}"></div>
     </div>
 
     <!-- Stock mínimo -->
     <div class="mb-3">
       <label for="stock_minimo" class="form-label">Stock Mínimo <span class="text-danger">*</span></label>
-      <input type="number" th:field="*{stock_minimo}" class="form-control" id="stock_minimo" min="0">
+      <input type="number" th:field="*{stock_minimo}" class="form-control" id="stock_minimo" min="0" required>
       <div class="text-danger" th:if="${#fields.hasErrors('stock_minimo')}" th:errors="*{stock_minimo}"></div>
     </div>
 
