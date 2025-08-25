@@ -22,9 +22,11 @@ public class DatabaseWebSecurity {
     public UserDetailsManager customUsers(DataSource dataSource){
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
         users.setUsersByUsernameQuery("select username, password, status as enabled from usuarios where username = ?");
-        users.setAuthoritiesByUsernameQuery("select u.username, r.nombreRol from usuarios u " +
-                "inner join roles r on r.id = u.id_rol " +
-                "where u.username = ?");
+        users.setAuthoritiesByUsernameQuery(
+                "select u.username, r.nombre_rol as authority " +
+                        "from usuarios u inner join roles r on r.id = u.id_rol " +
+                        "where u.username = ?"
+        );
         return users;
     }
 
@@ -63,6 +65,7 @@ public class DatabaseWebSecurity {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder(); // ✅ encriptará siempre con BCrypt
     }
+
 }

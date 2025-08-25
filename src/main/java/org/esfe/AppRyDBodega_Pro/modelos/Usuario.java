@@ -29,7 +29,6 @@ public class Usuario {
     @Column(name="username", nullable = false, unique = true, length = 50)
     private String username;
 
-    @NotBlank(message = "La contraseña es requerida")
     @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     @Column(name = "password", nullable = false, length = 255)
     private String password;
