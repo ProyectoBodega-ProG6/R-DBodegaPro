@@ -13,60 +13,42 @@
     <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <form th:action="@{/usuarios/save}" th:object="${usuario}" method="post">
-        <div>
-            <label>Nombre completo:</label>
-            <input type="text" th:field="*{nombreCompleto}" class="form-control"/>
-            <div th:if="${#fields.hasErrors('nombreCompleto')}" th:errors="*{nombreCompleto}"></div>
-        </div>
+    <form th:action="@{/usuario/save}" th:object="${usuario}" method="post">
 
-        <div>
-            <label>Usuario:</label>
-            <input type="text" th:field="*{username}" class="form-control"/>
-            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
-        </div>
+        <label>Nombre Completo:</label>
+        <input type="text" th:field="*{nombreCompleto}" class="form-control"/>
 
-        <div>
-            <label>Correo electrónico:</label>
-            <input type="email" th:field="*{correoElectronico}" class="form-control"/>
-            <div th:if="${#fields.hasErrors('correoElectronico')}" th:errors="*{correoElectronico}"></div>
-        </div>
+        <label>Username:</label>
+        <input type="text" th:field="*{username}" class="form-control"/>
 
-        <div>
-            <label>Teléfono:</label>
-            <input type="text" th:field="*{telefono}" class="form-control"/>
-        </div>
+        <label>Password:</label>
+        <input type="password" th:field="*{password}" class="form-control"/>
 
-        <div>
-            <label>Dirección:</label>
-            <input type="text" th:field="*{direccion}" class="form-control"/>
-        </div>
+        <label>Teléfono:</label>
+        <input type="text" th:field="*{telefono}" class="form-control"/>
 
-        <div>
-            <label>Password:</label>
-            <input type="password" th:field="*{password}" class="form-control"/>
-        </div>
+        <label>Dirección:</label>
+        <input type="text" th:field="*{direccion}" class="form-control"/>
 
-        <div>
-            <label>Rol:</label>
-            <select th:field="*{rol}" class="form-control">
-                <option th:each="rol : ${roles}"
-                        th:value="${rol}"
-                        th:text="${rol.nombreRol}">
-                </option>
-            </select>
-        </div>
+        <label>Correo Electrónico:</label>
+        <input type="email" th:field="*{correo_electronico}" class="form-control"/>
 
-        <div>
-            <label>Status:</label>
-            <select th:field="*{status}" class="form-control">
-                <option value="1">Activo</option>
-                <option value="0">Inactivo</option>
-            </select>
-        </div>
+        <label>Rol:</label>
+        <select th:field="*{rol}" class="form-control">
+            <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol.nombreRol}"></option>
+        </select>
 
-        <button type="submit">Guardar</button>
+        <label>Status:</label>
+        <select th:field="*{status}" class="form-control">
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/usuarios}" class="btn btn-secondary">Cancelar</a>
+
     </form>
+
 </div>
 </body>
 </html>

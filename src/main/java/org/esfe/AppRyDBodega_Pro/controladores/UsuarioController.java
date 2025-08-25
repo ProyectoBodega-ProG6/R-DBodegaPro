@@ -106,8 +106,8 @@ public class UsuarioController {
         } catch (Exception e) {
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
         }
-
-        return "redirect:/usuarios";
+        usuarioService.createOrEditOne(usuario);
+        return "redirect:/usuario/list";
     }
 
     @GetMapping("/edit/{id}")
