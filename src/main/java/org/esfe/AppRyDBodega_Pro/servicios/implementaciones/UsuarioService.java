@@ -43,7 +43,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public Page<Usuario> findByNombreCompletoContainingIgnoreCaseOrRolNombreRolContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrderByIdAsc(String nombreCompleto, String nombreRol, String username, Pageable pageable) {
-        return usuarioRepository.findByNombreCompletoContainingIgnoreCaseOrRolNombreRolContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrderByIdAsc(nombreCompleto, nombreRol, username, pageable);
+    public Page<Usuario> findByNombreCompletoContainingIgnoreCaseAndRolNombreRolContainingIgnoreCaseAndUsernameContainingIgnoreCaseOrderByIdAsc(String nombreCompleto, String nombreRol, String username, Pageable pageable) {
+        return usuarioRepository.findByNombreCompletoContainingIgnoreCaseAndRolNombreRolContainingIgnoreCaseAndUsernameContainingIgnoreCaseOrderByIdAsc(nombreCompleto, nombreRol, username, pageable);
     }
 }

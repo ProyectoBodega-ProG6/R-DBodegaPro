@@ -2,6 +2,7 @@ package org.esfe.AppRyDBodega_Pro.controladores;
 
 import jakarta.validation.Valid;
 import org.esfe.AppRyDBodega_Pro.modelos.Usuario;
+import org.esfe.AppRyDBodega_Pro.servicios.implementaciones.RolService;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,9 @@ public class UsuarioController {
     @Autowired
     IUsuarioService usuarioService;
 
+    @Autowired
+    RolService rolService;
+
     @GetMapping
     public String index(Model model,
                         @RequestParam("page") Optional<Integer> page,
@@ -45,7 +49,7 @@ public class UsuarioController {
                 (nombreRol != null && !nombreRol.isBlank()) ||
                 (username != null && !username.isBlank())) {
 
-            usuarios = usuarioService.findByNombreCompletoContainingIgnoreCaseOrRolNombreRolContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrderByIdAsc(
+            usuarios = usuarioService.findByNombreCompletoContainingIgnoreCaseAndRolNombreRolContainingIgnoreCaseAndUsernameContainingIgnoreCaseOrderByIdAsc(
                     nombreCompleto != null ? nombreCompleto : "",
                     nombreRol != null ? nombreRol : "",
                     username != null ? username : "",
@@ -60,6 +64,7 @@ public class UsuarioController {
             usuarios = usuarioService.buscarTodosPaginados(pageable);
         }
 
+
         model.addAttribute("usuarios", usuarios);
 
         int totalPages = usuarios.getTotalPages();
@@ -69,6 +74,8 @@ public class UsuarioController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+
+        model.addAttribute("roles", rolService.buscarTodosPaginados(pageable));
 
         return "usuario/index";
     }
