@@ -50,23 +50,20 @@
 
     <!-- Precio de compra -->
     <div class="mb-3">
-      <label for="precio_compra" class="form-label">Precio de Compra <span class="text-danger">*</span></label>
-      <input type="number" step="0.01" th:field="*{precio_compra}" step="0.01" class="form-control" id="precio_compra" placeholder="0.00" required>
-      <div class="text-danger" th:if="${#fields.hasErrors('precio_compra')}" th:errors="*{precio_compra}"></div>
+      <label for="precio_compra" class="form-label">Costo Promedio <span class="text-danger">*</span></label>
+      <input type="number" th:field="*{precio_compra}" step="0.01" class="form-control" id="precio_compra" placeholder="0.00" required>
     </div>
 
     <!-- Precio de venta -->
     <div class="mb-3">
-      <label for="precio_venta" class="form-label">Precio de Venta <span class="text-danger">*</span></label>
-      <input type="number" step="0.01" th:field="*{precio_venta}" step="0.01" class="form-control" id="precio_venta" placeholder="0.00" required>
-      <div class="text-danger" th:if="${#fields.hasErrors('precio_venta')}" th:errors="*{precio_venta}"></div>
+      <label for="precio_venta" class="form-label">Costo Promedio <span class="text-danger">*</span></label>
+      <input type="number" th:field="*{precio_venta}" step="0.01" class="form-control" id="precio_venta" placeholder="0.00" required>
     </div>
 
     <!-- Costo promedio -->
     <div class="mb-3">
       <label for="costo_promedio" class="form-label">Costo Promedio <span class="text-danger">*</span></label>
-      <input type="number" step="0.01" th:field="*{costo_promedio}" step="0.01" class="form-control" id="costo_promedio" placeholder="0.00" required>
-      <div class="text-danger" th:if="${#fields.hasErrors('costo_promedio')}" th:errors="*{costo_promedio}"></div>
+      <input type="number" th:field="*{costo_promedio}" step="0.01" class="form-control" id="costo_promedio" placeholder="0.00" required>
     </div>
 
     <!-- Stock actual -->
@@ -94,7 +91,31 @@
     </button>
     <a th:href="@{/productos}" class="btn btn-secondary rounded-pill px-4 ms-2">Regresar</a>
   </form>
+
+
+  <script>
+    const imagenInput = document.getElementById('fileImagen');
+    const vistaPrevia = document.getElementById('vista-previa');
+
+    imagenInput.addEventListener('change', function (event) {
+        const archivo = event.target.files[0];
+        if (archivo) {
+            const lector = new FileReader();
+
+            lector.onload = function (e) {
+                vistaPrevia.src = e.target.result;
+                vistaPrevia.style.display = 'block';
+            };
+
+            lector.readAsDataURL(archivo);
+        } else {
+            vistaPrevia.src = '#';
+            vistaPrevia.style.display = 'none';
+        }
+    });
+  </script>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
