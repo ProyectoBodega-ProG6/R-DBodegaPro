@@ -2,7 +2,9 @@ package org.esfe.AppRyDBodega_Pro.controladores;
 
 import jakarta.validation.Valid;
 import org.esfe.AppRyDBodega_Pro.modelos.Producto;
+import org.esfe.AppRyDBodega_Pro.servicios.interfaces.ICategoriaService;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProductoService;
+import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +34,13 @@ public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
+    @Autowired
+    private ICategoriaService categoriaService;
+
+    @Autowired
+    private IProveedorService proveedorService;
+
+
     @GetMapping
     public String index(Model model,
                         @RequestParam("page") Optional<Integer> page,
@@ -56,6 +65,14 @@ public class ProductoController {
         model.addAttribute("categoriaNombre", categoriaNombre);
         model.addAttribute("proveedorNombre", proveedorNombre);
 
+        // Listas para combobox
+        model.addAttribute("categorias", categoriaService.obtenerTodos());
+        model.addAttribute("proveedores", proveedorService.obtenerTodos());
+
+        model.addAttribute("nombre", nombre);
+        model.addAttribute("categoriaNombre", categoriaNombre);
+        model.addAttribute("proveedorNombre", proveedorNombre);
+
         int totalPages = productos.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -70,6 +87,8 @@ public class ProductoController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("producto", new Producto());
+        model.addAttribute("categorias", categoriaService.obtenerTodos());
+        model.addAttribute("proveedores", proveedorService.obtenerTodos());
         return "producto/create";
     }
 
@@ -121,6 +140,8 @@ public class ProductoController {
     public String edit(@PathVariable("id") Integer id, Model model) {
         Producto producto = productoService.buscarPorId(id).get();
         model.addAttribute("producto", producto);
+        model.addAttribute("categorias", categoriaService.obtenerTodos());
+        model.addAttribute("proveedores", proveedorService.obtenerTodos());
         return "producto/edit";
     }
 
