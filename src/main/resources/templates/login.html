@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - SysAre</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1e1e2f;
+            font-family: Arial, sans-serif;
+        }
+        .login-container {
+            background: #2c2c3e;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
+            width: 400px;
+            text-align: center;
+            transition: box-shadow 0.3s;
+        }
+        .login-container:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.8);
+        }
+        .login-container h1 {
+            color: #fff200;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .form-control {
+            background: #3a3a4d;
+            border: none;
+            color: #fff;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 5px #fff200;
+            border-color: #fff200;
+        }
+        .btn-primary {
+            background: #fff200;
+            border: none;
+            width: 100%;
+            font-weight: bold;
+            color: #2c2c3e;
+        }
+        .btn-primary:hover {
+            background: #ffea00;
+        }
+        .error-msg {
+            color: #ff4d4d;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h1>Bienvenido a SysAre</h1>
+
+    <!-- Mostrar mensaje de error si hay -->
+    <div th:if="${errorMsg}" class="error-msg" th:text="${errorMsg}"></div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="mb-3 text-start">
+            <label for="username" class="form-label" style="color:#fff;">Usuario</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Ingresa tu usuario" required>
+        </div>
+        <div class="mb-4 text-start">
+            <label for="password" class="form-label" style="color:#fff;">Contraseña</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Ingresa tu contraseña" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+    </form>
+</div>
+
+</body>
+</html>

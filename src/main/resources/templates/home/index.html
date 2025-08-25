@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layouts/_mainLayout">
+      layout:decorate="/layouts/_mainLayout" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 <div layout:fragment="content">
-
     <div class="welcome-container">
         <h1 class="welcome-text">Bienvenido a nuestro sistema <span>R&D Bodega Pro</span></h1>
     </div>
-
+    <div sec:authorize="isAnonymous()" class="alert alert-danger text-center" role="alert">
+        Debes iniciar sesión para poder utilizar la aplicación.
+    </div>
 </div>
-
 </html>
