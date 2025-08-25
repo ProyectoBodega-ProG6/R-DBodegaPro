@@ -127,6 +127,7 @@ public class UsuarioController {
 
         if (result.hasErrors()) {
             model.addAttribute("usuario", usuario);
+            model.addAttribute("roles", rolService.obtenerTodos());
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
             return "usuario/edit";
         }
@@ -139,7 +140,15 @@ public class UsuarioController {
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
         }
 
-        return "redirect:/usuarios";
+        usuario.setId(id);
+        usuarioService.createOrEditOne(usuario);
+        return "redirect:/usuario/list";
+    }
+
+    @GetMapping("/list")
+    public String list(Model model) {
+        model.addAttribute("usuarios", usuarioService.obtenerTodos());
+        return "usuario/list";
     }
 
     @GetMapping("/details/{id}")
@@ -164,6 +173,6 @@ public class UsuarioController {
         } catch (Exception e) {
             attributes.addFlashAttribute("error", "Error de eliminación.");
         }
-        return "redirect:/usuarios";
+        return "redirect:/usuarios/list";
     }
 }

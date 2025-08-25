@@ -13,41 +13,42 @@
     <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <form th:action="@{/usuarios/update/{id}(id=${usuario.id})}" th:object="${usuario}" method="post" class="row g-3">
+    <form th:action="@{/usuario/update/{id}(id=${usuario.id})}" th:object="${usuario}" method="post">
 
-        <div class="col-md-6">
-            <label class="form-label">Nombre Completo</label>
-            <input type="text" th:field="*{nombreCompleto}" class="form-control"/>
-            <p th:if="${#fields.hasErrors('nombreCompleto')}" th:errors="*{nombreCompleto}" class="text-danger"></p>
-        </div>
+        <input type="hidden" th:field="*{id}" />
 
-        <div class="col-md-6">
-            <label class="form-label">Username</label>
-            <input type="text" th:field="*{username}" class="form-control"/>
-            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></p>
-        </div>
+        <label>Nombre Completo:</label>
+        <input type="text" th:field="*{nombreCompleto}" class="form-control"/>
 
-        <div class="col-md-6">
-            <label class="form-label">Rol</label>
-            <select th:field="*{rol.id}" class="form-select">
-                <option value="">Seleccione un rol</option>
-                <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.nombreRol}" th:selected="${rol.id == usuario.rol.id}"></option>
-            </select>
-            <p th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}" class="text-danger"></p>
-        </div>
+        <label>Username:</label>
+        <input type="text" th:field="*{username}" class="form-control"/>
 
-        <div class="col-md-6">
-            <label class="form-label">Fecha de registro</label>
-            <input type="date" th:field="*{fechaRegistro}" class="form-control"/>
-            <p th:if="${#fields.hasErrors('fechaRegistro')}" th:errors="*{fechaRegistro}" class="text-danger"></p>
-        </div>
+        <label>Password:</label>
+        <input type="password" th:field="*{password}" class="form-control"/>
 
-        <div class="col-12 d-flex justify-content-start mt-3">
-            <button type="submit" class="btn btn-primary me-2">Actualizar</button>
-            <a th:href="@{/usuarios}" class="btn btn-secondary">Cancelar</a>
-        </div>
+        <label>Teléfono:</label>
+        <input type="text" th:field="*{telefono}" class="form-control"/>
 
+        <label>Dirección:</label>
+        <input type="text" th:field="*{direccion}" class="form-control"/>
+
+        <label>Correo Electrónico:</label>
+        <input type="email" th:field="*{correo_electronico}" class="form-control"/>
+
+        <label>Rol:</label>
+        <select th:field="*{rol}" class="form-control">
+            <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol.nombreRol}"></option>
+        </select>
+
+        <label>Status:</label>
+        <select th:field="*{status}" class="form-control">
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+        </select>
+
+        <button type="submit" class="btn btn-success">Actualizar</button>
     </form>
+
 </div>
 </body>
 </html>
