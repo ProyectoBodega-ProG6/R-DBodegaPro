@@ -81,7 +81,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/create")
-    public String create(Usuario usuario) {
+    public String create(Usuario usuario, Model model) {
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("roles", rolService.obtenerTodos());
         return "usuario/create";
     }
 
@@ -111,6 +113,7 @@ public class UsuarioController {
     public String edit(@PathVariable("id") Integer id, Model model) {
         Usuario usuario  = usuarioService.buscarPorId(id).orElse(null);
         model.addAttribute("usuario", usuario);
+        model.addAttribute("roles", rolService.obtenerTodos());
         return "usuario/edit";
     }
 
