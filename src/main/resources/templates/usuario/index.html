@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="content">
 
-  <h2 class="mb-4">Gestión de Categorias</h2>
+  <h2 class="mb-4">Gestión de Usuarios</h2>
 
   <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
   <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
@@ -39,7 +39,7 @@
     <div class="col-md-2 d-flex align-items-end gap-2">
     <button type="submit" class="btn btn-secondary mx-2">Buscar</button>
   <a th:href="@{/usuarios}" class="btn btn-light mx-2">Limpiar</a>
-      <a th:href="@{/usuarios/create}" class="btn btn-primary mx-2">Nuevo Usuario</a>
+      <a th:href="@{/usuarios/create}" class="btn btn-primary mx-2">Nuevo</a>
     </div>
 
 </form>

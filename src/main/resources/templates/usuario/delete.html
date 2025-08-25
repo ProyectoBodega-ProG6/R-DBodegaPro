@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
+<head>
+    <title>Eliminar Usuario</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 class="mb-3">Eliminar Usuario</h1>
+
+    <!-- Alertas -->
+    <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <p>¿Está seguro que desea eliminar al usuario <b th:text="${usuario.nombreCompleto}"></b>?</p>
+
+    <form th:action="@{/usuarios/delete}" method="post">
+        <input type="hidden" name="id" th:value="${usuario.id}"/>
+        <button type="submit" class="btn btn-danger me-2">Sí, eliminar</button>
+        <a th:href="@{/usuarios}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>

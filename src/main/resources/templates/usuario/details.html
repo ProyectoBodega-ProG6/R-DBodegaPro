@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
+<head>
+    <title>Detalles Usuario</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 class="mb-3">Detalles del Usuario</h1>
+
+    <!-- Alertas -->
+    <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <dl class="row">
+        <dt class="col-sm-3">ID:</dt>
+        <dd class="col-sm-9" th:text="${usuario.id}"></dd>
+
+        <dt class="col-sm-3">Nombre Completo:</dt>
+        <dd class="col-sm-9" th:text="${usuario.nombreCompleto}"></dd>
+
+        <dt class="col-sm-3">Username:</dt>
+        <dd class="col-sm-9" th:text="${usuario.username}"></dd>
+
+        <dt class="col-sm-3">Rol:</dt>
+        <dd class="col-sm-9" th:text="${usuario.rol.nombreRol}"></dd>
+
+        <dt class="col-sm-3">Fecha Registro:</dt>
+        <dd class="col-sm-9" th:text="${#dates.format(usuario.fechaRegistro,'yyyy-MM-dd')}"></dd>
+    </dl>
+
+    <a th:href="@{/usuarios}" class="btn btn-secondary">Volver</a>
+</div>
+</body>
+</html>
