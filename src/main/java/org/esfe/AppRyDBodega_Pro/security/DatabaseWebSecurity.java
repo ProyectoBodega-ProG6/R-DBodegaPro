@@ -14,51 +14,54 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-
 public class DatabaseWebSecurity {
 
     @Bean
     public UserDetailsManager customUsers(DataSource dataSource){
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-        users.setUsersByUsernameQuery("select username, password, status as enabled from usuarios where username = ?");
+
+        users.setUsersByUsernameQuery(
+                "select username, password, status as enabled " +
+                        "from usuarios where username = ?"
+        );
+
         users.setAuthoritiesByUsernameQuery(
                 "select u.username, r.nombre_rol as authority " +
                         "from usuarios u inner join roles r on r.id = u.id_rol " +
                         "where u.username = ?"
         );
+
         return users;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(authorize -> authorize
-                // aperturar el acceso a los recursos estáticos
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/assets/**", "/css/**", "/js/**").permitAll()
-                // las vistas públicas no requieren autenticación
                 .requestMatchers("/", "/privacy", "/terms").permitAll()
 
-                //todas las demas vistas necesitan autenticación
-                .requestMatchers("/usuarios/**").hasAnyAuthority("Administrador")
-                .requestMatchers("/roles/**").hasAnyAuthority("Administrador")
+                .requestMatchers("/usuarios/**").hasAuthority("Administrador")
+                .requestMatchers("/roles/**").hasAuthority("Administrador")
                 .requestMatchers("/categorias/**").hasAnyAuthority("Administrador", "SupervisorBodega")
                 .requestMatchers("/proveedores/**").hasAnyAuthority("Administrador", "SupervisorBodega")
                 .requestMatchers("/productos/**").hasAnyAuthority("Administrador", "SupervisorBodega")
                 .requestMatchers("/tipoMovimientos/**").hasAnyAuthority("Administrador", "SupervisorBodega")
                 .requestMatchers("/movimientos/**").hasAnyAuthority("Administrador", "SupervisorBodega")
 
-                // todas las demás vistas requieren autenticación
-                .anyRequest().authenticated());
+                .anyRequest().authenticated()
+        );
 
-                http.formLogin(form -> form
-                        .loginPage("/login") // Le dice a Spring Security cuál es la URL de tu página de login
-                        .permitAll()
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/login?error=true") // Redirige a la página de login con un parámetro de error si falla
-                );
+        http.formLogin(form -> form
+                .loginPage("/login")
+                .permitAll()
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/login?error=true")
+        );
 
         http.logout(logout -> logout
-                .logoutSuccessUrl("/login?logout") // Redirige a la página de login con un mensaje de "logout"
-                .permitAll());
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+        );
 
         return http.build();
     }
@@ -67,6 +70,4 @@ public class DatabaseWebSecurity {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,10 @@ public class UsuarioController {
 
     @Autowired
     RolService rolService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @GetMapping
     public String index(Model model,
@@ -100,6 +105,9 @@ public class UsuarioController {
         }
 
         try {
+            // 🔑 Encriptar la contraseña antes de guardar
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+
             usuarioService.createOrEditOne(usuario);
             attributes.addFlashAttribute("msg", "Registro ingresado exitosamente.");
         } catch (Exception e) {
@@ -132,6 +140,10 @@ public class UsuarioController {
 
         try {
             usuario.setId(id);
+
+            // 🔑 Encriptar la contraseña antes de actualizar
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+
             usuarioService.createOrEditOne(usuario);
             attributes.addFlashAttribute("msg", "Registro actualizado exitosamente.");
         } catch (Exception e) {
