@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Producto</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body class="bg-light text-dark">
+
+<div layout:fragment="content" class="container mt-5 p-4 rounded shadow-sm bg-white">
+
+    <h2 class="mb-4 text-center">Detalle del Producto</h2>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Nombre:</strong></div>
+        <div class="col-sm-9" th:text="${producto.nombre}"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Descripción:</strong></div>
+        <div class="col-sm-9" th:text="${producto.descripcion}"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Categoría:</strong></div>
+        <div class="col-sm-9" th:text="${producto.categoria.nombre}"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Proveedor:</strong></div>
+        <div class="col-sm-9" th:text="${producto.proveedor.nombre}"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Precio de Compra:</strong></div>
+        <div class="col-sm-9" th:text="${producto.precio_compra}"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Precio de Venta:</strong></div>
+        <div class="col-sm-9" th:text="${producto.precio_venta}"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Costo Promedio:</strong></div>
+        <div class="col-sm-9" th:text="${producto.costo_promedio}"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Stock Actual:</strong></div>
+        <div class="col-sm-9" th:text="${producto.stock_actual}"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Stock Mínimo:</strong></div>
+        <div class="col-sm-9" th:text="${producto.stock_minimo}"></div>
+    </div>
+
+    <!-- Estado del stock -->
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Estado del Stock:</strong></div>
+        <div class="col-sm-9">
+            <span th:text="${producto.estadoStockText}" th:class="${producto.estadoStockClass}"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-3"><strong>Imagen:</strong></div>
+        <div class="col-sm-9">
+            <img th:if="${producto.imagen_url != null}"
+                 th:src="@{'/productos/imagen/' + ${producto.id}}"
+                 style="max-width: 300px; max-height: 300px;" class="img-thumbnail"/>
+            <span th:if="${producto.imagen_url == null}">Sin imagen</span>
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <a th:href="@{/productos}" class="btn btn-secondary rounded-pill px-4">Regresar</a>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

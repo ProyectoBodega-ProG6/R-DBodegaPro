@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Productos</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body class="bg-light text-dark">
+
+<div layout:fragment="content" class="container mt-5 p-4 rounded shadow-sm bg-white">
+    <h2 class="mb-4 text-center">Gestión de Editar Producto</h2>
+
+    <form th:action="@{/productos/update}" th:object="${producto}" method="post" enctype="multipart/form-data" class="mb-4">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre: <span class="text-danger">*</span></label>
+            <input type="text" class="form-control"
+                   th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del producto" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción: </label>
+            <input type="text" class="form-control"
+                   th:field="*{descripcion}" id="descripcion" placeholder="Escriba la descripción del producto">
+            <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría: <span class="text-danger">*</span></label>
+            <select class="form-select" th:field="*{categoria}" id="categoria" required>
+                <option value="" disabled selected>Seleccione una categoría</option>
+                <option th:each="cat : ${categorias}"
+                        th:value="${cat.id}"
+                        th:text="${cat.nombre}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="proveedor" class="form-label">Proveedor: <span class="text-danger">*</span></label>
+            <select class="form-select" th:field="*{proveedor}" id="proveedor" required>
+                <option value="" disabled selected>Seleccione un proveedor</option>
+                <option th:each="prov : ${proveedores}"
+                        th:value="${prov.id}"
+                        th:text="${prov.nombre}"></option>
+            </select>
+        </div>
+
+        <!-- Precio de compra -->
+        <div class="mb-3">
+            <label for="precio_compra" class="form-label">Precio Compra <span class="text-danger">*</span></label>
+            <input type="number" th:field="*{precio_compra}" step="0.01" class="form-control" id="precio_compra" placeholder="0.00" required>
+        </div>
+
+        <!-- Precio de venta -->
+        <div class="mb-3">
+            <label for="precio_venta" class="form-label">Precio Venta <span class="text-danger">*</span></label>
+            <input type="number" th:field="*{precio_venta}" step="0.01" class="form-control" id="precio_venta" placeholder="0.00" required>
+        </div>
+
+        <!-- Costo promedio -->
+        <div class="mb-3">
+            <label for="costo_promedio" class="form-label">Costo Promedio <span class="text-danger">*</span></label>
+            <input type="number" th:field="*{costo_promedio}" step="0.01" class="form-control" id="costo_promedio" placeholder="0.00" required>
+        </div>
+
+        <!-- Stock actual -->
+        <div class="mb-3">
+            <label for="stock_actual" class="form-label">Stock Actual <span class="text-danger">*</span></label>
+            <input type="number" th:field="*{stock_actual}" class="form-control" id="stock_actual" min="0" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('stock_actual')}" th:errors="*{stock_actual}"></div>
+        </div>
+
+        <!-- Stock mínimo -->
+        <div class="mb-3">
+            <label for="stock_minimo" class="form-label">Stock Mínimo <span class="text-danger">*</span></label>
+            <input type="number" th:field="*{stock_minimo}" class="form-control" id="stock_minimo" min="0" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('stock_minimo')}" th:errors="*{stock_minimo}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="fileImagen">Imagen actual:</label>
+            <img th:if="${producto.imagen_url != null}"
+                 th:src="@{/productos/imagen/{id}(id=${producto.id})}"
+                 style="max-width: 200px; max-height: 200px;" id="vista-previa"/>
+            <input type="file" class="form-control mt-2" id="fileImagen" name="fileImagen" accept="image/*"/>
+            <input type="hidden" th:field="*{imagen_url}" />
+            <small class="form-text text-muted">Deja en blanco para mantener la imagen actual</small>
+        </div>
+
+        <div class="mb-3">
+        <button type="submit" class="btn btn-dark rounded-pill px-4">
+            Actualizar producto
+        </button>
+        <a th:href="@{/productos}" class="btn btn-secondary rounded-pill px-4 ms-2">Regresar</a>
+        </div>
+    </form>
+
+
+    <script>
+        const imagenInput = document.getElementById('fileImagen');
+        const vistaPrevia = document.getElementById('vista-previa');
+
+        imagenInput.addEventListener('change', function (event) {
+            const archivo = event.target.files[0];
+            if (archivo) {
+                const lector = new FileReader();
+
+                lector.onload = function (e) {
+                    vistaPrevia.src = e.target.result;
+                    vistaPrevia.style.display = 'block';
+                };
+
+                lector.readAsDataURL(archivo);
+            } else {
+                vistaPrevia.src = '#';
+                vistaPrevia.style.display = 'none';
+            }
+        });
+    </script>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

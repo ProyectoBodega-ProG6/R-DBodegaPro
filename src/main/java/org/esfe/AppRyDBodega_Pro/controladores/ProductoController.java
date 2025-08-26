@@ -2,7 +2,9 @@ package org.esfe.AppRyDBodega_Pro.controladores;
 
 import jakarta.validation.Valid;
 import org.esfe.AppRyDBodega_Pro.modelos.Producto;
+import org.esfe.AppRyDBodega_Pro.servicios.interfaces.ICategoriaService;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProductoService;
+import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +34,13 @@ public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
+    @Autowired
+    private ICategoriaService categoriaService;
+
+    @Autowired
+    private IProveedorService proveedorService;
+
+
     @GetMapping
     public String index(Model model,
                         @RequestParam("page") Optional<Integer> page,
@@ -56,6 +65,14 @@ public class ProductoController {
         model.addAttribute("categoriaNombre", categoriaNombre);
         model.addAttribute("proveedorNombre", proveedorNombre);
 
+        // Listas para combobox
+        model.addAttribute("categorias", categoriaService.obtenerTodos());
+        model.addAttribute("proveedores", proveedorService.obtenerTodos());
+
+        model.addAttribute("nombre", nombre);
+        model.addAttribute("categoriaNombre", categoriaNombre);
+        model.addAttribute("proveedorNombre", proveedorNombre);
+
         int totalPages = productos.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -70,6 +87,8 @@ public class ProductoController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("producto", new Producto());
+        model.addAttribute("categorias", categoriaService.obtenerTodos());
+        model.addAttribute("proveedores", proveedorService.obtenerTodos());
         return "producto/create";
     }
 
@@ -97,15 +116,6 @@ public class ProductoController {
                 Files.copy(fileImagen.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
                 producto.setImagen_url(fileName);
 
-                // Si es edición, eliminar imagen anterior
-                if (producto.getId() != null && producto.getId() > 0) {
-                    Producto productos = productoService.buscarPorId(producto.getId()).get();
-                    if (producto != null && producto.getImagen_url() != null) {
-                        Path filePathDelete = uploadPath.resolve(producto.getImagen_url());
-                        Files.deleteIfExists(filePathDelete);
-                    }
-                }
-
             } catch (Exception e) {
                 attributes.addFlashAttribute("error", "Error al procesar la imagen: " + e.getMessage());
                 return "redirect:/productos";
@@ -117,12 +127,75 @@ public class ProductoController {
         return "redirect:/productos";
     }
 
+
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
         Producto producto = productoService.buscarPorId(id).get();
         model.addAttribute("producto", producto);
+        model.addAttribute("categorias", categoriaService.obtenerTodos());
+        model.addAttribute("proveedores", proveedorService.obtenerTodos());
         return "producto/edit";
     }
+
+    @PostMapping("/update")
+    public String update(@Valid Producto producto,
+                         BindingResult result,
+                         @RequestParam("fileImagen") MultipartFile fileImagen,
+                         Model model,
+                         RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            model.addAttribute("producto", producto);
+            return "producto/edit";
+        }
+
+        // Verificar si existe el producto
+        Optional<Producto> productoExistente = productoService.buscarPorId(producto.getId());
+        if (!productoExistente.isPresent()) {
+            attributes.addFlashAttribute("error", "Producto no encontrado");
+            return "redirect:/productos";
+        }
+
+        Producto prod = productoExistente.get();
+
+        // Actualizar campos
+        prod.setNombre(producto.getNombre());
+        prod.setDescripcion(producto.getDescripcion());
+        prod.setCategoria(producto.getCategoria());
+        prod.setProveedor(producto.getProveedor());
+        prod.setPrecio_compra(producto.getPrecio_compra());
+        prod.setPrecio_venta(producto.getPrecio_venta());
+        prod.setCosto_promedio(producto.getCosto_promedio());
+        prod.setStock_actual(producto.getStock_actual());
+        prod.setStock_minimo(producto.getStock_minimo());
+
+        // Subida de imagen nueva (si hay)
+        if (fileImagen != null && !fileImagen.isEmpty()) {
+            try {
+                Path uploadPath = Paths.get(UPLOAD_DIR);
+                if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
+
+                // Eliminar imagen anterior
+                if (prod.getImagen_url() != null) {
+                    Path filePathDelete = uploadPath.resolve(prod.getImagen_url());
+                    Files.deleteIfExists(filePathDelete);
+                }
+
+                String fileName = fileImagen.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(fileImagen.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                prod.setImagen_url(fileName);
+
+            } catch (Exception e) {
+                attributes.addFlashAttribute("error", "Error al procesar la imagen: " + e.getMessage());
+                return "redirect:/productos";
+            }
+        }
+
+        productoService.createOrEditOne(prod); // actualiza producto existente
+        attributes.addFlashAttribute("msg", "Producto actualizado correctamente");
+        return "redirect:/productos";
+    }
+
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model) {
@@ -138,26 +211,36 @@ public class ProductoController {
         return "producto/delete";
     }
 
-    @PostMapping("/delete")
-    public String delete(Producto producto, RedirectAttributes attributes) {
-        Producto producto1 = productoService.buscarPorId(producto.getId()).get();
-        if (producto1 != null && producto1.getImagen_url() != null) {
-            try {
-                Path uploadPath = Paths.get(UPLOAD_DIR);
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Integer id, RedirectAttributes attributes) {
+        Optional<Producto> productoOpt = productoService.buscarPorId(id);
+        if (productoOpt.isPresent()) {
+            Producto producto = productoOpt.get();
+
+            // Eliminar imagen si existe
+            if (producto.getImagen_url() != null) {
+                try {
+                    Path uploadPath = Paths.get(UPLOAD_DIR);
+                    Path filePathDelete = uploadPath.resolve(producto.getImagen_url());
+                    Files.deleteIfExists(filePathDelete);
+                } catch (IOException e) {
+                    attributes.addFlashAttribute("error", "Error al procesar la imagen: " + e.getMessage());
+                    return "redirect:/productos";
                 }
-                Path filePathDelete = uploadPath.resolve(producto1.getImagen_url());
-                Files.deleteIfExists(filePathDelete);
-            } catch (Exception e) {
-                attributes.addFlashAttribute("error", "Error al procesar la imagen: " + e.getMessage());
-                return "redirect:/productos";
             }
+
+            productoService.eliminarPorId(id);
+            attributes.addFlashAttribute("msg", "Producto eliminado correctamente");
+        } else {
+            attributes.addFlashAttribute("error", "Producto no encontrado");
         }
-        productoService.eliminarPorId(producto.getId());
-        attributes.addFlashAttribute("msg", "Producto eliminado correctamente");
+
         return "redirect:/productos";
     }
+
+
+
+
 
     @GetMapping("/imagen/{id}")
     @ResponseBody

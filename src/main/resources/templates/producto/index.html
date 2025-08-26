@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{/layouts/_mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Productos</title>
+</head>
+<body>
+<div layout:fragment="content" class="container mt-4">
+
+    <div th:if="${msg != null}">
+        <script th:inline="javascript">
+            Swal.fire({
+                title: "Confirmación",
+                text: [[${msg}]],
+                icon: "success"
+            });
+        </script>
+    </div>
+
+    <!-- Mensajes de error -->
+    <div th:if="${error != null}">
+        <script th:inline="javascript">
+            Swal.fire({
+                title: "Error",
+                text: [[${error}]],
+                icon: "error"
+            });
+        </script>
+    </div>
+
+    <h2 class="mb-4">Gestión de Productos</h2>
+
+    <form th:action="@{/productos}" method="get" class="mb-3" id="formBuscar">
+        <div class="row g-2">
+
+            <div class="col-md-5 position-relative">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" id="nombre"
+                       th:value="${nombre}" placeholder="Escriba el nombre del producto">
+            </div>
+
+            <div class="input-group flex-grow-1">
+                <select class="form-select" name="categoriaNombre" id="categoriaNombre">
+                    <option value="">Buscar por Categoria...</option>
+                    <option th:each="categoria : ${categorias}"
+                            th:value="${categoria.nombre}"
+                            th:text="${categoria.nombre}"
+                            th:selected="${categoria.nombre == categoriaNombre}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="input-group flex-grow-1">
+                <select class="form-select" name="proveedorNombre" id="proveedorNombre">
+                    <option value="">Buscar por Proveedor...</option>
+                    <option th:each="proveedor : ${proveedores}"
+                            th:value="${proveedor.nombre}"
+                            th:text="${proveedor.nombre}"
+                            th:selected="${proveedor.nombre == proveedorNombre}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+
+                <!-- Limpiar + refrescar tabla -->
+                <button type="button" class="btn btn-warning" onclick="limpiarCampos()">Limpiar</button>
+
+                <a th:href="@{/productos/create}" class="btn btn-outline-primary">Crear</a>
+            </div>
+        </div>
+    </form>
+
+    <!-- Script para limpiar y refrescar -->
+    <script>
+        function limpiarCampos() {
+            document.getElementById("nombre").value = "";
+            document.getElementById("categoriaNombre").value = "";
+            document.getElementById("proveedorNombre").value = "";
+            document.getElementById("formBuscar").submit();
+        }
+    </script>
+
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio Compra</th>
+            <th>Precio Venta</th>
+            <th>Costo Promedio</th>
+            <th>Stock Actual</th>
+            <th>Stock Mínimo</th>
+            <th>Imagen</th>
+            <th>Categoría</th>
+            <th>Proveedor</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="producto : ${productos}">
+            <td th:text="${producto.id}"></td>
+            <td th:text="${producto.nombre}"></td>
+            <td th:text="${producto.descripcion}"></td>
+            <td th:text="${producto.precio_compra}"></td>
+            <td th:text="${producto.precio_venta}"></td>
+            <td th:text="${producto.costo_promedio}"></td>
+            <td th:text="${producto.stock_actual}"></td>
+            <td th:text="${producto.stock_minimo}"></td>
+            <td>
+                <img th:if="${producto.imagen_url != null}" th:src="@{/productos/imagen/{id}(id=${producto.id})}" style="max-width:100px; max-height:100px"/>
+                <i th:if="${producto.imagen_url == null}" class="fas fa-image fa-2x"></i>
+            </td>
+            <td th:text="${producto.categoria.nombre}"></td>
+            <td th:text="${producto.proveedor.nombre}"></td>
+            <td>
+                <span th:text="${producto.estadoStockText}" th:class="${producto.estadoStockClass}"></span>
+            </td>
+            <td>
+                <a th:href="@{/productos/details/{id}(id=${producto.id})}" class="btn btn-sm btn-info">Detalles</a>
+                <a th:href="@{/productos/edit/{id}(id=${producto.id})}" class="btn btn-sm btn-primary">Editar</a>
+                <a th:href="@{/productos/remove/{id}(id=${producto.id})}" class="btn btn-sm btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <nav th:if="${pageNumbers != null}" aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                <a class="page-link"
+                   th:href="@{|/productos?page=${pageNumber}&nombre=${nombre}&categoriaNombre=${categoriaNombre}&proveedorNombre=${proveedorNombre}|}"
+                   th:text="${pageNumber}"></a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+</body>
+</html>
