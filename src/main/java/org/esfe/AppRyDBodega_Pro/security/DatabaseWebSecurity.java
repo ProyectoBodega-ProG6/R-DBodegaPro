@@ -37,7 +37,7 @@ public class DatabaseWebSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/assets/**", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/uploads/**","/assets/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/login","/privacy", "/terms").permitAll()
 
                 .requestMatchers("/").hasAnyAuthority("Administrador", "SupervisorBodega")
@@ -49,7 +49,7 @@ public class DatabaseWebSecurity {
                 .requestMatchers("/tipoMovimientos/**").hasAnyAuthority("Administrador", "SupervisorBodega")
                 .requestMatchers("/movimientos/**").hasAnyAuthority("Administrador", "SupervisorBodega")
 
-                .anyRequest().authenticated()
+                .anyRequest().denyAll()
         );
 
         http.formLogin(form -> form
