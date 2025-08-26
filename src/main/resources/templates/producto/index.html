@@ -113,7 +113,8 @@
             <td th:text="${producto.stock_actual}"></td>
             <td th:text="${producto.stock_minimo}"></td>
             <td>
-                <img th:if="${producto.imagen_url != null}" th:src="@{${producto.imagen_url}}" style="max-width:100px; max-height:100px"/>
+                <img th:if="${producto.imagen_url != null}" th:src="@{/productos/imagen/{id}(id=${producto.id})}" style="max-width:100px; max-height:100px"/>
+                <i th:if="${producto.imagen_url == null}" class="fas fa-image fa-2x"></i>
             </td>
             <td th:text="${producto.categoria.nombre}"></td>
             <td th:text="${producto.proveedor.nombre}"></td>
