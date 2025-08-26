@@ -58,7 +58,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="usuario : ${usuarios}">
+    <tr th:each="usuario : ${usuarios.content}">
       <td th:text="${usuario.id}"></td>
       <td th:text="${usuario.nombreCompleto}"></td>
       <td th:text="${usuario.username}"></td>
@@ -69,11 +69,10 @@
                       th:classappend="${usuario.status == 1 ? 'text-success' : 'text-danger'}"></span>
       </td>
       <td>
-        <a class="btn btn-info btn-sm" th:href="@{/usuario/details/{id}(id=${usuario.id})}">Detalles</a>
-        <a class="btn btn-warning btn-sm" th:href="@{/usuario/edit/{id}(id=${usuario.id})}">Editar</a>
+        <a class="btn btn-info btn-sm" th:href="@{/usuarios/details/{id}(id=${usuario.id})}">Detalles</a>
+        <a class="btn btn-warning btn-sm" th:href="@{/usuarios/edit/{id}(id=${usuario.id})}">Editar</a>
         <a class="btn btn-danger btn-sm"
-           th:href="@{/usuario/delete/{id}(id=${usuario.id})}"
-           onclick="return confirm('¿Seguro que deseas eliminar este usuario?');">Eliminar</a>
+           th:href="@{/usuarios/remove/{id}(id=${usuario.id})}">Eliminar</a>
       </td>
     </tr>
     </tbody>

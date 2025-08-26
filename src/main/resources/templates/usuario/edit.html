@@ -13,42 +13,79 @@
     <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <form th:action="@{/usuario/update/{id}(id=${usuario.id})}" th:object="${usuario}" method="post">
+    <form th:action="@{/usuarios/update/{id}(id=${usuario.id})}" th:object="${usuario}" method="post" class="d-flex flex-column gap-2">
 
         <input type="hidden" th:field="*{id}" />
 
-        <label>Nombre Completo:</label>
-        <input type="text" th:field="*{nombreCompleto}" class="form-control"/>
+        <div class="form-group">
+            <label>Nombre Completo:</label>
+            <input type="text" th:field="*{nombreCompleto}" class="form-control"/>
+        </div>
 
-        <label>Username:</label>
-        <input type="text" th:field="*{username}" class="form-control"/>
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" th:field="*{username}" class="form-control"/>
+        </div>
 
-        <label>Password:</label>
-        <input type="password" th:field="*{password}" class="form-control"/>
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="text" th:field="*{password}" class="form-control"
+                   minlength="8" maxlength="10" required
+                   oninput="checkPasswordLength(this)"/>
+            <small id="passwordHelp" class="text-danger" style="display:none;">
+                La contraseña debe tener exactamente 8 dígitos
+            </small>
+        </div>
 
-        <label>Teléfono:</label>
-        <input type="text" th:field="*{telefono}" class="form-control"/>
 
-        <label>Dirección:</label>
-        <input type="text" th:field="*{direccion}" class="form-control"/>
+        <div class="form-group">
+            <label>Teléfono:</label>
+            <input type="text" th:field="*{telefono}" class="form-control"/>
+        </div>
 
-        <label>Correo Electrónico:</label>
-        <input type="email" th:field="*{correo_electronico}" class="form-control"/>
+        <div class="form-group">
+            <label>Dirección:</label>
+            <input type="text" th:field="*{direccion}" class="form-control"/>
+        </div>
 
-        <label>Rol:</label>
-        <select th:field="*{rol}" class="form-control">
-            <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol.nombreRol}"></option>
-        </select>
+        <div class="form-group">
+            <label>Correo Electrónico:</label>
+            <input type="email" th:field="*{correo_electronico}" class="form-control"/>
+        </div>
 
-        <label>Status:</label>
-        <select th:field="*{status}" class="form-control">
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
-        </select>
+        <div class="form-group">
+            <label>Rol:</label>
+            <select th:field="*{rol.id}" class="form-control">
+                <option value="">--Seleccionar Rol--</option>
+                <option th:each="r : ${roles}" th:value="${r.id}" th:text="${r.nombreRol}"
+                        th:selected="${usuario.rol != null} ? ${r.id == usuario.rol.id} : false"></option>
+            </select>
+        </div>
 
-        <button type="submit" class="btn btn-success">Actualizar</button>
+        <div class="form-group">
+            <label>Status:</label>
+            <select th:field="*{status}" class="form-control">
+                <option value="1" th:selected="${usuario.status == 1}">Activo</option>
+                <option value="0" th:selected="${usuario.status == 0}">Inactivo</option>
+            </select>
+        </div>
+
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-success">Actualizar</button>
+            <a th:href="@{/usuarios}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
-
 </div>
+
+<script>
+    function checkPasswordLength(input) {
+        const helpText = document.getElementById('passwordHelp');
+        if(input.value.length !== 8) {
+            helpText.style.display = 'block';
+        } else {
+            helpText.style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>
