@@ -1,51 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Producto</title>
+    <title>Editar Productos</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
-<body>
-<div layout:fragment="content" class="container mt-4">
 
-    <h2 class="mb-4">Editar Producto</h2>
+<body class="bg-light text-dark">
 
-    <!-- Mensajes de confirmación / error -->
-    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success"></div>
-    <div th:if="${error != null}" th:text="${error}" class="alert alert-danger"></div>
+<div layout:fragment="content" class="container mt-5 p-4 rounded shadow-sm bg-white">
+    <h2 class="mb-4 text-center">Gestión de Editar Producto</h2>
 
-    <form th:action="@{/productos/update}" th:object="${producto}" method="post" enctype="multipart/form-data">
-        <input type="hidden" th:field="*{id}"/>
+    <form th:action="@{/productos/update}" th:object="${producto}" method="post" enctype="multipart/form-data" class="mb-4">
+
+        <input type="hidden" th:field="*{id}" />
 
         <div class="mb-3">
-            <label class="form-label">Nombre *</label>
-            <input type="text" th:field="*{nombre}" class="form-control" required>
+            <label for="nombre" class="form-label">Nombre: <span class="text-danger">*</span></label>
+            <input type="text" class="form-control"
+                   th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del producto" required>
             <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Descripción</label>
-            <textarea th:field="*{descripcion}" class="form-control"></textarea>
+            <label for="descripcion" class="form-label">Descripción: </label>
+            <input type="text" class="form-control"
+                   th:field="*{descripcion}" id="descripcion" placeholder="Escriba la descripción del producto">
             <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría: <span class="text-danger">*</span></label>
+            <select class="form-select" th:field="*{categoria}" id="categoria" required>
+                <option value="" disabled selected>Seleccione una categoría</option>
+                <option th:each="cat : ${categorias}"
+                        th:value="${cat.id}"
+                        th:text="${cat.nombre}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="proveedor" class="form-label">Proveedor: <span class="text-danger">*</span></label>
+            <select class="form-select" th:field="*{proveedor}" id="proveedor" required>
+                <option value="" disabled selected>Seleccione un proveedor</option>
+                <option th:each="prov : ${proveedores}"
+                        th:value="${prov.id}"
+                        th:text="${prov.nombre}"></option>
+            </select>
         </div>
 
         <!-- Precio de compra -->
         <div class="mb-3">
             <label for="precio_compra" class="form-label">Precio Compra <span class="text-danger">*</span></label>
-        <input type="number" th:field="*{precio_compra}" step="0.01" class="form-control" id="precio_compra" placeholder="0.00" required>
+            <input type="number" th:field="*{precio_compra}" step="0.01" class="form-control" id="precio_compra" placeholder="0.00" required>
         </div>
 
         <!-- Precio de venta -->
-            <div class="mb-3">
-                <label for="precio_venta" class="form-label">Precio Venta <span class="text-danger">*</span></label>
-        <input type="number" th:field="*{precio_venta}" step="0.01" class="form-control" id="precio_venta" placeholder="0.00" required>
-            </div>
+        <div class="mb-3">
+            <label for="precio_venta" class="form-label">Precio Venta <span class="text-danger">*</span></label>
+            <input type="number" th:field="*{precio_venta}" step="0.01" class="form-control" id="precio_venta" placeholder="0.00" required>
+        </div>
 
         <!-- Costo promedio -->
-                <div class="mb-3">
-                    <label for="costo_promedio" class="form-label">Costo Promedio <span class="text-danger">*</span></label>
-        <input type="number" th:field="*{costo_promedio}" step="0.01" class="form-control" id="costo_promedio" placeholder="0.00" required>
-                </div>
-
+        <div class="mb-3">
+            <label for="costo_promedio" class="form-label">Costo Promedio <span class="text-danger">*</span></label>
+            <input type="number" th:field="*{costo_promedio}" step="0.01" class="form-control" id="costo_promedio" placeholder="0.00" required>
+        </div>
 
         <!-- Stock actual -->
         <div class="mb-3">
@@ -61,58 +82,24 @@
             <div class="text-danger" th:if="${#fields.hasErrors('stock_minimo')}" th:errors="*{stock_minimo}"></div>
         </div>
 
-        <!-- Mostrar estado dinámicamente -->
-        <div class="mb-3">
-            <label class="form-label">Estado:</label>
-            <span th:switch="${producto.estadoStock}">
-                <span th:case="T(org.esfe.AppRyDBodega_Pro.modelos.Producto.EstadoStock).AGOTADO"
-                      class="badge bg-danger">Agotado</span>
-                <span th:case="T(org.esfe.AppRyDBodega_Pro.modelos.Producto.EstadoStock).TERMINANDO"
-                      class="badge bg-warning text-dark">Terminando</span>
-                <span th:case="T(org.esfe.AppRyDBodega_Pro.modelos.Producto.EstadoStock).BUENO"
-                      class="badge bg-success">Disponible</span>
-            </span>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Categoría *</label>
-                <select th:field="*{categoria}" class="form-select" required>
-                    <option value="">Seleccione una categoría</option>
-                    <option th:each="categoria : ${categorias}"
-                            th:value="${categoria}"
-                            th:text="${categoria.nombre}"
-                            th:selected="${categoria.id == producto.categoria.id}"></option>
-                </select>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Proveedor</label>
-                <select th:field="*{proveedor}" class="form-select">
-                    <option value="">Seleccione un proveedor</option>
-                    <option th:each="proveedor : ${proveedores}"
-                            th:value="${proveedor}"
-                            th:text="${proveedor.nombre}"
-                            th:selected="${proveedor.id == producto.proveedor.id}"></option>
-                </select>
-            </div>
-        </div>
-
         <div class="form-group">
             <label for="fileImagen">Imagen actual:</label>
             <img th:if="${producto.imagen_url != null}"
-                 th:src="@{'/producto/imagen_url/' + ${producto.id}}"
+                 th:src="@{/productos/imagen/{id}(id=${producto.id})}"
                  style="max-width: 200px; max-height: 200px;" id="vista-previa"/>
             <input type="file" class="form-control mt-2" id="fileImagen" name="fileImagen" accept="image/*"/>
             <input type="hidden" th:field="*{imagen_url}" />
             <small class="form-text text-muted">Deja en blanco para mantener la imagen actual</small>
         </div>
 
-        <div class="d-flex justify-content-between">
-            <a th:href="@{/productos}" class="btn btn-secondary">Cancelar</a>
-            <button type="submit" class="btn btn-success">Actualizar</button>
+        <div class="mb-3">
+        <button type="submit" class="btn btn-dark rounded-pill px-4">
+            Actualizar producto
+        </button>
+        <a th:href="@{/productos}" class="btn btn-secondary rounded-pill px-4 ms-2">Regresar</a>
         </div>
     </form>
+
 
     <script>
         const imagenInput = document.getElementById('fileImagen');
@@ -135,7 +122,8 @@
             }
         });
     </script>
-
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

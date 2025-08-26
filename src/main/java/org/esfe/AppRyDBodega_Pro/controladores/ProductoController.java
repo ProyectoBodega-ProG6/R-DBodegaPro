@@ -116,15 +116,6 @@ public class ProductoController {
                 Files.copy(fileImagen.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
                 producto.setImagen_url(fileName);
 
-                // Si es edición, eliminar imagen anterior
-                if (producto.getId() != null && producto.getId() > 0) {
-                    Producto productos = productoService.buscarPorId(producto.getId()).get();
-                    if (producto != null && producto.getImagen_url() != null) {
-                        Path filePathDelete = uploadPath.resolve(producto.getImagen_url());
-                        Files.deleteIfExists(filePathDelete);
-                    }
-                }
-
             } catch (Exception e) {
                 attributes.addFlashAttribute("error", "Error al procesar la imagen: " + e.getMessage());
                 return "redirect:/productos";
@@ -145,6 +136,66 @@ public class ProductoController {
         model.addAttribute("proveedores", proveedorService.obtenerTodos());
         return "producto/edit";
     }
+
+    @PostMapping("/update")
+    public String update(@Valid Producto producto,
+                         BindingResult result,
+                         @RequestParam("fileImagen") MultipartFile fileImagen,
+                         Model model,
+                         RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            model.addAttribute("producto", producto);
+            return "producto/edit";
+        }
+
+        // Verificar si existe el producto
+        Optional<Producto> productoExistente = productoService.buscarPorId(producto.getId());
+        if (!productoExistente.isPresent()) {
+            attributes.addFlashAttribute("error", "Producto no encontrado");
+            return "redirect:/productos";
+        }
+
+        Producto prod = productoExistente.get();
+
+        // Actualizar campos
+        prod.setNombre(producto.getNombre());
+        prod.setDescripcion(producto.getDescripcion());
+        prod.setCategoria(producto.getCategoria());
+        prod.setProveedor(producto.getProveedor());
+        prod.setPrecio_compra(producto.getPrecio_compra());
+        prod.setPrecio_venta(producto.getPrecio_venta());
+        prod.setCosto_promedio(producto.getCosto_promedio());
+        prod.setStock_actual(producto.getStock_actual());
+        prod.setStock_minimo(producto.getStock_minimo());
+
+        // Subida de imagen nueva (si hay)
+        if (fileImagen != null && !fileImagen.isEmpty()) {
+            try {
+                Path uploadPath = Paths.get(UPLOAD_DIR);
+                if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
+
+                // Eliminar imagen anterior
+                if (prod.getImagen_url() != null) {
+                    Path filePathDelete = uploadPath.resolve(prod.getImagen_url());
+                    Files.deleteIfExists(filePathDelete);
+                }
+
+                String fileName = fileImagen.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(fileImagen.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                prod.setImagen_url(fileName);
+
+            } catch (Exception e) {
+                attributes.addFlashAttribute("error", "Error al procesar la imagen: " + e.getMessage());
+                return "redirect:/productos";
+            }
+        }
+
+        productoService.createOrEditOne(prod); // actualiza producto existente
+        attributes.addFlashAttribute("msg", "Producto actualizado correctamente");
+        return "redirect:/productos";
+    }
+
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model) {
