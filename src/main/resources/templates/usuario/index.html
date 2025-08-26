@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="content">
 
-  <h2 class="mb-4">Gestión de Categorias</h2>
+  <h2 class="mb-4">Gestión de Usuarios</h2>
 
   <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
   <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
@@ -39,20 +39,21 @@
     <div class="col-md-2 d-flex align-items-end gap-2">
     <button type="submit" class="btn btn-secondary mx-2">Buscar</button>
   <a th:href="@{/usuarios}" class="btn btn-light mx-2">Limpiar</a>
-      <a th:href="@{/usuarios/create}" class="btn btn-primary mx-2">Nuevo Usuario</a>
+      <a th:href="@{/usuarios/create}" class="btn btn-primary mx-2">Nuevo</a>
     </div>
 
 </form>
 
 
-  <!-- Tabla de usuarios -->
-  <table class="table">
+  <table class="table table-striped table-bordered">
     <thead>
     <tr>
       <th>ID</th>
       <th>Nombre Completo</th>
       <th>Username</th>
+      <th>Correo</th>
       <th>Rol</th>
+      <th>Status</th>
       <th>Acciones</th>
     </tr>
     </thead>
@@ -61,11 +62,17 @@
       <td th:text="${usuario.id}"></td>
       <td th:text="${usuario.nombreCompleto}"></td>
       <td th:text="${usuario.username}"></td>
+      <td th:text="${usuario.correo_electronico}"></td>
       <td th:text="${usuario.rol.nombreRol}"></td>
       <td>
-        <a th:href="@{/usuarios/details/{id}(id=${usuario.id})}" class="btn btn-info">Ver</a>
-        <a th:href="@{/usuarios/edit/{id}(id=${usuario.id})}" class="btn btn-warning">Editar</a>
-        <a th:href="@{/usuarios/remove/{id}(id=${usuario.id})}" class="btn btn-danger">Eliminar</a>
+                <span th:text="${usuario.status == 1 ? 'Activo' : 'Inactivo'}"
+                      th:classappend="${usuario.status == 1 ? 'text-success' : 'text-danger'}"></span>
+      </td>
+      <td>
+        <a class="btn btn-info btn-sm" th:href="@{/usuarios/details/{id}(id=${usuario.id})}">Detalles</a>
+        <a class="btn btn-warning btn-sm" th:href="@{/usuarios/edit/{id}(id=${usuario.id})}">Editar</a>
+        <a class="btn btn-danger btn-sm"
+           th:href="@{/usuarios/remove/{id}(id=${usuario.id})}">Eliminar</a>
       </td>
     </tr>
     </tbody>

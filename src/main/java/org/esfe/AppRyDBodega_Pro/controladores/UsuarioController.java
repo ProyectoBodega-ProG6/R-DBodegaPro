@@ -1,6 +1,7 @@
 package org.esfe.AppRyDBodega_Pro.controladores;
 
 import jakarta.validation.Valid;
+import org.esfe.AppRyDBodega_Pro.modelos.Rol;
 import org.esfe.AppRyDBodega_Pro.modelos.Usuario;
 import org.esfe.AppRyDBodega_Pro.servicios.implementaciones.RolService;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IUsuarioService;
@@ -86,20 +87,21 @@ public class UsuarioController {
     }
 
     @GetMapping("/create")
-    public String create(Usuario usuario, Model model) {
+    public String create(Model model) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("roles", rolService.obtenerTodos());
         return "usuario/create";
     }
 
     @PostMapping("/save")
-    public String save(@Valid Usuario usuario,
+    public String save(@Valid @ModelAttribute Usuario usuario,
                        BindingResult result,
                        RedirectAttributes attributes,
                        Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("usuario", usuario);
+            model.addAttribute("roles", rolService.obtenerTodos());
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
             return "usuario/create";
         }
@@ -112,14 +114,24 @@ public class UsuarioController {
             attributes.addFlashAttribute("msg", "Registro ingresado exitosamente.");
         } catch (Exception e) {
             attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
+            return "usuario/create"; // importante para mostrar errores
         }
-
         return "redirect:/usuarios";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id, Model model) {
-        Usuario usuario  = usuarioService.buscarPorId(id).orElse(null);
+    public String edit(@PathVariable("id") Integer id, Model model, RedirectAttributes attributes) {
+        Optional<Usuario> optionalUsuario = usuarioService.buscarPorId(id);
+        if(optionalUsuario.isEmpty()) {
+            attributes.addFlashAttribute("error", "Usuario no encontrado");
+            return "redirect:/usuarios";
+        }
+
+        Usuario usuario = optionalUsuario.get();
+
+        // Evitar null en rol para que Thymeleaf no falle
+        if(usuario.getRol() == null) usuario.setRol(new Rol());
+
         model.addAttribute("usuario", usuario);
         model.addAttribute("roles", rolService.obtenerTodos());
         return "usuario/edit";
@@ -127,14 +139,18 @@ public class UsuarioController {
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable("id") Integer id,
-                         @Valid Usuario usuario,
+                         @Valid @ModelAttribute("usuario") Usuario usuario,
                          BindingResult result,
                          RedirectAttributes attributes,
                          Model model) {
 
-        if (result.hasErrors()) {
-            model.addAttribute("usuario", usuario);
-            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
+        // Evitar validación de password en blanco
+        if(usuario.getPassword() != null && usuario.getPassword().isBlank()) {
+            usuario.setPassword(null);
+        }
+
+        if(result.hasErrors()) {
+            model.addAttribute("roles", rolService.obtenerTodos());
             return "usuario/edit";
         }
 
@@ -144,14 +160,30 @@ public class UsuarioController {
             // 🔑 Encriptar la contraseña antes de actualizar
             usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
+            // Mantener contraseña si el campo viene vacío
+            if(usuario.getPassword() == null) {
+                Usuario usuarioExistente = usuarioService.buscarPorId(id).orElse(null);
+                if(usuarioExistente != null) {
+                    usuario.setPassword(usuarioExistente.getPassword());
+                }
+            }
+
+            // Asignar el objeto Rol según el ID recibido
+            if(usuario.getRol() != null && usuario.getRol().getId() != null) {
+                usuario.setRol(rolService.buscarPorId(usuario.getRol().getId()).orElse(null));
+            }
+
             usuarioService.createOrEditOne(usuario);
             attributes.addFlashAttribute("msg", "Registro actualizado exitosamente.");
         } catch (Exception e) {
-            attributes.addFlashAttribute("error", "Error: verifique la información ingresada.");
+            attributes.addFlashAttribute("error", "Error al actualizar el registro.");
+            return "redirect:/usuarios";
         }
 
         return "redirect:/usuarios";
     }
+
+
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model) {
