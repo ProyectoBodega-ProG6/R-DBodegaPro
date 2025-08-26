@@ -211,26 +211,36 @@ public class ProductoController {
         return "producto/delete";
     }
 
-    @PostMapping("/delete")
-    public String delete(Producto producto, RedirectAttributes attributes) {
-        Producto producto1 = productoService.buscarPorId(producto.getId()).get();
-        if (producto1 != null && producto1.getImagen_url() != null) {
-            try {
-                Path uploadPath = Paths.get(UPLOAD_DIR);
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Integer id, RedirectAttributes attributes) {
+        Optional<Producto> productoOpt = productoService.buscarPorId(id);
+        if (productoOpt.isPresent()) {
+            Producto producto = productoOpt.get();
+
+            // Eliminar imagen si existe
+            if (producto.getImagen_url() != null) {
+                try {
+                    Path uploadPath = Paths.get(UPLOAD_DIR);
+                    Path filePathDelete = uploadPath.resolve(producto.getImagen_url());
+                    Files.deleteIfExists(filePathDelete);
+                } catch (IOException e) {
+                    attributes.addFlashAttribute("error", "Error al procesar la imagen: " + e.getMessage());
+                    return "redirect:/productos";
                 }
-                Path filePathDelete = uploadPath.resolve(producto1.getImagen_url());
-                Files.deleteIfExists(filePathDelete);
-            } catch (Exception e) {
-                attributes.addFlashAttribute("error", "Error al procesar la imagen: " + e.getMessage());
-                return "redirect:/productos";
             }
+
+            productoService.eliminarPorId(id);
+            attributes.addFlashAttribute("msg", "Producto eliminado correctamente");
+        } else {
+            attributes.addFlashAttribute("error", "Producto no encontrado");
         }
-        productoService.eliminarPorId(producto.getId());
-        attributes.addFlashAttribute("msg", "Producto eliminado correctamente");
+
         return "redirect:/productos";
     }
+
+
+
+
 
     @GetMapping("/imagen/{id}")
     @ResponseBody
