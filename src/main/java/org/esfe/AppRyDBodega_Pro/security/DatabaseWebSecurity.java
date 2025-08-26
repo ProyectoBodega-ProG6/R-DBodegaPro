@@ -37,7 +37,7 @@ public class DatabaseWebSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/uploads/**","/assets/**", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/img/**","/uploads/**","/assets/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/login","/privacy", "/terms").permitAll()
 
                 .requestMatchers("/").hasAnyAuthority("Administrador", "SupervisorBodega")

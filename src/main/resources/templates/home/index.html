@@ -8,8 +8,13 @@
 </head>
 <div layout:fragment="content">
     <div class="welcome-container">
+        <div class="welcome-box">
         <h1 class="welcome-text">Bienvenido a nuestro sistema <span>R&D Bodega Pro</span></h1>
+            <img th:src="@{/img/logo.png}" alt="logo" class="welcome-logo">
+        </div>
     </div>
+
+
     <div sec:authorize="isAnonymous()" class="alert alert-danger text-center" role="alert">
         Debes iniciar sesión para poder utilizar la aplicación.
     </div>
