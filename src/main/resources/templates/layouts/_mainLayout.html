@@ -57,6 +57,11 @@
 
                         <div class="sb-sidenav-menu-heading">Gestiones</div>
 
+                        <a class="nav-link" th:href="@{/}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-house-door"></i></div>
+                            <b><i>Home</i></b>
+                        </a>
+
                         <a class="nav-link" th:href="@{/roles}">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
                             <b><i>Gestión de Roles</i></b>
@@ -104,6 +109,11 @@
 
                         <div class="sb-sidenav-menu-heading">Gestiones</div>
 
+                        <a class="nav-link" th:href="@{/}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-house-door"></i></div>
+                            <b><i>Home</i></b>
+                        </a>
+
                         <a class="nav-link" th:href="@{/categorias}">
                             <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
                             <b><i>Gestión de Categorias</i></b>
@@ -140,7 +150,10 @@
                 </div>
             </div>
             <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
+                <div sec:authorize="isAuthenticated()" class="small">
+                    Has ingresado como:
+                    <span class="text-light" sec:authentication="name"></span>
+                </div>
                 <b><i>R&D BodegaPro</i></b>
             </div>
         </nav>

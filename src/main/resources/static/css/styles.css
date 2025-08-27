@@ -11253,13 +11253,21 @@ body {
 
 
  /* Contenedor centrado en toda la pantalla */
- .welcome-container {
+ /*.welcome-container {
    display: flex;
    justify-content: center;
    align-items: flex-start;
    height: 100vh; /* ocupar toda la pantalla */
-   padding-top: 50px;
- }
+   /*padding-top: 50px;
+ }*/
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* ahora centra verticalmente */
+  min-height: calc(100vh - 150px); /* resta la altura aprox. del footer */
+  padding: 20px;
+}
+
 
  /* Caja que contiene el texto y el logo */
  .welcome-box {
@@ -11298,7 +11306,7 @@ body {
 
  /* Estilo de la imagen */
  .welcome-logo {
-   max-width: 400px; /* ajusta el tamaño */
+   max-width: 200px; /* ajusta el tamaño */
    height: auto;
    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); /* sombra sutil */
    transition: transform 0.3s ease;
@@ -11307,3 +11315,9 @@ body {
  .welcome-logo:hover {
    transform: scale(1.05); /* efecto zoom al pasar el mouse */
  }
+
+ main .container-fluid {
+   max-width: 1100px;   /* ancho uniforme */
+   margin: 0 auto;
+ }
+
