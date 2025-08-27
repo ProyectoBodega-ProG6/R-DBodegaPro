@@ -54,25 +54,41 @@ public class TipoMovmientoController {
     }
 
     @GetMapping("/create")
-    public String create(TipoMovimiento tipoMovimiento) {
+    public String create(Model model) {
+
+        if (!model.containsAttribute("tipoMovimiento")) {
+            TipoMovimiento tipoMovimiento = new TipoMovimiento();
+            tipoMovimiento.setTipo(2); // Inicializa tipo Salida para mostrar alerta
+            model.addAttribute("tipoMovimiento", tipoMovimiento);
+        }
+
         return "tipoMovimiento/create";
     }
 
     @PostMapping("/save")
     public String save(@Valid TipoMovimiento tipoMovimiento,
                        BindingResult result,
-                       Model model,
                        RedirectAttributes attributes) {
+
+        // Validación: si es Salida, forzar editarCosto = false
+        if (tipoMovimiento.getTipo() != null && tipoMovimiento.getTipo() == 2) {
+            if (Boolean.TRUE.equals(tipoMovimiento.getEditarCosto())) {
+                tipoMovimiento.setEditarCosto(false);
+                attributes.addFlashAttribute("alerta", "⚠ No se puede editar el costo en movimientos de SALIDA. Se cambió automáticamente a NO.");
+            }
+        }
+
         if (result.hasErrors()) {
-            model.addAttribute("tipoMovimiento", tipoMovimiento);
             attributes.addFlashAttribute("error", "⚠ Error: verifique la información.");
-            return "tipoMovimiento/create";
+            return "redirect:/tipoMovimientos/create"; // redirige al formulario
         }
 
         tipoMovimientoService.createOrEditOne(tipoMovimiento);
         attributes.addFlashAttribute("msg", "✅ Registro ingresado exitosamente");
-        return "redirect:/tipoMovimientos";
+
+        return "redirect:/tipoMovimientos"; // redirige al index
     }
+
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model) {
@@ -94,6 +110,15 @@ public class TipoMovmientoController {
                          BindingResult result,
                          Model model,
                          RedirectAttributes attributes) {
+
+        // Validación: si es Salida, forzar editarCosto = false
+        if (tipoMovimiento.getTipo() != null && tipoMovimiento.getTipo() == 2) {
+            tipoMovimiento.setEditarCosto(false);
+            // Mensaje para mostrar en la misma página
+            model.addAttribute("alerta", "⚠ No se puede editar el costo en movimientos de SALIDA seleccione el tipo AJUSTE ESPECIAL para modificar el costo");
+        }
+
+
         if (result.hasErrors()) {
             model.addAttribute("tipoMovimiento", tipoMovimiento);
             attributes.addFlashAttribute("error", "⚠ Error: verifique la información.");

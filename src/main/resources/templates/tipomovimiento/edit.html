@@ -13,6 +13,12 @@
 <div layout:fragment="content" class="container mt-5 p-4 rounded shadow-sm bg-white">
     <h2 class="mb-4 text-center">Editar Tipo de movimiento</h2>
 
+    <!-- Alerta desde backend -->
+    <div th:if="${alerta}" class="alert alert-warning" th:text="${alerta}"></div>
+    <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+
     <form th:action="@{/tipoMovimientos/update/{id}(id=${tipoMovimiento.id})}" th:object="${tipoMovimiento}" method="post" class="mb-4">
 
 
@@ -33,6 +39,12 @@
                 <label class="form-check-label" for="editarNo">NO</label>
             </div>
         </div>
+
+        <!-- Alerta fija sobre el campo Tipo -->
+        <div class="alert alert-warning" th:if="${tipoMovimiento.tipo == 2}">
+            ⚠ No se puede editar el costo en movimientos de SALIDA, seleccione tipo Entrada o Ajuste Especial Salida.
+        </div>
+
 
         <div class="mb-3">
             <label for="tipo" class="form-label">Tipo: <span class="text-danger">*</span></label>
