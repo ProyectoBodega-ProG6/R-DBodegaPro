@@ -1,0 +1,67 @@
+/* Contenedor principal del login */
+.login-box {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+}
+
+/* Lado izquierdo: logo */
+.login-logo {
+    background: #07071C; /* azul moderno */
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-logo .logo-img {
+    max-width: 80%;
+    border-radius: 10px;
+}
+
+/* Lado derecho: formulario */
+.login-form-wrapper {
+    flex: 2;
+    padding: 40px;
+}
+
+/* Título y icono */
+.login-key i {
+    font-size: 50px;
+    color: #07071C;
+}
+
+.login-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Botón login */
+.login-button .btn {
+    border-radius: 50px;
+    padding: 10px 30px;
+    transition: 0.3s;
+}
+
+.login-button .btn:hover {
+    background-color: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 50px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #0d6efd;
+}
