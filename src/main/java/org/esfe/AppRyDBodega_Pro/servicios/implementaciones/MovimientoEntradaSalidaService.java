@@ -59,28 +59,45 @@ public class MovimientoEntradaSalidaService implements IMovimientoEntradaSalidaS
             throw new IllegalArgumentException("El producto es obligatorio");
         }
 
-        // Calcular costo promedio si el tipo de movimiento permite editar el costo
-        if (tipo.getEditarCosto() != null && tipo.getEditarCosto()) {
-            BigDecimal stockActual = BigDecimal.valueOf(producto.getStock_actual());
-            BigDecimal costoActual = producto.getCosto_promedio();
+        // Lógica según tipo de movimiento
+        switch (tipo.getTipo()) {
+            case 1: // ENTRADA
+                // Recalcular costo promedio si editarCosto = true
+                if (Boolean.TRUE.equals(tipo.getEditarCosto())) {
+                    recalcularCostoPromedio(producto, cantidad, precioMovimiento);
+                }
+                producto.setStock_actual(producto.getStock_actual() + cantidad);
+                // Precio del movimiento = precio ingresado
+                movimiento.setPrecio(precioMovimiento);
+                break;
 
-            BigDecimal nuevoCosto = (costoActual.multiply(stockActual)
-                    .add(precioMovimiento.multiply(BigDecimal.valueOf(cantidad))))
-                    .divide(stockActual.add(BigDecimal.valueOf(cantidad)), 2, RoundingMode.HALF_UP);
+            case 2: // SALIDA
+                int stockNuevo = producto.getStock_actual() - cantidad;
+                if (stockNuevo < 0) {
+                    throw new IllegalArgumentException("No hay suficiente stock para realizar la salida");
+                }
+                producto.setStock_actual(stockNuevo);
+                // Precio de salida = costo promedio actual
+                movimiento.setPrecio(producto.getCosto_promedio());
+                break;
 
-            producto.setCosto_promedio(nuevoCosto);
-        }
+            case 3: // AJUSTE ESPECIAL
+                // Ajuste puede ser positivo o negativo
+                int stockAjuste = producto.getStock_actual() + cantidad;
+                if (stockAjuste < 0) {
+                    throw new IllegalArgumentException("El ajuste dejaría stock negativo");
+                }
+                producto.setStock_actual(stockAjuste);
 
-        // Actualizar stock según tipo de movimiento
-        // Suponiendo tipo = 1 → Entrada, tipo = 2 → Salida
-        if (tipo.getTipo() != null && tipo.getTipo().equals(1)) { // Entrada
-            producto.setStock_actual(producto.getStock_actual() + cantidad);
-        } else { // Salida
-            int stockNuevo = producto.getStock_actual() - cantidad;
-            if (stockNuevo < 0) {
-                throw new IllegalArgumentException("No hay suficiente stock para realizar la salida");
-            }
-            producto.setStock_actual(stockNuevo);
+                if (Boolean.TRUE.equals(tipo.getEditarCosto())) {
+                    recalcularCostoPromedio(producto, cantidad, precioMovimiento);
+                }
+                // Precio del movimiento = costo promedio vigente
+                movimiento.setPrecio(producto.getCosto_promedio());
+                break;
+
+            default:
+                throw new IllegalArgumentException("Tipo de movimiento inválido");
         }
 
         // Guardar producto actualizado
@@ -89,6 +106,17 @@ public class MovimientoEntradaSalidaService implements IMovimientoEntradaSalidaS
         // Guardar movimiento
         return movimientoEntradaSalidaRepository.save(movimiento);
     }
+
+    private void recalcularCostoPromedio(Producto producto, int cantidad, BigDecimal precioMovimiento) {
+        BigDecimal stockActual = BigDecimal.valueOf(producto.getStock_actual());
+        BigDecimal costoActual = producto.getCosto_promedio();
+
+        BigDecimal nuevoCosto = (costoActual.multiply(stockActual).add(precioMovimiento.multiply(BigDecimal.valueOf(cantidad))))
+                .divide(stockActual.add(BigDecimal.valueOf(cantidad)), 2, RoundingMode.HALF_UP);
+
+        producto.setCosto_promedio(nuevoCosto);
+    }
+
 
     @Override
     public void eliminarPorId(Integer id) {
