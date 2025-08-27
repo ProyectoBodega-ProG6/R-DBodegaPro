@@ -5,20 +5,25 @@
     <title>LogIn</title>
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
     <link th:href="@{/css/login.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
 <body>
-<div class="container">
-    <div class="row">
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="row w-100">
         <div class="col-lg-3 col-md-2"></div>
-        <div class="col-lg-6 col-md-8 login-box">
-            <div class="col-lg-12 login-key">
-                <i class="fa fa-key" aria-hidden="true"></i>
-            </div>
-            <div class="col-lg-12 login-title">
-                ADMIN PANEL
+        <div class="col-lg-6 col-md-8 login-box d-flex">
+            <div class="login-logo d-none d-md-flex align-items-center justify-content-center">
+                <img th:src="@{/img/logo.png}" alt="Logo" class="logo-img">
             </div>
 
-            <div class="col-lg-12 login-form">
+            <div class="login-form-wrapper flex-fill">
+                <div class="col-lg-12 login-key text-center">
+                <i class="fa fa-shield-alt" aria-hidden="true"></i>
+            </div>
+            <div class="col-lg-12 login-title text-center">
+                Login R&D
+            </div>
+
                 <div class="col-lg-12 login-form">
                     <form th:action="@{/login}" method="post">
                         <div class="form-group">
@@ -30,21 +35,21 @@
                             <input id="password" type="password" name="password" class="form-control" />
                         </div>
 
-                        <div class="col-lg-12 loginbttm">
-                            <div class="col-lg-6 login-btm login-text">
+                        <div class="col-lg-12 loginbttm d-flex justify-content-between align-items-center">
+                            <div class="login-text">
                                 <!-- Mensajes de error / logout -->
                                 <p th:if="${param.error}" style="color: red;">Usuario o contraseña incorrectos</p>
                                 <p th:if="${param.logout}" style="color: green;">Has cerrado sesión correctamente</p>
                             </div>
-                            <div class="col-lg-6 login-btm login-button">
+                            <div class="login-button">
                                 <button type="submit" class="btn btn-outline-primary">LOGIN</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-2"></div>
         </div>
+        <div class="col-lg-3 col-md-2"></div>
     </div>
 </div>
 </body>
