@@ -40,8 +40,9 @@
         <div class="mb-3">
             <label for="tipo" class="form-label">Tipo: <span class="text-danger">*</span></label>
             <select class="form-select" th:field="*{tipo}" id="tipo" required>
-                <option th:value="0">Entrada</option>
-                <option th:value="1">Salida</option>
+                <option th:value="1">Entrada</option>
+                <option th:value="2">Salida</option>
+                <option th:value="3">Ajuste Especial Salida</option>
             </select>
         </div>
 

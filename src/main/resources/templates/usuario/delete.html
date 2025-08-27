@@ -20,6 +20,15 @@
             <p><strong>Nombre Completo:</strong> <span th:text="${usuario.nombreCompleto}"></span></p>
             <p><strong>Username:</strong> <span th:text="${usuario.username}"></span></p>
             <p><strong>Correo:</strong> <span th:text="${usuario.correo_electronico}"></span></p>
+            <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
+            <p><strong>Dirección:</strong> <span th:text="${usuario.direccion}"></span></p>
+            <p><strong>Rol:</strong>
+                <span th:text="${usuario.rol != null ? usuario.rol.nombreRol : 'Sin rol'}"></span>
+            </p>
+            <p><strong>Status:</strong>
+                <span th:text="${usuario.status == 1 ? 'Activo' : 'Inactivo'}"
+                      th:classappend="${usuario.status == 1 ? 'text-success fw-bold' : 'text-danger fw-bold'}"></span>
+            </p>
 
             <!-- OJO: el action va a /usuarios/delete y pasamos el id oculto -->
             <form th:action="@{/usuarios/delete}" method="post" class="mt-4">

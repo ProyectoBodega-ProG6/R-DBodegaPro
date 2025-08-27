@@ -23,7 +23,7 @@ public class TipoMovimiento {
     @NotNull(message = "El valor de editar_costo es obligatorio")
     private Boolean editarCosto;
 
-    @Column(name = "tipo", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
+    @Column(name = "tipo", nullable = false)
     @NotNull(message = "El valor de tipo es obligatorio")
     private Integer tipo;
 

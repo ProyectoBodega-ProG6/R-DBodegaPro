@@ -54,6 +54,7 @@
       <tr>
         <th>ID</th>
         <th>Nombre Rol</th>
+        <th>Descripción</th>
         <th>Acciones</th>
       </tr>
       </thead>
@@ -61,6 +62,7 @@
       <tr th:each="rol : ${roles}">
         <td th:text="${rol.id}"></td>
         <td th:text="${rol.nombreRol}"></td>
+        <td th:text="${rol.descripcion}"></td>
         <td>
           <a th:href="@{'/roles/details/' + ${rol.id}}" class="btn btn-info btn-sm">Detalles</a>
           <a th:href="@{'/roles/edit/' + ${rol.id}}" class="btn btn-warning btn-sm">Editar</a>
