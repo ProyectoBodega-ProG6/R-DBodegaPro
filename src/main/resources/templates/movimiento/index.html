@@ -1,10 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layouts/_mainLayout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Crear Movimiento</title>
 </head>
 <body>
 
+<div layout:fragment="content" class="container mt-4">
+
+  <div th:if="${msg != null}">
+    <script th:inline="javascript">
+      Swal.fire({
+          title: "Confirmación",
+          text: [[${msg}]],
+          icon: "success"
+      });
+    </script>
+  </div>
+
+  <!-- Mensajes de error -->
+  <div th:if="${error != null}">
+    <script th:inline="javascript">
+      Swal.fire({
+          title: "Error",
+          text: [[${error}]],
+          icon: "error"
+      });
+    </script>
+  </div>
+
+  <h2 class="mb-4">Gestión de Productos</h2>
+
+  <form th:action="@{/movimientos}" method="get" class="mb-3" id="formBuscar">
+    <div class="row g-2">
+
+      <!-- Nombre Producto con autocomplete -->
+      <div class="col-md-6 position-relative">
+        <label for="productoNombre" class="form-label">Nombre Producto</label>
+        <input type="text" id="productoNombre" name="producto.nombre" class="form-control"
+               placeholder="Escriba el nombre del producto..." autocomplete="off"
+               th:value="${movimiento.producto.nombre}">
+        <div id="sugerencias" class="sugerencias-list"></div>
+      </div>
+
+      <!-- Tipo Movimiento (combobox) -->
+      <div class="col-md-6">
+        <label for="tipoMovimiento" class="form-label">Tipo de Movimiento</label>
+        <select class="form-select" name="tipoMovimiento.nombre" id="tipoMovimiento">
+          <option value="">Buscar por Tipo Movimiento...</option>
+          <option th:each="tipo : ${tiposMovimiento}"
+                  th:value="${tipo.nombre}"
+                  th:text="${tipo.nombre}"
+                  th:selected="${tipo.nombre == movimiento.tipoMovimiento.nombre}">
+          </option>
+        </select>
+      </div>
+      <div class="col-md-2 d-flex align-items-end gap-2">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+
+        <!-- Limpiar + refrescar tabla -->
+        <button type="button" class="btn btn-warning" onclick="limpiarCampos()">Limpiar</button>
+
+        <a th:href="@{/movimientos/create}" class="btn btn-outline-primary">Crear</a>
+      </div>
+    </div>
+  </form>
+
+  <!-- Script para limpiar y refrescar -->
+  <script>
+    function limpiarCampos() {
+        document.getElementById("tipoMovimiento").value = "";
+        document.getElementById("productoNombre").value = "";
+        document.getElementById("formBuscar").submit();
+    }
+  </script>
+
+
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tipo Movimiento</th>
+      <th>Producto</th>
+      <th>Usuario</th>
+      <th>Cantidad</th>
+      <th>Precio</th>
+      <th>Fecha</th>
+      <th>Observaciones</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="movimiento : ${movimientos}">
+      <td th:text="${movimiento.id}"></td>
+      <td th:text="${movimiento.tipoMovimiento.nombre}"></td>
+      <td th:text="${movimiento.producto.nombre}"></td>
+      <td th:text="${movimiento.usuario.nombreCompleto}"></td>
+      <td th:text="${movimiento.cantidad}"></td>
+      <td th:text="${movimiento.precio}"></td>
+      <td th:text="${movimiento.fecha}"></td>1
+      <td th:text="${movimiento.observaciones}"></td>
+      <td>
+        <a th:href="@{/movimientos/details/{id}(id=${movimiento.id})}" class="btn btn-sm btn-info">Detalles</a>
+        <a th:href="@{/movimientos/edit/{id}(id=${movimiento.id})}" class="btn btn-sm btn-primary">Editar</a>
+        <a th:href="@{/movimientos/remove/{id}(id=${movimiento.id})}" class="btn btn-sm btn-danger">Eliminar</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+
+  <nav th:if="${pageNumbers != null}" aria-label="Page navigation">
+    <ul class="pagination">
+      <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+        <a class="page-link"
+           th:href="@{|/movimientos?page=${pageNumber}&tipoMovimiento=${tipoMovimiento}&productoNombre=${productoNombre}|}"
+           th:text="${pageNumber}"></a>
+      </li>
+    </ul>
+  </nav>
+
+</div>
+<!-- Scripts -->
+<script>
+  const input = document.getElementById('productoNombre');
+  const sugerencias = document.getElementById('sugerencias');
+
+  input.addEventListener('input', function() {
+      const valor = input.value.trim();
+      if(valor.length < 2) {
+          sugerencias.innerHTML = '';
+          return;
+      }
+
+      fetch(`/movimientos/productos/buscar?term=${encodeURIComponent(valor)}`)
+          .then(res => res.json())
+          .then(data => {
+              sugerencias.innerHTML = '';
+              data.forEach(prod => {
+                  const div = document.createElement('div');
+                  div.textContent = prod.nombre;
+                  div.classList.add('sugerencia');
+                  div.addEventListener('click', () => {
+                      input.value = prod.nombre;
+                      sugerencias.innerHTML = '';
+                  });
+                  sugerencias.appendChild(div);
+              });
+          });
+  });
+
+  // Cerrar sugerencias al hacer click fuera
+  document.addEventListener('click', (e) => {
+      if(!input.contains(e.target)) {
+          sugerencias.innerHTML = '';
+      }
+  });
+</script>
+
+<style>
+  .sugerencias-list {
+      border: 1px solid #ccc;
+      max-height: 150px;
+      overflow-y: auto;
+      position: absolute;
+      background: white;
+      width: 100%;
+      z-index: 10;
+  }
+  .sugerencia {
+      padding: 5px;
+      cursor: pointer;
+  }
+  .sugerencia:hover {
+      background-color: #eee;
+  }
+</style>
 </body>
 </html>
