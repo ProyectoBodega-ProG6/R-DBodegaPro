@@ -11321,3 +11321,42 @@ body {
    margin: 0 auto;
  }
 
+
+
+
+
+
+
+
+
+
+.sb-sidenav-dark {
+  background-color: #07071C; /* color de fondo de la barra lateral */
+  color: rgba(255, 255, 255, 0.7); /* color del texto base */
+}
+
+.sb-sidenav-dark .sb-sidenav-footer {
+  background-color: #07071C; /* color del footer del sidebar */
+}
+
+.sb-topnav {
+  background-color: #07071C; /* color de fondo de la barra superior */
+}
+
+.sb-topnav .navbar-brand {
+  color: #fff; /* color del texto del brand (logo o nombre) */
+}
+
+.sb-topnav .nav-link {
+  color: #e5e7eb; /* color de los enlaces en la barra superior */
+}
+
+.sb-topnav .nav-link:hover {
+  color: #ffd700; /* color al pasar el mouse por un enlace */
+}
+
+.sb-sidenav-dark .sb-sidenav-menu .nav-link:hover {
+    color: #ffd700; /* dorado */
+}
+
+
