@@ -82,18 +82,33 @@ public class MovimientoEntradaSalidaService implements IMovimientoEntradaSalidaS
                 break;
 
             case 3: // AJUSTE ESPECIAL
-                // Ajuste puede ser positivo o negativo
-                int stockAjuste = producto.getStock_actual() + cantidad;
+                // Convertir cantidad de Integer a int para evitar NullPointerException
+                if (movimiento.getCantidad() == null) {
+                    throw new IllegalArgumentException("La cantidad no puede ser nula");
+                }
+                int cantidadInt = movimiento.getCantidad();
+
+                int stockAnterior = producto.getStock_actual();
+                int stockAjuste = stockAnterior + cantidadInt;
+
                 if (stockAjuste < 0) {
                     throw new IllegalArgumentException("El ajuste dejaría stock negativo");
                 }
                 producto.setStock_actual(stockAjuste);
 
                 if (Boolean.TRUE.equals(tipo.getEditarCosto())) {
-                    recalcularCostoPromedio(producto, cantidad, precioMovimiento);
+                    if (cantidadInt > 0) {
+                        // Ajuste Entrada → usa el método normal de costo promedio
+                        recalcularCostoPromedioPositivoAjustes(producto, stockAnterior, cantidadInt, precioMovimiento);
+                    } else {
+                        // Ajuste Salida → usa el método especial para ajustes negativos
+                        recalcularCostoPromedioNegativoAjustes(producto, stockAnterior, Math.abs(cantidadInt), precioMovimiento);
+                    }
+                    movimiento.setPrecio(precioMovimiento); // usar el precio editado por el usuario
+                } else {
+                    // Si no se permite editar costo → usar costo promedio actual
+                    movimiento.setPrecio(producto.getCosto_promedio());
                 }
-                // Precio del movimiento = costo promedio vigente
-                movimiento.setPrecio(producto.getCosto_promedio());
                 break;
 
             default:
@@ -107,15 +122,46 @@ public class MovimientoEntradaSalidaService implements IMovimientoEntradaSalidaS
         return movimientoEntradaSalidaRepository.save(movimiento);
     }
 
+    // Para ajustes positivos (entrada) CASE 1
     private void recalcularCostoPromedio(Producto producto, int cantidad, BigDecimal precioMovimiento) {
         BigDecimal stockActual = BigDecimal.valueOf(producto.getStock_actual());
         BigDecimal costoActual = producto.getCosto_promedio();
 
-        BigDecimal nuevoCosto = (costoActual.multiply(stockActual).add(precioMovimiento.multiply(BigDecimal.valueOf(cantidad))))
+        BigDecimal nuevoCosto = (costoActual.multiply(stockActual)
+                .add(precioMovimiento.multiply(BigDecimal.valueOf(cantidad))))
                 .divide(stockActual.add(BigDecimal.valueOf(cantidad)), 2, RoundingMode.HALF_UP);
 
         producto.setCosto_promedio(nuevoCosto);
     }
+
+
+    // Para ajustes positivos (entrada) CASE 3
+    private void recalcularCostoPromedioPositivoAjustes(Producto producto, int stockAnterior, int cantidad, BigDecimal precioMovimiento) {
+        BigDecimal stockBD = BigDecimal.valueOf(stockAnterior);
+        BigDecimal costoActual = producto.getCosto_promedio();
+
+        BigDecimal nuevoCosto = (costoActual.multiply(stockBD)
+                .add(precioMovimiento.multiply(BigDecimal.valueOf(cantidad))))
+                .divide(stockBD.add(BigDecimal.valueOf(cantidad)), 2, RoundingMode.HALF_UP);
+
+        producto.setCosto_promedio(nuevoCosto);
+    }
+
+    // Para ajustes negativos (salida) CASE 3
+    private void recalcularCostoPromedioNegativoAjustes(Producto producto, int stockAnterior, int cantidad, BigDecimal precioMovimiento) {
+        BigDecimal stockBD = BigDecimal.valueOf(stockAnterior);
+        BigDecimal costoActual = producto.getCosto_promedio();
+
+        BigDecimal nuevoCosto = (costoActual.multiply(stockBD)
+                .add(precioMovimiento.multiply(BigDecimal.valueOf(cantidad))))
+                .divide(stockBD.add(BigDecimal.valueOf(cantidad)), 2, RoundingMode.HALF_UP);
+
+        producto.setCosto_promedio(nuevoCosto);
+    }
+
+
+
+
 
 
     @Override

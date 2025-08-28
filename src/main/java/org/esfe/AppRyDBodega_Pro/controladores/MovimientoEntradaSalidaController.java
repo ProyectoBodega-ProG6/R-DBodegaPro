@@ -116,11 +116,12 @@ public class MovimientoEntradaSalidaController {
         }
         movimiento.setTipoMovimiento(tipoMovimiento);
 
-        // Validar cantidad > 0
-        if (movimiento.getCantidad() == null || movimiento.getCantidad() <= 0) {
-            attributes.addFlashAttribute("error", "La cantidad debe ser mayor a 0");
+        // Validar que cantidad no sea nula
+        if (movimiento.getCantidad() == null) {
+            attributes.addFlashAttribute("error", "La cantidad no puede ser nula");
             return "redirect:/movimientos/create";
         }
+
 
 // Validar precio solo si es Entrada
         if (tipoMovimiento.getTipo() != null && tipoMovimiento.getTipo() == 1) { // 1 = Entrada
