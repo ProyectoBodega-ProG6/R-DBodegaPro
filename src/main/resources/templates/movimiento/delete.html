@@ -1,10 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layouts/_mainLayout}">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Eliminar Movimiento</title>
 </head>
 <body>
+
+<div layout:fragment="content" class="container mt-4">
+
+    <h2 class="mb-4 text-danger">Eliminar Movimiento</h2>
+
+    <div class="card shadow border-danger">
+        <div class="card-body">
+            <p>¿Estás seguro de que deseas eliminar este movimiento? Esta acción no se puede deshacer.</p>
+
+            <!-- Tabla con los detalles del movimiento -->
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${movimiento.id ?: 'No definido'}"></td>
+                </tr>
+                <tr>
+                    <th>Tipo Movimiento</th>
+                    <td th:text="${movimiento.tipoMovimiento?.nombre ?: 'Sin tipo'}"></td>
+                </tr>
+                <tr>
+                    <th>Producto</th>
+                    <td th:text="${movimiento.producto?.nombre ?: 'Sin producto'}"></td>
+                </tr>
+                <tr>
+                    <th>Usuario</th>
+                    <td th:text="${movimiento.usuario?.nombreCompleto ?: 'Sin usuario'}"></td>
+                </tr>
+                <tr>
+                    <th>Cantidad</th>
+                    <td th:text="${movimiento.cantidad ?: 'No definido'}"></td>
+                </tr>
+                <tr>
+                    <th>Precio</th>
+                    <td th:text="${movimiento.precio ?: 'No definido'}"></td>
+                </tr>
+                <tr>
+                    <th>Fecha</th>
+                    <td th:text="${movimiento.fecha ?: 'Sin fecha'}"></td>
+                </tr>
+                <tr>
+                    <th>Observaciones</th>
+                    <td th:text="${movimiento.observaciones ?: 'Sin observaciones'}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Formulario de eliminación -->
+            <form th:action="@{/movimientos/delete}" method="post">
+                <!-- Enviar el ID del movimiento -->
+                <input type="hidden" name="id" th:value="${movimiento.id}" />
+                <!-- Token CSRF para Spring Security -->
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a th:href="@{/movimientos}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>

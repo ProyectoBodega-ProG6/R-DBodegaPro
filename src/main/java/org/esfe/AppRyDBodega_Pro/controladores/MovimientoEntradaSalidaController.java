@@ -272,16 +272,21 @@ public class MovimientoEntradaSalidaController {
         return "movimiento/delete"; // vista con pregunta: "¿Está seguro de eliminar?"
     }
 
+
+
+
+    //editado prueba
     @PostMapping("/delete")
-    public String delete(MovimientoEntradaSalida movimiento, RedirectAttributes attributes) {
+    public String delete(@RequestParam("id") Integer id, RedirectAttributes attributes) {
         try {
-            movimientoService.eliminarPorId(movimiento.getId());
+            movimientoService.eliminarPorId(id);
             attributes.addFlashAttribute("msg", "Registro eliminado exitosamente");
         } catch (Exception e) {
             attributes.addFlashAttribute("error", "Error de eliminación");
         }
         return "redirect:/movimientos";
     }
+
 
     @GetMapping("/stock")
     public String verStock(Model model) {
