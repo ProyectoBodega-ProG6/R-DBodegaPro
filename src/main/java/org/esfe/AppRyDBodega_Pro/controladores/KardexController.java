@@ -60,4 +60,34 @@ public class KardexController {
             e.printStackTrace();
         }
     }
+
+
+    //coso
+    @GetMapping("/pdf/descargar")
+    public void generarKardexPDFDescarga(HttpServletResponse response) {
+        try {
+            response.setContentType("application/pdf");
+            // attachment = descarga
+            response.setHeader("Content-Disposition", "attachment; filename=kardex.pdf");
+
+            List<KardexDTO> listaKardex = kardexService.obtenerKardex();
+            PdfGenerator.generarKardexPDF(listaKardex, response.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping("/pdf/vista")
+    public void generarKardexPDFVista(HttpServletResponse response) {
+        try {
+            response.setContentType("application/pdf");
+            // inline = vista previa
+            response.setHeader("Content-Disposition", "inline; filename=kardex.pdf");
+
+            List<KardexDTO> listaKardex = kardexService.obtenerKardex();
+            PdfGenerator.generarKardexPDF(listaKardex, response.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
