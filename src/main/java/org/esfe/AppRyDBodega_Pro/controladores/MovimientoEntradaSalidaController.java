@@ -3,9 +3,11 @@ package org.esfe.AppRyDBodega_Pro.controladores;
 import org.esfe.AppRyDBodega_Pro.modelos.MovimientoEntradaSalida;
 import org.esfe.AppRyDBodega_Pro.modelos.Producto;
 import org.esfe.AppRyDBodega_Pro.modelos.TipoMovimiento;
+import org.esfe.AppRyDBodega_Pro.modelos.Usuario;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IMovimientoEntradaSalidaService;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProductoService;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.ITipoMovimientoService;
+import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +35,9 @@ public class MovimientoEntradaSalidaController {
 
     @Autowired
     private ITipoMovimientoService tipoMovimientoService;
+
+    @Autowired
+    private IUsuarioService usuarioService;
 
     @GetMapping
     public String index(Model model,
@@ -76,13 +82,14 @@ public class MovimientoEntradaSalidaController {
     }
 
     @GetMapping("/create")
-    public String create(MovimientoEntradaSalida movimiento, Model model) {
-
-        movimiento.setProducto(new Producto());
-        movimiento.setTipoMovimiento(new TipoMovimiento());
-
+    public String create(Model model) {
+        if (!model.containsAttribute("movimiento")) {
+            MovimientoEntradaSalida movimiento = new MovimientoEntradaSalida();
+            model.addAttribute("movimiento", movimiento);
+        }
         model.addAttribute("productos", productoService.obtenerTodos());
         model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
+        model.addAttribute("usuarios", usuarioService.obtenerTodos()); // pasa los usuarios al formulario
         return "movimiento/create";
     }
 
@@ -92,25 +99,45 @@ public class MovimientoEntradaSalidaController {
                        Model model,
                        RedirectAttributes attributes) {
 
-        Producto producto = productoService.buscarPorNombre(movimiento.getProducto().getNombre());
-        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorNombre(movimiento.getTipoMovimiento().getNombre());
+        // Validar producto
+        Producto producto = productoService.buscarPorId(movimiento.getProducto().getId()).orElse(null);
+        if (producto == null) {
+            attributes.addFlashAttribute("error", "Producto no válido");
+            return "redirect:/movimientos/create";
+        }
         movimiento.setProducto(producto);
+
+
+        // Validar tipo de movimiento
+        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorId(movimiento.getTipoMovimiento().getId()).orElse(null);
+        if (tipoMovimiento == null) {
+            attributes.addFlashAttribute("error", "Tipo de movimiento no válido");
+            return "redirect:/movimientos/create";
+        }
         movimiento.setTipoMovimiento(tipoMovimiento);
 
-        if (result.hasErrors() || producto == null || tipoMovimiento == null) {
+        // Sobrescribir precio si es salida
+        if ("Salida".equals(tipoMovimiento.getTipo())) {
+            movimiento.setPrecio(producto.getPrecio_venta());
+        }
+
+        // Validar usuario
+        Usuario usuario = usuarioService.buscarPorId(movimiento.getUsuario().getId()).orElse(null);
+        if (usuario == null) {
+            attributes.addFlashAttribute("error", "Usuario no válido");
+            return "redirect:/movimientos/create";
+        }
+        movimiento.setUsuario(usuario);
+
+        if (result.hasErrors()) {
             model.addAttribute("productos", productoService.obtenerTodos());
             model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
-            model.addAttribute("movimiento", movimiento);
-            attributes.addFlashAttribute("error", "Error, verifique la información");
+            model.addAttribute("usuarios", usuarioService.obtenerTodos());
             return "movimiento/create";
         }
 
-        try {
-            movimientoService.createOrEditOne(movimiento);
-            attributes.addFlashAttribute("msg", "Registro ingresado exitosamente");
-        } catch (Exception e) {
-            attributes.addFlashAttribute("error", "Error, verifique la información");
-        }
+        movimientoService.createOrEditOne(movimiento);
+        attributes.addFlashAttribute("msg", "Registro guardado correctamente");
         return "redirect:/movimientos";
     }
 

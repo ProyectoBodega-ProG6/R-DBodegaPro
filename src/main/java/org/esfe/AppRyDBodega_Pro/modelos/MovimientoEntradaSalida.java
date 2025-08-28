@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "movimientosEntradaSalida")
@@ -59,6 +60,22 @@ public class MovimientoEntradaSalida {
     @CreationTimestamp
     @Column(name = "fecha", nullable = false, updatable = false)
     private LocalDateTime fecha;
+
+    // Campo transitorio para mostrar fecha formateada
+    @Transient
+    private String fechaStr;
+
+    public String getFechaStr() {
+        if (fecha != null) {
+            return fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        }
+        return "";
+    }
+
+    public void setFechaStr(String fechaStr) {
+        this.fechaStr = fechaStr;
+    }
+
 
     @Lob
     @Column(name = "observaciones", columnDefinition = "TEXT")
