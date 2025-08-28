@@ -1,10 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/_mainLayout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Editar Movimiento</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
+
+<div layout:fragment="content" class="container mt-4">
+
+    <h2 class="mb-4">Editar Movimiento</h2>
+
+    <!-- Mensajes de éxito o error -->
+    <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form th:action="@{'/movimientos/update/' + ${movimiento.id}}" th:object="${movimiento}" method="post" class="needs-validation">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Producto -->
+        <div class="mb-3">
+            <label class="form-label">Producto</label>
+            <select th:field="*{producto.id}" class="form-select">
+                <option th:each="p : ${productos}" th:value="${p.id}" th:text="${p.nombre}">Producto</option>
+            </select>
+        </div>
+
+        <!-- Tipo de movimiento (deshabilitado) -->
+        <div class="mb-3">
+            <label class="form-label">Tipo de Movimiento</label>
+            <select th:field="*{tipoMovimiento.id}" class="form-select" id="tipoMovimientoSelect" disabled>
+                <option th:each="t : ${tiposMovimiento}"
+                        th:value="${t.id}"
+                        th:text="${t.nombre}"
+                        th:data-tipo="${t.tipo}"
+                        th:selected="${t.id == movimiento.tipoMovimiento.id}">
+                </option>
+            </select>
+            <!-- Hidden para enviar el valor -->
+            <input type="hidden" th:field="*{tipoMovimiento.id}" />
+        </div>
+
+
+        <!-- Cantidad -->
+        <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" th:field="*{cantidad}" id="cantidad" class="form-control" required>
+            <small id="alertStock" class="text-danger"></small>
+        </div>
+
+        <!-- Precio -->
+        <div class="mb-3">
+            <label>Precio</label>
+            <input type="number" step="0.01"
+                   th:field="*{precio}"
+                   id="precioInput"
+                   class="form-control"/>
+            <small id="avisoPrecio" class="text-muted"></small>
+        </div>
+
+        <!-- Usuario -->
+        <div class="mb-3">
+            <label for="usuario">Usuario</label>
+            <select th:field="*{usuario.id}" class="form-control" id="usuario">
+                <option th:each="u : ${usuarios}" th:value="${u.id}" th:text="${u.nombreCompleto}"></option>
+            </select>
+        </div>
+
+        <!-- Fecha -->
+        <div class="mb-3">
+            <label class="form-label">Fecha</label>
+            <input type="text" th:value="${movimiento.fechaStr}" readonly class="form-control"/>
+        </div>
+
+        <!-- Observaciones -->
+        <div class="mb-3">
+            <label for="observaciones" class="form-label">Observaciones</label>
+            <textarea th:field="*{observaciones}" id="observaciones" class="form-control" rows="3"></textarea>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-between">
+            <a th:href="@{/movimientos}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tipoSelect = document.getElementById('tipoMovimientoSelect');
+        const precioInput = document.getElementById('precioInput');
+        const avisoPrecio = document.getElementById('avisoPrecio');
+        const cantidadInput = document.getElementById('cantidad');
+        const alertStock = document.getElementById('alertStock');
+
+        function actualizarPrecio() {
+            const selectedOption = tipoSelect.selectedOptions[0];
+            const tipoNumerico = selectedOption.dataset.tipo;
+
+            if (tipoNumerico == 2) { // SALIDA
+                precioInput.disabled = true;
+                avisoPrecio.textContent = "No editable para movimientos de salida";
+            } else { // ENTRADA o AJUSTE
+                precioInput.disabled = false;
+                avisoPrecio.textContent = "";
+            }
+        }
+
+        function validarStock() {
+            const cantidad = parseInt(cantidadInput.value);
+            const stockActual = parseInt([[${movimiento.producto.stock_actual}]]);
+            const tipoNumerico = tipoSelect.selectedOptions[0].dataset.tipo;
+
+            if (tipoNumerico == 2 && cantidad > stockActual) {
+                alertStock.textContent = "Cantidad excede el stock disponible!";
+            } else {
+                alertStock.textContent = "";
+            }
+        }
+
+        tipoSelect.addEventListener('change', actualizarPrecio);
+        cantidadInput.addEventListener('input', validarStock);
+
+        actualizarPrecio();
+        validarStock();
+    });
+</script>
 
 </body>
 </html>

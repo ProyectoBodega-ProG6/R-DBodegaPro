@@ -166,46 +166,105 @@ public class MovimientoEntradaSalidaController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id, Model model) {
+    public String edit(@PathVariable Integer id, Model model, RedirectAttributes attributes) {
+
         MovimientoEntradaSalida movimiento = movimientoService.buscarPorId(id).orElse(null);
-        model.addAttribute("movimiento", movimiento);
+        if (movimiento == null) {
+            attributes.addFlashAttribute("error", "Movimiento no encontrado");
+            return "redirect:/movimientos";
+        }
+
+        if (!model.containsAttribute("movimiento")) {
+            model.addAttribute("movimiento", movimiento);
+        }
+
         model.addAttribute("productos", productoService.obtenerTodos());
         model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
-        return "movimiento/edit";
+        model.addAttribute("usuarios", usuarioService.obtenerTodos());
+
+        return "movimiento/edit"; // vista de edición
     }
 
-    @PostMapping("/update")
-    public String update(MovimientoEntradaSalida movimiento,
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Integer id,
+                         MovimientoEntradaSalida movimientoForm,
                          BindingResult result,
                          Model model,
                          RedirectAttributes attributes) {
 
-        // Usar ID para buscar producto y tipo de movimiento
-        Producto producto = productoService.buscarPorId(movimiento.getProducto().getId()).orElse(null);
-        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorId(movimiento.getTipoMovimiento().getId()).orElse(null);
+        // Cargar el movimiento existente
+        MovimientoEntradaSalida movimiento = movimientoService.buscarPorId(id)
+                .orElse(null);
+        if (movimiento == null) {
+            attributes.addFlashAttribute("error", "Movimiento no encontrado");
+            return "redirect:/movimientos";
+        }
 
-        if (producto == null || tipoMovimiento == null || result.hasErrors()) {
+        // Validar y asignar producto
+        Producto producto = productoService.buscarPorId(movimientoForm.getProducto().getId())
+                .orElse(null);
+        if (producto == null) {
+            attributes.addFlashAttribute("error", "Producto no válido");
+            return "redirect:/movimientos/edit/" + id;
+        }
+        movimiento.setProducto(producto);
+
+        // Validar y asignar tipo de movimiento
+        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorId(movimientoForm.getTipoMovimiento().getId())
+                .orElse(null);
+        if (tipoMovimiento == null) {
+            attributes.addFlashAttribute("error", "Tipo de movimiento no válido");
+            return "redirect:/movimientos/edit/" + id;
+        }
+        movimiento.setTipoMovimiento(tipoMovimiento);
+
+        // Validar cantidad
+        if (movimientoForm.getCantidad() == null) {
+            attributes.addFlashAttribute("error", "La cantidad no puede ser nula");
+            return "redirect:/movimientos/edit/" + id;
+        }
+        movimiento.setCantidad(movimientoForm.getCantidad());
+
+        // Validar precio si es entrada
+        if (tipoMovimiento.getTipo() != null && tipoMovimiento.getTipo() == 1) {
+            if (movimientoForm.getPrecio() == null || movimientoForm.getPrecio().doubleValue() <= 0) {
+                attributes.addFlashAttribute("error", "Debe ingresar un precio válido para la entrada");
+                return "redirect:/movimientos/edit/" + id;
+            }
+            movimiento.setPrecio(movimientoForm.getPrecio());
+        } else {
+            movimiento.setPrecio(null); // opcional: limpiar precio si es salida
+        }
+
+        // Validar y asignar usuario
+        Usuario usuario = usuarioService.buscarPorId(movimientoForm.getUsuario().getId())
+                .orElse(null);
+        if (usuario == null) {
+            attributes.addFlashAttribute("error", "Usuario no válido");
+            return "redirect:/movimientos/edit/" + id;
+        }
+        movimiento.setUsuario(usuario);
+
+        // Manejar errores de validación de Spring
+        if (result.hasErrors()) {
             model.addAttribute("productos", productoService.obtenerTodos());
             model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
             model.addAttribute("usuarios", usuarioService.obtenerTodos());
-            model.addAttribute("movimiento", movimiento);
-            attributes.addFlashAttribute("error", "Error, verifique la información");
             return "movimiento/edit";
         }
 
-        movimiento.setProducto(producto);
-        movimiento.setTipoMovimiento(tipoMovimiento);
-
         try {
             movimientoService.createOrEditOne(movimiento);
-            attributes.addFlashAttribute("msg", "Registro actualizado exitosamente");
+            attributes.addFlashAttribute("msg", "Registro actualizado correctamente");
         } catch (IllegalArgumentException e) {
             attributes.addFlashAttribute("error", e.getMessage());
-            return "movimiento/edit";
+            return "redirect:/movimientos/edit/" + id;
         }
 
         return "redirect:/movimientos";
     }
+
 
     @GetMapping("/remove/{id}")
     public String remove(@PathVariable("id") Integer id, Model model) {
