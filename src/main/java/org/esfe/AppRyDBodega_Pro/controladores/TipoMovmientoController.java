@@ -55,22 +55,21 @@ public class TipoMovmientoController {
 
     @GetMapping("/create")
     public String create(Model model) {
-
         if (!model.containsAttribute("tipoMovimiento")) {
             TipoMovimiento tipoMovimiento = new TipoMovimiento();
-            tipoMovimiento.setTipo(2); // Inicializa tipo Salida para mostrar alerta
+            // NO inicializar tipo = 2
             model.addAttribute("tipoMovimiento", tipoMovimiento);
         }
-
         return "tipoMovimiento/create";
     }
+
 
     @PostMapping("/save")
     public String save(@Valid TipoMovimiento tipoMovimiento,
                        BindingResult result,
                        RedirectAttributes attributes) {
 
-        // Validación: si es Salida, forzar editarCosto = false
+        // Solo validar editarCosto, NO cambiar tipo
         if (tipoMovimiento.getTipo() != null && tipoMovimiento.getTipo() == 2) {
             if (Boolean.TRUE.equals(tipoMovimiento.getEditarCosto())) {
                 tipoMovimiento.setEditarCosto(false);
@@ -80,14 +79,14 @@ public class TipoMovmientoController {
 
         if (result.hasErrors()) {
             attributes.addFlashAttribute("error", "⚠ Error: verifique la información.");
-            return "redirect:/tipoMovimientos/create"; // redirige al formulario
+            return "redirect:/tipoMovimientos/create";
         }
 
         tipoMovimientoService.createOrEditOne(tipoMovimiento);
         attributes.addFlashAttribute("msg", "✅ Registro ingresado exitosamente");
-
-        return "redirect:/tipoMovimientos"; // redirige al index
+        return "redirect:/tipoMovimientos";
     }
+
 
 
     @GetMapping("/details/{id}")
@@ -99,9 +98,18 @@ public class TipoMovmientoController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
+        // Buscar el tipo de movimiento por id
         TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorId(id).orElse(null);
+
+        if (tipoMovimiento == null) {
+            // Si no existe, redirigir con mensaje de error
+            model.addAttribute("error", "Tipo de movimiento no encontrado");
+            return "redirect:/tipoMovimientos";
+        }
+
+        // Enviar al modelo para llenar el formulario
         model.addAttribute("tipoMovimiento", tipoMovimiento);
-        return "tipoMovimiento/edit";
+        return "tipoMovimiento/edit"; // Vista Thymeleaf
     }
 
     @PostMapping("/update/{id}")
@@ -111,25 +119,33 @@ public class TipoMovmientoController {
                          Model model,
                          RedirectAttributes attributes) {
 
-        // Validación: si es Salida, forzar editarCosto = false
-        if (tipoMovimiento.getTipo() != null && tipoMovimiento.getTipo() == 2) {
-            tipoMovimiento.setEditarCosto(false);
-            // Mensaje para mostrar en la misma página
-            model.addAttribute("alerta", "⚠ No se puede editar el costo en movimientos de SALIDA seleccione el tipo AJUSTE ESPECIAL para modificar el costo");
-        }
-
-
+        // Validar errores de formulario
         if (result.hasErrors()) {
             model.addAttribute("tipoMovimiento", tipoMovimiento);
             attributes.addFlashAttribute("error", "⚠ Error: verifique la información.");
             return "tipoMovimiento/edit";
         }
 
+        // Solo validar editarCosto si es Salida, sin tocar tipo
+        if (tipoMovimiento.getTipo() != null && tipoMovimiento.getTipo() == 2) {
+            if (Boolean.TRUE.equals(tipoMovimiento.getEditarCosto())) {
+                tipoMovimiento.setEditarCosto(false);
+                model.addAttribute("alerta", "⚠ No se puede editar el costo en movimientos de SALIDA. Se cambió automáticamente a NO.");
+            }
+        }
+
+        // Asegurar que se actualice el ID correcto
         tipoMovimiento.setId(id);
+
+        // Guardar cambios en la base de datos
         tipoMovimientoService.createOrEditOne(tipoMovimiento);
+
+        // Mensaje de éxito
         attributes.addFlashAttribute("msg", "✅ Registro actualizado exitosamente");
+
         return "redirect:/tipoMovimientos";
     }
+
 
     @GetMapping("/remove/{id}")
     public String remove(@PathVariable("id") Integer id, Model model) {

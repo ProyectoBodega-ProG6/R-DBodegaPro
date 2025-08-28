@@ -33,7 +33,9 @@
             <select th:field="*{tipoMovimiento.id}" class="form-select">
                 <option th:each="t : ${tiposMovimiento}"
                         th:value="${t.id}"
-                        th:text="${t.nombre}">Tipo</option>
+                        th:text="${t.nombre}"
+                        th:selected="${movimiento.tipoMovimiento != null} ? ${t.id} == ${movimiento.tipoMovimiento.id} : false">
+                </option>
             </select>
         </div>
 
@@ -48,12 +50,13 @@
             <label>Precio</label>
             <input type="number" step="0.01"
                    th:field="*{precio}"
-                   th:disabled="${movimiento.tipoMovimiento != null and movimiento.tipoMovimiento.tipo == 'Salida'}"
+                   th:disabled="${movimiento.tipoMovimiento != null} ? ${movimiento.tipoMovimiento.tipo} == 2 : false"
                    class="form-control"/>
-            <small th:if="${movimiento.tipoMovimiento != null and movimiento.tipoMovimiento.tipo == 'Salida'}" class="text-muted">
+            <small th:if="${movimiento.tipoMovimiento != null and movimiento.tipoMovimiento.tipo == 2}" class="text-muted">
                 No editable para movimientos de salida
             </small>
         </div>
+
 
         <!-- Usuario -->
         <div class="mb-3">

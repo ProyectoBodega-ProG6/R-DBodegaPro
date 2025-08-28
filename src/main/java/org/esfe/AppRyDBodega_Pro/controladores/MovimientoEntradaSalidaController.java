@@ -116,13 +116,23 @@ public class MovimientoEntradaSalidaController {
         }
         movimiento.setTipoMovimiento(tipoMovimiento);
 
-        // Sobrescribir precio si es salida
-        if ("Salida".equals(tipoMovimiento.getTipo())) {
-            movimiento.setPrecio(producto.getPrecio_venta());
+        // Validar cantidad > 0
+        if (movimiento.getCantidad() == null || movimiento.getCantidad() <= 0) {
+            attributes.addFlashAttribute("error", "La cantidad debe ser mayor a 0");
+            return "redirect:/movimientos/create";
+        }
+
+// Validar precio solo si es Entrada
+        if (tipoMovimiento.getTipo() != null && tipoMovimiento.getTipo() == 1) { // 1 = Entrada
+            if (movimiento.getPrecio() == null || movimiento.getPrecio().doubleValue() <= 0) {
+                attributes.addFlashAttribute("error", "Debe ingresar un precio válido para la entrada");
+                return "redirect:/movimientos/create";
+            }
         }
 
         // Validar usuario
-        Usuario usuario = usuarioService.buscarPorId(movimiento.getUsuario().getId()).orElse(null);
+        Usuario usuario = usuarioService.buscarPorId(
+                movimiento.getUsuario().getId()).orElse(null);
         if (usuario == null) {
             attributes.addFlashAttribute("error", "Usuario no válido");
             return "redirect:/movimientos/create";
@@ -135,9 +145,15 @@ public class MovimientoEntradaSalidaController {
             model.addAttribute("usuarios", usuarioService.obtenerTodos());
             return "movimiento/create";
         }
+// Intentar guardar y capturar errores de stock
+        try {
+            movimientoService.createOrEditOne(movimiento);
+            attributes.addFlashAttribute("msg", "Registro guardado correctamente");
+        } catch (IllegalArgumentException e) {
+            attributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/movimientos/create";
+        }
 
-        movimientoService.createOrEditOne(movimiento);
-        attributes.addFlashAttribute("msg", "Registro guardado correctamente");
         return "redirect:/movimientos";
     }
 
@@ -163,25 +179,30 @@ public class MovimientoEntradaSalidaController {
                          Model model,
                          RedirectAttributes attributes) {
 
-        Producto producto = productoService.buscarPorNombre(movimiento.getProducto().getNombre());
-        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorNombre(movimiento.getTipoMovimiento().getNombre());
-        movimiento.setProducto(producto);
-        movimiento.setTipoMovimiento(tipoMovimiento);
+        // Usar ID para buscar producto y tipo de movimiento
+        Producto producto = productoService.buscarPorId(movimiento.getProducto().getId()).orElse(null);
+        TipoMovimiento tipoMovimiento = tipoMovimientoService.buscarPorId(movimiento.getTipoMovimiento().getId()).orElse(null);
 
-        if (result.hasErrors() || producto == null || tipoMovimiento == null) {
+        if (producto == null || tipoMovimiento == null || result.hasErrors()) {
             model.addAttribute("productos", productoService.obtenerTodos());
             model.addAttribute("tiposMovimiento", tipoMovimientoService.obtenerTodos());
+            model.addAttribute("usuarios", usuarioService.obtenerTodos());
             model.addAttribute("movimiento", movimiento);
             attributes.addFlashAttribute("error", "Error, verifique la información");
             return "movimiento/edit";
         }
 
+        movimiento.setProducto(producto);
+        movimiento.setTipoMovimiento(tipoMovimiento);
+
         try {
             movimientoService.createOrEditOne(movimiento);
             attributes.addFlashAttribute("msg", "Registro actualizado exitosamente");
-        } catch (Exception e) {
-            attributes.addFlashAttribute("error", "Error, verifique la información");
+        } catch (IllegalArgumentException e) {
+            attributes.addFlashAttribute("error", e.getMessage());
+            return "movimiento/edit";
         }
+
         return "redirect:/movimientos";
     }
 
