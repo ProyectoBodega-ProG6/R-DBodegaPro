@@ -49,6 +49,7 @@
         <div class="mb-3">
             <label for="tipo" class="form-label">Tipo: <span class="text-danger">*</span></label>
             <select class="form-select" th:field="*{tipo}" id="tipo" required>
+                <option value="">Seleccione un tipo...</option>
                 <option th:value="1">Entrada</option>
                 <option th:value="2">Salida</option>
                 <option th:value="3">Ajuste Especial Salida</option>
