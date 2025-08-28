@@ -18,17 +18,17 @@
         <input type="hidden" th:field="*{id}" />
 
         <div class="form-group">
-            <label>Nombre Completo:</label>
+            <label>Nombre Completo: <span class="text-danger">*</span></label>
             <input type="text" th:field="*{nombreCompleto}" class="form-control"/>
         </div>
 
         <div class="form-group">
-            <label>Username:</label>
+            <label>Username: <span class="text-danger">*</span></label>
             <input type="text" th:field="*{username}" class="form-control"/>
         </div>
 
         <div class="form-group">
-            <label>Password:</label>
+            <label>Password: <span class="text-danger">*</span></label>
             <input type="text" th:field="*{password}" class="form-control"
                    minlength="8" maxlength="10" required
                    oninput="checkPasswordLength(this)"/>
@@ -49,12 +49,12 @@
         </div>
 
         <div class="form-group">
-            <label>Correo Electrónico:</label>
+            <label>Correo Electrónico: <span class="text-danger">*</span></label>
             <input type="email" th:field="*{correo_electronico}" class="form-control"/>
         </div>
 
         <div class="form-group">
-            <label>Rol:</label>
+            <label>Rol: <span class="text-danger">*</span></label>
             <select th:field="*{rol.id}" class="form-control">
                 <option value="">--Seleccionar Rol--</option>
                 <option th:each="r : ${roles}" th:value="${r.id}" th:text="${r.nombreRol}"
@@ -63,7 +63,7 @@
         </div>
 
         <div class="form-group">
-            <label>Status:</label>
+            <label>Status: <span class="text-danger">*</span></label>
             <select th:field="*{status}" class="form-control">
                 <option value="1" th:selected="${usuario.status == 1}">Activo</option>
                 <option value="0" th:selected="${usuario.status == 0}">Inactivo</option>

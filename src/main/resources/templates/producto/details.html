@@ -14,7 +14,7 @@
     <h2 class="mb-4 text-center">Detalle del Producto</h2>
 
     <div class="row mb-3">
-        <div class="col-sm-3"><strong>Nombre:</strong></div>
+        <div class="col-sm-3"><strong>Nombre: <span class="text-danger">*</span></strong></div>
         <div class="col-sm-9" th:text="${producto.nombre}"></div>
     </div>
 
@@ -24,37 +24,37 @@
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-3"><strong>Categoría:</strong></div>
+        <div class="col-sm-3"><strong>Categoría: <span class="text-danger">*</span></strong></div>
         <div class="col-sm-9" th:text="${producto.categoria.nombre}"></div>
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-3"><strong>Proveedor:</strong></div>
+        <div class="col-sm-3"><strong>Proveedor: <span class="text-danger">*</span></strong></div>
         <div class="col-sm-9" th:text="${producto.proveedor.nombre}"></div>
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-3"><strong>Precio de Compra:</strong></div>
+        <div class="col-sm-3"><strong>Precio de Compra: <span class="text-danger">*</span></strong></div>
         <div class="col-sm-9" th:text="${producto.precio_compra}"></div>
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-3"><strong>Precio de Venta:</strong></div>
+        <div class="col-sm-3"><strong>Precio de Venta: <span class="text-danger">*</span></strong></div>
         <div class="col-sm-9" th:text="${producto.precio_venta}"></div>
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-3"><strong>Costo Promedio:</strong></div>
+        <div class="col-sm-3"><strong>Costo Promedio: <span class="text-danger">*</span></strong></div>
         <div class="col-sm-9" th:text="${producto.costo_promedio}"></div>
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-3"><strong>Stock Actual:</strong></div>
+        <div class="col-sm-3"><strong>Stock Actual: <span class="text-danger">*</span></strong></div>
         <div class="col-sm-9" th:text="${producto.stock_actual}"></div>
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-3"><strong>Stock Mínimo:</strong></div>
+        <div class="col-sm-3"><strong>Stock Mínimo: <span class="text-danger">*</span></strong></div>
         <div class="col-sm-9" th:text="${producto.stock_minimo}"></div>
     </div>
 

@@ -16,22 +16,22 @@
     <p class="text-center">¿Está seguro que desea eliminar este registro?</p>
 
     <div class="mb-3">
-        <label class="form-label fw-bold">ID:</label>
+        <label class="form-label fw-bold">ID: <span class="text-danger">*</span></label>
         <p th:text="${tipoMovimiento.id}"></p>
     </div>
 
     <div class="mb-3">
-        <label class="form-label fw-bold">Nombre:</label>
+        <label class="form-label fw-bold">Nombre: <span class="text-danger">*</span></label>
         <p th:text="${tipoMovimiento.nombre}"></p>
     </div>
 
     <div class="mb-3">
-        <label class="form-label fw-bold">Editar costo:</label>
+        <label class="form-label fw-bold">Editar costo: <span class="text-danger">*</span></label>
         <p th:text="${tipoMovimiento.editarCosto} ? 'Sí' : 'No'"></p>
     </div>
 
     <div class="mb-3">
-        <label class="form-label fw-bold">Tipo:</label>
+        <label class="form-label fw-bold">Tipo: <span class="text-danger">*</span></label>
         <p th:text="${tipoMovimiento.tipo == 0 ? 'Entrada' : 'Salida'}"></p>
     </div>
 

@@ -16,28 +16,28 @@
     <form th:action="@{/usuarios/save}" th:object="${usuario}" method="post">
 
         <div class="mb-3">
-            <label>Nombre Completo</label>
+            <label>Nombre Completo <span class="text-danger">*</span></label>
             <input type="text" th:field="*{nombreCompleto}" class="form-control"/>
             <div th:if="${#fields.hasErrors('nombreCompleto')}" class="text-danger"
                  th:errors="*{nombreCompleto}"></div>
         </div>
 
         <div class="mb-3">
-            <label>Username</label>
+            <label>Username <span class="text-danger">*</span></label>
             <input type="text" th:field="*{username}" class="form-control"/>
             <div th:if="${#fields.hasErrors('username')}" class="text-danger"
                  th:errors="*{username}"></div>
         </div>
 
         <div class="mb-3">
-            <label>Email</label>
+            <label>Email <span class="text-danger">*</span></label>
             <input type="email" th:field="*{correo_electronico}" class="form-control"/>
             <div th:if="${#fields.hasErrors('correo_electronico')}" class="text-danger"
                  th:errors="*{correo_electronico}"></div>
         </div>
 
         <div class="mb-3">
-            <label>Password</label>
+            <label>Password <span class="text-danger">*</span></label>
             <input type="password" th:field="*{password}" class="form-control"/>
             <div th:if="${#fields.hasErrors('password')}" class="text-danger"
                  th:errors="*{password}"></div>
@@ -58,7 +58,7 @@
         </div>
 
         <div class="mb-3">
-            <label>Rol</label>
+            <label>Rol <span class="text-danger">*</span></label>
             <select th:field="*{rol.id}" class="form-control">
                 <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.nombreRol}"></option>
             </select>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="mb-3">
-            <label>Status</label>
+            <label>Status <span class="text-danger">*</span></label>
             <select th:field="*{status}" class="form-control">
                 <option value="1" th:selected="*{status} == 1">Activo</option>
                 <option value="0" th:selected="*{status} == 0">Inactivo</option>
