@@ -1,7 +1,6 @@
 package org.esfe.AppRyDBodega_Pro.controladores;
 
 import jakarta.validation.Valid;
-import org.esfe.AppRyDBodega_Pro.modelos.Categoria;
 import org.esfe.AppRyDBodega_Pro.modelos.Rol;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IRolService;
 import org.springframework.beans.factory.annotation.Autowired;

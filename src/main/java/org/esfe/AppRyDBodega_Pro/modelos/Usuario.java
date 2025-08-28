@@ -1,12 +1,9 @@
 package org.esfe.AppRyDBodega_Pro.modelos;
 
 import jakarta.persistence.Entity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios",

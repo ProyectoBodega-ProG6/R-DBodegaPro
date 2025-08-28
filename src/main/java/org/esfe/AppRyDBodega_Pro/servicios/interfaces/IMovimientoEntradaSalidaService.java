@@ -1,6 +1,5 @@
 package org.esfe.AppRyDBodega_Pro.servicios.interfaces;
 
-import org.esfe.AppRyDBodega_Pro.modelos.Categoria;
 import org.esfe.AppRyDBodega_Pro.modelos.MovimientoEntradaSalida;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
