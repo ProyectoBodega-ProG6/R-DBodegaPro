@@ -48,6 +48,7 @@ public class DatabaseWebSecurity {
                 .requestMatchers("/productos/**").hasAnyAuthority("Administrador", "SupervisorBodega")
                 .requestMatchers("/tipoMovimientos/**").hasAnyAuthority("Administrador", "SupervisorBodega")
                 .requestMatchers("/movimientos/**").hasAnyAuthority("Administrador", "SupervisorBodega")
+                .requestMatchers("/kardex/**").hasAnyAuthority("Administrador", "SupervisorBodega")
 
                 .anyRequest().denyAll()
         );
