@@ -1,10 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="/layouts/_mainLayout">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Detalles del Movimiento</title>
 </head>
 <body>
+
+<div layout:fragment="content" class="container mt-4">
+
+    <h2 class="mb-4">Detalles del Movimiento</h2>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${movimiento.id ?: 'No definido'}"></td>
+                </tr>
+                <tr>
+                    <th>Tipo Movimiento</th>
+                    <td th:text="${movimiento.tipoMovimiento?.nombre ?: 'Sin tipo'}"></td>
+                </tr>
+                <tr>
+                    <th>Producto</th>
+                    <td th:text="${movimiento.producto?.nombre ?: 'Sin producto'}"></td>
+                </tr>
+                <tr>
+                    <th>Usuario</th>
+                    <td th:text="${movimiento.usuario?.nombreCompleto ?: 'Sin usuario'}"></td>
+                </tr>
+                <tr>
+                    <th>Cantidad</th>
+                    <td th:text="${movimiento.cantidad ?: 'No definido'}"></td>
+                </tr>
+                <tr>
+                    <th>Precio</th>
+                    <td th:text="${movimiento.precio ?: 'No definido'}"></td>
+                </tr>
+                <tr>
+                    <th>Fecha</th>
+                    <td th:text="${movimiento.fecha ?: 'Sin fecha'}"></td>
+                </tr>
+                <tr>
+                    <th>Observaciones</th>
+                    <td th:text="${movimiento.observaciones ?: 'Sin observaciones'}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-3 d-flex gap-2">
+        <a th:href="@{/movimientos}" class="btn btn-secondary">Volver</a>
+    </div>
+
+</div>
 
 </body>
 </html>

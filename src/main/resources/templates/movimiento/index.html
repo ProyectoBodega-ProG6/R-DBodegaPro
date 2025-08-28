@@ -37,13 +37,18 @@
     <div class="row g-2">
 
       <!-- Nombre Producto con autocomplete -->
-      <div class="col-md-6 position-relative">
-        <label for="productoNombre" class="form-label">Nombre Producto</label>
-        <input type="text" id="productoNombre" name="nombreProducto" class="form-control"
-               placeholder="Escriba el nombre del producto..." autocomplete="off"
-               th:value="${nombreProducto}">
-        <div id="sugerencias" class="sugerencias-list"></div>
+      <div class="col-md-6">
+        <label for="nombreProducto" class="form-label">Tipo de Producto</label>
+        <select class="form-select" name="nombreProducto" id="nombreProducto">
+          <option value="">Buscar por Producto...</option>
+          <option th:each="produc : ${productos}"
+                  th:value="${produc.nombre}"
+                  th:text="${produc.nombre}"
+                  th:selected="${produc.nombre == nombreProducto}">
+          </option>
+        </select>
       </div>
+
 
       <!-- Tipo Movimiento (combobox) -->
       <div class="col-md-6">
@@ -102,7 +107,7 @@
       <td th:text="${movimiento.usuario?.nombreCompleto}"></td>
     <td th:text="${movimiento.cantidad}"></td>
       <td th:text="${movimiento.precio}"></td>
-      <td th:text="${movimiento.fecha}"></td>1
+      <td th:text="${movimiento.fecha}"></td>
       <td th:text="${movimiento.observaciones}"></td>
       <td>
         <a th:href="@{/movimientos/details/{id}(id=${movimiento.id})}" class="btn btn-sm btn-info">Detalles</a>
