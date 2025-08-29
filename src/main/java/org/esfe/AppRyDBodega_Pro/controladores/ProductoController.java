@@ -6,6 +6,7 @@ import org.esfe.AppRyDBodega_Pro.servicios.interfaces.ICategoriaService;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProductoService;
 import org.esfe.AppRyDBodega_Pro.servicios.interfaces.IProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -217,20 +218,29 @@ public class ProductoController {
         if (productoOpt.isPresent()) {
             Producto producto = productoOpt.get();
 
-            // Eliminar imagen si existe
-            if (producto.getImagen_url() != null) {
-                try {
-                    Path uploadPath = Paths.get(UPLOAD_DIR);
-                    Path filePathDelete = uploadPath.resolve(producto.getImagen_url());
-                    Files.deleteIfExists(filePathDelete);
-                } catch (IOException e) {
-                    attributes.addFlashAttribute("error", "Error al procesar la imagen: " + e.getMessage());
-                    return "redirect:/productos";
+            try {
+                // Primero eliminar en la BD
+                productoService.eliminarPorId(id);
+
+                // Si se eliminó en BD, entonces eliminar imagen si existe
+                if (producto.getImagen_url() != null) {
+                    try {
+                        Path uploadPath = Paths.get(UPLOAD_DIR);
+                        Path filePathDelete = uploadPath.resolve(producto.getImagen_url());
+                        Files.deleteIfExists(filePathDelete);
+                    } catch (IOException e) {
+                        attributes.addFlashAttribute("error", "El producto se eliminó, pero ocurrió un error al borrar la imagen: " + e.getMessage());
+                        return "redirect:/productos";
+                    }
                 }
+
+                attributes.addFlashAttribute("msg", "Producto eliminado correctamente");
+
+            } catch (DataIntegrityViolationException e) {
+                // Si no se elimina en BD, la imagen se conserva
+                attributes.addFlashAttribute("error", "No se puede eliminar el producto porque tiene movimientos registrados");
             }
 
-            productoService.eliminarPorId(id);
-            attributes.addFlashAttribute("msg", "Producto eliminado correctamente");
         } else {
             attributes.addFlashAttribute("error", "Producto no encontrado");
         }
