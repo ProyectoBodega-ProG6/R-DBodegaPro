@@ -78,7 +78,7 @@
   <script>
     function limpiarCampos() {
         document.getElementById("tipoMovimiento").value = "";
-        document.getElementById("productoNombre").value = "";
+        document.getElementById("nombreProducto").value = "";
         document.getElementById("formBuscar").submit();
     }
   </script>
@@ -123,7 +123,7 @@
     <ul class="pagination">
       <li class="page-item" th:each="pageNumber : ${pageNumbers}">
         <a class="page-link"
-           th:href="@{|/movimientos?page=${pageNumber}&tipoMovimiento=${tipoMovimiento}&productoNombre=${productoNombre}|}"
+           th:href="@{|/movimientos?page=${pageNumber}&tipoMovimiento=${tipoMovimiento}&nombreProducto=${nombreProducto}|}"
            th:text="${pageNumber}"></a>
       </li>
     </ul>
