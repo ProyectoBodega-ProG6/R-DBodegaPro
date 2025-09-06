@@ -160,15 +160,6 @@ public class MovimientoEntradaSalidaService implements IMovimientoEntradaSalidaS
     }
 
 
-
-
-
-
-    @Override
-    public void eliminarPorId(Integer id) {
-        movimientoEntradaSalidaRepository.deleteById(id);
-    }
-
     @Override
     public Page<MovimientoEntradaSalida> findByProductoNombreContainingIgnoreCaseAndTipoMovimientoNombreOrderByIdAsc(String nombreProducto, String nombre, Pageable pageable) {
         return movimientoEntradaSalidaRepository.findByProductoNombreContainingIgnoreCaseAndTipoMovimientoNombreOrderByIdAsc(nombreProducto, nombre, pageable);

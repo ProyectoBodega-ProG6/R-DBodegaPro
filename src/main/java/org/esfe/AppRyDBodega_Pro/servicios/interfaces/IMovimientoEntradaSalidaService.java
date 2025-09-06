@@ -17,7 +17,6 @@ public interface IMovimientoEntradaSalidaService {
 
     MovimientoEntradaSalida createOrEditOne(MovimientoEntradaSalida movimientoEntradaSalida);
 
-    void eliminarPorId(Integer id);
 
     Page<MovimientoEntradaSalida> findByProductoNombreContainingIgnoreCaseAndTipoMovimientoNombreOrderByIdAsc(
             String nombreProducto,

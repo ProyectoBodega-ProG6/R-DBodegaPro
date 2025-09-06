@@ -265,29 +265,6 @@ public class MovimientoEntradaSalidaController {
     }
 
 
-    @GetMapping("/remove/{id}")
-    public String remove(@PathVariable("id") Integer id, Model model) {
-        MovimientoEntradaSalida movimiento = movimientoService.buscarPorId(id).orElse(null);
-        model.addAttribute("movimiento", movimiento);
-        return "movimiento/delete"; // vista con pregunta: "¿Está seguro de eliminar?"
-    }
-
-
-
-
-    //editado prueba
-    @PostMapping("/delete")
-    public String delete(@RequestParam("id") Integer id, RedirectAttributes attributes) {
-        try {
-            movimientoService.eliminarPorId(id);
-            attributes.addFlashAttribute("msg", "Registro eliminado exitosamente");
-        } catch (Exception e) {
-            attributes.addFlashAttribute("error", "Error de eliminación");
-        }
-        return "redirect:/movimientos";
-    }
-
-
     @GetMapping("/stock")
     public String verStock(Model model) {
         List<Producto> productos = productoService.obtenerTodos();

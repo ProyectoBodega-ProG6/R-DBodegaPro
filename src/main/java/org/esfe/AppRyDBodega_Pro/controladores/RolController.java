@@ -63,8 +63,8 @@ public class RolController {
     @GetMapping("/create")
     public String create(Rol rol, Model model,RedirectAttributes attributes) {
         long totalRoles = rolService.count();
-        if (totalRoles >= 2) {
-            attributes.addFlashAttribute("error", "No se pueden registrar más de 2 roles.");
+        if (totalRoles >= 3) {
+            attributes.addFlashAttribute("error", "No se pueden registrar más de 3 roles.");
             return "redirect:/roles";
         }
         model.addAttribute("canCreate", true);
@@ -84,8 +84,8 @@ public class RolController {
         }
 
         long totalRoles = rolService.count();
-        if (totalRoles >= 2) {
-            attributes.addFlashAttribute("error", "No se pueden registrar más de 2 roles.");
+        if (totalRoles >= 3) {
+            attributes.addFlashAttribute("error", "No se pueden registrar más de 3 roles.");
             return "redirect:/roles";
         }
 

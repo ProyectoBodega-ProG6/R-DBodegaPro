@@ -111,8 +111,7 @@
       <td th:text="${movimiento.observaciones}"></td>
       <td>
         <a th:href="@{/movimientos/details/{id}(id=${movimiento.id})}" class="btn btn-sm btn-info">Detalles</a>
-        <a th:href="@{/movimientos/edit/{id}(id=${movimiento.id})}" class="btn btn-sm btn-primary">Editar</a>
-        <a th:href="@{/movimientos/remove/{id}(id=${movimiento.id})}" class="btn btn-sm btn-danger">Eliminar</a>
+        <a th:href="@{/movimientos/edit/{id}(id=${movimiento.id})}" class="btn btn-sm btn-dark">Editar</a>
       </td>
     </tr>
     </tbody>
