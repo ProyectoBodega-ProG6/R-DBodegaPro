@@ -271,4 +271,12 @@ public class ProductoController {
             return new byte[0];
         }
     }
+
+    @GetMapping("/catalogo")
+    public String catalogo(Model model) {
+        List<Producto> productos = productoService.obtenerTodos(); // O usa paginación si prefieres
+        model.addAttribute("productos", productos);
+        return "producto/catalogo";
+    }
+
 }
