@@ -279,4 +279,14 @@ public class ProductoController {
         return "producto/catalogo";
     }
 
+    @GetMapping("/catalogo/detalle/{id}")
+    public String detalleCatalogo(@PathVariable("id") Integer id, Model model) {
+        Producto producto = productoService.buscarPorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con id: " + id));
+        model.addAttribute("producto", producto);
+        return "producto/catalogo-detalle";
+    }
+
+
+
 }
